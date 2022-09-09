@@ -7,3 +7,5 @@
 pip install -r requirements.txt 
 python main.py
 ```
+
+All in [vitalik-blog.pdf](https://github.com/smallyunet/vitalik-blog-pdf/blob/main/vitalik-blog.pdf)
