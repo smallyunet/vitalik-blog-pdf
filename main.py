@@ -123,7 +123,8 @@ def main():
         print(u"merge " + str(i) + ' pdf')
 
     todays_date = date.today()
-    name = "vitalik-blog-" + str(todays_date) + ".pdf"
+    #name = "vitalik-blog-" + str(todays_date) + ".pdf"
+    name = "vitalik-blog.pdf"
     output = open(name, "wb")
     merger.write(output)
 
