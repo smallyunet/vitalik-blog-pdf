@@ -70,7 +70,7 @@
 </ul>
 <center>
 <p><br/></p>
-<p><img class="padded" src="https://vitalik.ca/images/endgame/diag1.png" style="width:575px"/></p>
+<p><img class="padded" src="https://vitalik.ca/images/endgame/diag1.png" style="display: block; margin-left: auto; margin-right: auto;width:575px"/></p>
 </center>
 <p><br/></p>
 <p>What do we get after all of this is done? <strong>We get a chain where block <em>production</em> is still centralized, but block <em>validation</em> is trustless and highly decentralized, and specialized anti-censorship magic prevents the block producers from censoring.</strong> It's somewhat aesthetically ugly, but it does provide the basic guarantees that we are looking for: even if every single one of the primary stakers (the block producers) is intent on attacking or censoring, the worst that they could do is all go offline entirely, at which point the chain stops accepting transactions until the community pools their resources and sets up <em>one</em> primary-staker node that is honest.</p>
@@ -78,7 +78,7 @@
 <p>Imagine that one particular rollup - whether Arbitrum, Optimism, Zksync, StarkNet or something completely new - does a really good job of engineering their node implementation, to the point where it really can do 10,000 transactions per second if given powerful enough hardware. The techniques for doing this are in-principle well-known, and implementations were made by <a href="https://medium.com/eosio/eosio-dawn-3-0-now-available-49a3b99242d7">Dan Larimer</a> and others many years ago: split up execution into one CPU thread running the unparallelizable but cheap business logic and a huge number of other threads running the expensive but highly parallelizable cryptography. Imagine also that Ethereum <a href="https://hackmd.io/@vbuterin/das">implements sharding with data availability sampling</a>, and has the space to store that rollup's on-chain data between its 64 shards. As a result, everyone migrates to this rollup. What would that world look like?</p>
 <center>
 <p><br/></p>
-<p><img class="padded" src="https://vitalik.ca/images/endgame/diag2.png" style="width:575px"/></p>
+<p><img class="padded" src="https://vitalik.ca/images/endgame/diag2.png" style="display: block; margin-left: auto; margin-right: auto;width:575px"/></p>
 </center>
 <p><br/></p>
 <p><strong>Once again, we get a world where, block <em>production</em> is centralized, block <em>validation</em> is trustless and highly decentralized, and censorship is still prevented</strong>. Rollup block producers have to process a huge number of transactions, and so it is a difficult market to enter, but they have no way to push invalid blocks through. Block availability is secured by the underlying chain, and block validity is guaranteed by the rollup logic: if it's a ZK rollup, it's ensured by SNARKs, and an optimistic rollup is secure as long as there is one honest actor somewhere running a fraud prover node (they can be subsidized with <a href="https://gitcoin.co/grants/">Gitcoin grants</a>). Furthermore, because users always have the option of submitting transactions through the on-chain secondary inclusion channel, rollup sequencers also cannot effectively censor.</p>
@@ -87,7 +87,7 @@
 <p>It seems like we could have it all: decentralized validation, robust censorship resistance, and even distributed block <em>production</em>, because the rollups are all invididually small and so easy to start producing blocks in. But the decentralization of block production may not last, because of the possibility of <a href="http://arxiv.org/abs/2112.01472">cross-domain MEV</a>. There are a number of benefits to being able to construct the next block on <em>many domains at the same time</em>: you can create blocks that use arbitrage opportunities that rely on making transactions in two rollups, or one rollup and the main chain, or even more complex combinations.</p>
 <center>
 <p><br/></p>
-<p><img src="https://vitalik.ca/images/endgame/wgate.png" style="width:550px"/><br/></p>
+<p><img src="https://vitalik.ca/images/endgame/wgate.png" style="display: block; margin-left: auto; margin-right: auto;width:550px"/><br/></p>
 <p><em>A cross-domain MEV opportunity discovered by <a href="https://westerngate.xyz/">Western Gate</a></em></p>
 </center>
 <p><br/></p>
@@ -99,7 +99,7 @@
 <p>So what's the result? <strong>Block <em>production</em> is centralized, block <em>validation</em> is trustless and highly decentralized, and censorship is still prevented</strong>.</p>
 <center>
 <p><br/></p>
-<p><img class="padded" src="https://vitalik.ca/images/endgame/diag3.png"/></p>
+<p><img class="padded" src="https://vitalik.ca/images/endgame/diag3.png" style="display: block; margin-left: auto; margin-right: auto;"/></p>
 <p><em>Three paths toward the same destination.</em></p>
 </center>
 <p><br/></p>
@@ -110,7 +110,7 @@
 <p>But also, Ethereum researchers should think hard about what levels of decentralization in block production are actually achievable. It may not be worth it to add complicated plumbing to make highly decentralized block production easy if cross-domain MEV (or even cross-shard MEV from one rollup taking up multiple shards) make it unsustainable regardless.</p>
 <center>
 <p><br/></p>
-<p><img class="padded" src="https://vitalik.ca/images/endgame/ethrollups.png"/></p>
+<p><img class="padded" src="https://vitalik.ca/images/endgame/ethrollups.png" style="display: block; margin-left: auto; margin-right: auto;"/></p>
 </center>
 <p><br/></p>
 <p><strong>What does this mean for big block chains?</strong> There is a path for them to turn into something trustless and censorship resistant, and we'll soon find out if their core developers and communities actually value censorship resistance and decentralization enough for them to do it!</p>

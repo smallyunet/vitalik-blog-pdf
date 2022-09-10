@@ -88,7 +88,7 @@
 <p>From the point of view of someone coming in later who just receives these two messages, they see that A is no longer used, but they don't know whether "replace A with B" or "replace A with C" has higher priority.</p>
 <center>
 <p><br/></p>
-<p><img class="padded" src="https://vitalik.ca/images/nonfin/keychange.png"/></p>
+<p><img class="padded" src="https://vitalik.ca/images/nonfin/keychange.png" style="display: block; margin-left: auto; margin-right: auto;"/></p>
 </center>
 <p><br/></p>
 <p>This is equivalent to the famous <a href="https://en.wikipedia.org/wiki/Double-spending">double-spend problem</a> in designing decentralized currencies, except instead of the goal being to prevent a previous owner of a coin from being able to send it again, here the goal is to prevent the previous key controlling an account from being able to change the key. <strong>Just like creating a decentralized currency, doing account management in a decentralized way requires something like a blockchain</strong>. A blockchain can timestamp the key change messages, providing common knowledge over whether B or C came first.</p>
@@ -118,7 +118,7 @@
 <p>An even more effective usecase is many-at-a-time issuance: if an artists wants to issue N copies of a "limited-edition" NFT, they could publish on-chain a <em>single</em> hash containing the Merkle root of the NFTs that they are issuing. The single issuance prevents them from issuing more after the fact, and you can publish the number (eg. 100) signifying the quantity limit along with the Merkle root, signifying that only the leftmost 100 Merkle branches are valid.</p>
 <center>
 <p><br/></p>
-<p><img class="padded" src="https://vitalik.ca/images/nonfin/merkle.png"/> <small><i></i></small></p>
+<p><img class="padded" src="https://vitalik.ca/images/nonfin/merkle.png" style="display: block; margin-left: auto; margin-right: auto;"/> <small><i></i></small></p>
 <p>By publishing a single Merkle root and max count on-chain, you can commit issue a limited quantity of attestations. In this example, there are only five possible valid Merkle branches that could satisfy the proof check. Astute readers may notice a conceptual similarity to <a href="https://ethereum.org/en/developers/docs/scaling/plasma/">Plasma chains</a>.</p>
 <p></p>
 </center>
@@ -137,10 +137,10 @@
 <table class="transparent">
 <tr>
 <td>
-<p><img src="https://vitalik.ca/images/nonfin/tweet1.png"/></p>
+<p><img src="https://vitalik.ca/images/nonfin/tweet1.png" style="display: block; margin-left: auto; margin-right: auto;"/></p>
 </td>
 <td>
-<p><img src="https://vitalik.ca/images/nonfin/tweet2.png"/></p>
+<p><img src="https://vitalik.ca/images/nonfin/tweet2.png" style="display: block; margin-left: auto; margin-right: auto;"/></p>
 </td>
 </tr>
 </table>

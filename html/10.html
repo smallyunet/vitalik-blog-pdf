@@ -64,7 +64,7 @@
 <p>One powerful intellectual tool that allows for more nuanced thinking about complexity is to draw a distinction between what we will call <strong>encapsulated complexity</strong> and <strong>systemic complexity</strong>.</p>
 <center>
 <p><br/></p>
-<p><img class="padded" src="https://vitalik.ca/images/complexity-files/encapsulated_systemic.png"/></p>
+<p><img class="padded" src="https://vitalik.ca/images/complexity-files/encapsulated_systemic.png" style="display: block; margin-left: auto; margin-right: auto;"/></p>
 </center>
 <p><br/></p>
 <p>Encapsulated complexity occurs when there is a system with sub-systems that are internally complex, but that present a simple "interface" to the outside. Systemic complexity occurs when the different parts of a system can't even be cleanly separated, and have complex interactions with each other.</p>
@@ -78,7 +78,7 @@
 <p>Now, consider Schnorr signatures. Schnorr signatures rely only on basic <a href="https://blog.cloudflare.com/a-relatively-easy-to-understand-primer-on-elliptic-curve-cryptography/">elliptic curves</a>. But the signing and verification logic is somewhat more complex:</p>
 <center>
 <p><br/><a href="https://en.wikipedia.org/wiki/Schnorr_signature"></a></p>
-<p><img class="padded" src="https://vitalik.ca/images/complexity-files/schnorr_def.png"/></p>
+<p><img class="padded" src="https://vitalik.ca/images/complexity-files/schnorr_def.png" style="display: block; margin-left: auto; margin-right: auto;"/></p>
 <br/>
 </center>
 <p>So... which type of signature is "simpler"? It depends what you care about! BLS signatures have a huge amount of technical complexity, but the complexity is all buried within the definition of the <span class="math inline">\(e\)</span> function. If you treat the <span class="math inline">\(e\)</span> function as a black box, BLS signatures are actually really easy. Schnorr signatures, on the other hand, have less <em>total</em> complexity, but they have more pieces that could interact with the outside world in tricky ways.</p>
@@ -113,7 +113,7 @@
 <p>However, there are limits to this approach of preferring encapsulated complexity. Software bugs can occur in any piece of code, and as it gets bigger the probability of a bug approaches 1. Sometimes, when you need to interact with a sub-system in an unexpected and new way, <strong>complexity that was originally encapsulated can become systemic</strong>.</p>
 <p>One example of the latter is Ethereum's current two-level state tree, which features a tree of account objects, where each account object in turn has its own storage tree.</p>
 <center>
-<p><img class="padded" src="https://vitalik.ca/images/complexity-files/2Ltree.png" style="width:550px"/></p>
+<p><img class="padded" src="https://vitalik.ca/images/complexity-files/2Ltree.png" style="display: block; margin-left: auto; margin-right: auto;width:550px"/></p>
 </center>
 <p>This tree structure is complex, but at the beginning the complexity seemed to be well-encapsulated: the rest of the protocol interacts with the tree as a key/value store that you can read and write to, so we don't have to worry about how the tree is structured.</p>
 <p>Later, however, the complexity turned out to have systemic effects: the ability of accounts to have arbitrarily large storage trees meant that there was no way to reliably expect a particular slice of the state (eg. "all accounts starting with 0x1234") to have a predictable size. This makes it harder to split up the state into pieces, complicating the design of syncing protocols and attempts to <a href="https://www.portal.network/#/">distribute the storage process</a>. <strong>Why did encapsulated complexity become systemic? Because the interface changed.</strong> The fix? The current <a href="https://notes.ethereum.org/@vbuterin/verkle_tree_eip">proposal to move to Verkle trees</a> also includes a move to a well-balanced single-layer design for the tree,</p>

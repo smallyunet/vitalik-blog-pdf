@@ -79,19 +79,19 @@ Yes, but why would you want to make [a minority chain split] easier? Splits dest
 <h3 id="what-is-blockchain-governance">What is Blockchain Governance?</h3>
 <p>To start off, we need to describe more clearly what the process of "blockchain governance" <em>is</em>. Generally speaking, there are two informal models of governance, that I will call the "decision function" view of governance and the "coordination" view of governance. The decision function view treats governance as a function <span class="math inline">\(f(x_1, x_2 ... x_n) \rightarrow y\)</span>, where the inputs are the wishes of various legitimate stakeholders (senators, the president, property owners, shareholders, voters, etc) and the output is the decision.</p>
 <center>
-<img class="padded" src="https://vitalik.ca/images/voting-files/decisionfunction.png" style="width:350px"/>
+<img class="padded" src="https://vitalik.ca/images/voting-files/decisionfunction.png" style="display: block; margin-left: auto; margin-right: auto;width:350px"/>
 </center>
 <p><br/></p>
 <p>The decision function view is often useful as an approximation, but it clearly frays very easily around the edges: people often can and do break the law and get away with it, sometimes rules are ambiguous, and sometimes revolutions happen - and all three of these possibilities are, at least sometimes, <em>a good thing</em>. And often even behavior inside the system is shaped by incentives created by <em>the possibility</em> of acting outside the system, and this once again is at least sometimes a good thing.</p>
 <p>The coordination model of governance, in contrast, sees governance as something that exists in layers. The bottom layer is, in the real world, the laws of physics themselves (as a geopolitical realist would say, guns and bombs), and in the blockchain space we can abstract a bit further and say that it is each individual's ability to run whatever software they want in their capacity as a user, miner, stakeholder, validator or whatever other kind of agent a blockchain protocol allows them to be. The bottom layer is always the ultimate deciding layer; if, for example, all Bitcoin users wake up one day and decides to edit their clients' source code and replace the entire code with an Ethereum client that listens to balances of a particular ERC20 token contract, then that means that that ERC20 token <em>is</em> bitcoin. The bottom layer's ultimate governing power cannot be stopped, but the actions that people take on this layer can be <em>influenced</em> by the layers above it.</p>
 <p>The second (and crucially important) layer is coordination institutions. The purpose of a coordination institution is to create focal points around how and when individuals should act in order to better coordinate behavior. There are many situations, both in blockchain governance and in real life, where if you act in a certain way alone, you are likely to get nowhere (or worse), but if everyone acts together a desired result can be achieved.</p>
 <center>
-<img class="padded" src="https://vitalik.ca/images/voting-files/coordinationgame.png" style="width:250px"/><br/> <br/> <small>An abstract coordination game. You benefit heavily from making the same move as everyone else.</small>
+<img class="padded" src="https://vitalik.ca/images/voting-files/coordinationgame.png" style="display: block; margin-left: auto; margin-right: auto;width:250px"/><br/> <br/> <small>An abstract coordination game. You benefit heavily from making the same move as everyone else.</small>
 </center>
 <p><br/></p>
 <p>In these cases, it's in your interest to go if everyone else is going, and stop if everyone else is stopping. You can think of coordination institutions as putting up green or red flags in the air saying "go" or "stop", <em>with an established culture</em> that everyone watches these flags and (usually) does what they say. Why do people have the incentive to follow these flags? Because <em>everyone else</em> is already following these flags, and you have the incentive to do the same thing as what everyone else is doing.</p>
 <center>
-<img src="https://vitalik.ca/images/voting-files/byzantinegeneral.jpg" style="width:550px"/> <br/><br/> <small>A Byzantine general rallying his troops forward. The purpose of this isn't just to make the soldiers feel brave and excited, but also to reassure them that <i>everyone else</i> feels brave and excited and will charge forward as well, so an individual soldier is not just committing suicide by charging forward alone.</small>
+<img src="https://vitalik.ca/images/voting-files/byzantinegeneral.jpg" style="display: block; margin-left: auto; margin-right: auto;width:550px"/> <br/><br/> <small>A Byzantine general rallying his troops forward. The purpose of this isn't just to make the soldiers feel brave and excited, but also to reassure them that <i>everyone else</i> feels brave and excited and will charge forward as well, so an individual soldier is not just committing suicide by charging forward alone.</small>
 </center>
 <p><br/></p>
 <blockquote>
@@ -111,7 +111,7 @@ Yes, but why would you want to make [a minority chain split] easier? Splits dest
 <li><strong>The EIP 186/649/669 Carbonvote</strong>: <a href="http://carbonvote.com/">http://carbonvote.com/</a></li>
 </ul>
 <center>
-<img src="https://vitalik.ca/images/voting-files/vote2.png" style="height:340px"/> <img src="https://vitalik.ca/images/voting-files/vote3.png" style="height:340px"/> <br/><br/> <img class="padded" src="https://vitalik.ca/images/voting-files/vote1.png" style="width:480px"/>
+<img src="https://vitalik.ca/images/voting-files/vote2.png" style="display: block; margin-left: auto; margin-right: auto;height:340px"/> <img src="https://vitalik.ca/images/voting-files/vote3.png" style="display: block; margin-left: auto; margin-right: auto;height:340px"/> <br/><br/> <img class="padded" src="https://vitalik.ca/images/voting-files/vote1.png" style="display: block; margin-left: auto; margin-right: auto;width:480px"/>
 </center>
 <p><br/></p>
 <p>These three are all examples of <em>loosely coupled</em> coin voting, or coin voting as a layer 2 coordination institution. Ethereum does not have any examples of <em>tightly coupled</em> coin voting (or, coin voting as a layer 1 in-protocol feature), though it <em>does</em> have an example of tightly coupled <em>miner</em> voting: miners' right to vote on the gas limit. Clearly, tightly coupled voting and loosely coupled voting are competitors in the governance mechanism space, so it's worth dissecting: what are the advantages and disadvantages of each one?</p>
@@ -120,12 +120,12 @@ Yes, but why would you want to make [a minority chain split] easier? Splits dest
 <h3 id="low-voter-participation">Low Voter Participation</h3>
 <p>One of the main criticisms of coin voting mechanisms so far is that, no matter where they are tried, they tend to have very low voter participation. The DAO Carbonvote only had a voter participation rate of 4.5%:</p>
 <center>
-<img src="http://upyun-assets.ethfans.org/uploads/photo/image/97e569c5676248db835c1a01eaf0e790.png" style="width:350px"/>
+<img src="http://upyun-assets.ethfans.org/uploads/photo/image/97e569c5676248db835c1a01eaf0e790.png" style="display: block; margin-left: auto; margin-right: auto;width:350px"/>
 </center>
 <p><br/></p>
 <p>Additionally, wealth distribution is very unequal, and the results of these two factors together are best described by this image created by a critic of the DAO fork:</p>
 <center>
-<img src="https://i0.wp.com/elaineou.com/wp-content/uploads/2016/07/Screen-Shot-2016-07-18-at-1.28.08-PM.png" style="width:450px"/>
+<img src="https://i0.wp.com/elaineou.com/wp-content/uploads/2016/07/Screen-Shot-2016-07-18-at-1.28.08-PM.png" style="display: block; margin-left: auto; margin-right: auto;width:450px"/>
 </center>
 <p><br/></p>
 <p>The EIP 186 Carbonvote had ~2.7 million ETH voting. The DAO proposal votes <a href="http://themerkle.com/the-dao-undergoes-low-voting-turnout/">did not fare better</a>, with participation never reaching 10%. And outside of Ethereum things are not sunny either; even in Bitshares, a system where the core social contract is designed around voting, the top delegate in an approval vote only got <a href="https://bitcointalk.org/index.php?topic=916696.330;imode">17% of the vote</a>, and in Lisk it got <a href="https://explorer.lisk.io/delegateMonitor">up to 30%</a>, though as we will discuss later these systems have other problems of their own.</p>
@@ -138,20 +138,20 @@ Yes, but why would you want to make [a minority chain split] easier? Splits dest
 <p>Here's LiskElite, with 55 members (out of a total 101):</p>
 <p>
 <center>
-<img src="https://vitalik.ca/images/voting-files/liskpool1.png" style="width:450px"/>
+<img src="https://vitalik.ca/images/voting-files/liskpool1.png" style="display: block; margin-left: auto; margin-right: auto;width:450px"/>
 </center>
 <br/>
 </p>
 <p>Here's LiskGDT, with 33 members:</p>
 <p>
 <center>
-<img src="https://vitalik.ca/images/voting-files/liskpool2.png" style="width:450px"/>
+<img src="https://vitalik.ca/images/voting-files/liskpool2.png" style="display: block; margin-left: auto; margin-right: auto;width:450px"/>
 </center>
 <br/>
 </p>
 <p>And as "Exhibit B" some voter bribes being paid out <a href="https://bitcointalk.org/index.php?topic=1835497.new">in Ark</a>:</p>
 <center>
-<img src="https://i.imgur.com/evqfsMj.png" style="width:500px"/>
+<img src="https://i.imgur.com/evqfsMj.png" style="display: block; margin-left: auto; margin-right: auto;width:500px"/>
 </center>
 <p><br/></p>
 <p>Here, note that there is a key difference between tightly coupled and loosely coupled votes. In a loosely coupled vote, direct or indirect vote bribing is also possible, but if the community agrees that some given proposal or set of votes constitutes a game-theoretic attack, they can simply socially agree to ignore it. And in fact this has kind of already happened - the Carbonvote contains a blacklist of addresses corresponding to known exchange addresses, and votes from these addresses are not counted. In a tightly coupled vote, there is no way to create such a blacklist at protocol level, because agreeing who is part of the blacklist is <em>itself</em> a blockchain governance decision. But since the blacklist is part of a community-created voting tool that only indirectly influences protocol changes, voting tools that contain bad blacklists can simply be rejected by the community.</p>
@@ -162,7 +162,7 @@ Yes, but why would you want to make [a minority chain split] easier? Splits dest
 Additionally, even if coin holders <em>are</em> the only relevant class of user (one might imagine this to be the case in a cryptocurrency where there is an established social contract that its purpose is to be the next digital gold, and nothing else), there is still the challenge that a coin holder vote gives a much greater voice to wealthy coin holders than to everyone else, opening the door for centralization of holdings to lead to unencumbered centralization of decision making. Or, in other words...
 </p>
 <center>
-<img src="https://i0.wp.com/elaineou.com/wp-content/uploads/2016/07/Screen-Shot-2016-07-18-at-1.28.08-PM.png" style="width:450px"/>
+<img src="https://i0.wp.com/elaineou.com/wp-content/uploads/2016/07/Screen-Shot-2016-07-18-at-1.28.08-PM.png" style="display: block; margin-left: auto; margin-right: auto;width:450px"/>
 </center>
 <p><br/></p>
 <p>And if you want to see a review of a project that seems to combine all of these disadvantages at the same time, see this: <a href="https://btcgeek.com/bitshares-trying-memorycoin-year-ago-disastrous-ends/">https://btcgeek.com/bitshares-trying-memorycoin-year-ago-disastrous-ends/</a>.</p>
@@ -170,12 +170,12 @@ Additionally, even if coin holders <em>are</em> the only relevant class of user 
 <h3 id="centralization">Centralization</h3>
 <p>Let's look at the existing live experiment that we have in tightly coupled voting on Ethereum, the gas limit. Here's the gas limit evolution over the past two years:</p>
 <center>
-<img src="https://vitalik.ca/images/voting-files/governance3.png" style="width:450px"/>
+<img src="https://vitalik.ca/images/voting-files/governance3.png" style="display: block; margin-left: auto; margin-right: auto;width:450px"/>
 </center>
 <p><br/></p>
 <p>You might notice that the general feel of the curve is a bit like another chart that may be quite familiar to you:</p>
 <center>
-<img class="padded" src="https://philoofalexandria.files.wordpress.com/2011/10/top_marginal_income_tax_rate_1913-2003.jpg" style="width:450px"/>
+<img class="padded" src="https://philoofalexandria.files.wordpress.com/2011/10/top_marginal_income_tax_rate_1913-2003.jpg" style="display: block; margin-left: auto; margin-right: auto;width:450px"/>
 </center>
 <p><br/></p>
 <p>Basically, they both look like magic numbers that are created and repeatedly renegotiated by a fairly centralized group of guys sitting together in a room. What's happening in the first case? Miners are generally following the direction favored by the community, which is itself gauged via social consensus aids similar to those that drive hard forks (core developer support, Reddit upvotes, etc; in Ethereum, the gas limit has never gotten controversial enough to require anything as serious as a coin vote).</p>

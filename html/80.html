@@ -66,7 +66,7 @@
 <p>Elliptic curves themselves are very much a nontrivial topic to understand, and this article will generally assume that you know how they work; if you do not, I recommend this article here as a primer: <a href="https://blog.cloudflare.com/a-relatively-easy-to-understand-primer-on-elliptic-curve-cryptography/">https://blog.cloudflare.com/a-relatively-easy-to-understand-primer-on-elliptic-curve-cryptography/</a>. As a quick summary, elliptic curve cryptography involves mathematical objects called "points" (these are literal two-dimensional points with <span class="math inline">\((x, y)\)</span> coordinates), with special formulas for adding and subtracting them (ie. for calculating the coordinates of <span class="math inline">\(R = P + Q\)</span>), and you can also multiply a point by an integer (ie. <span class="math inline">\(P \cdot n = P + P + ... + P\)</span>, though there's a much faster way to compute it if <span class="math inline">\(n\)</span> is big).</p>
 <br/>
 <center>
-<img src="https://cdn-images-1.medium.com/max/2000/1*2PxXNwMceh1XC_waAP9NiA.jpeg"/><br/><br/> <small><i>Here's how point addition looks like graphically.</i></small>
+<img src="https://cdn-images-1.medium.com/max/2000/1*2PxXNwMceh1XC_waAP9NiA.jpeg" style="display: block; margin-left: auto; margin-right: auto;"/><br/><br/> <small><i>Here's how point addition looks like graphically.</i></small>
 </center>
 <p><br/></p>
 <p>There exists a special point called the "point at infinity" (<span class="math inline">\(O\)</span>), the equivalent of zero in point arithmetic; it's always the case that <span class="math inline">\(P + O = P\)</span>. Also, a curve has an "<strong>order</strong>"; there exists a number <span class="math inline">\(n\)</span> such that <span class="math inline">\(P \cdot n = O\)</span> for any <span class="math inline">\(P\)</span> (and of course, <span class="math inline">\(P \cdot (n+1) = P, P \cdot (7 \cdot n + 5) = P \cdot 5\)</span>, and so on). There is also some commonly agreed upon "generator point" <span class="math inline">\(G\)</span>, which is understood to in some sense represent the number <span class="math inline">\(1\)</span>. Theoretically, any point on a curve (except <span class="math inline">\(O\)</span>) can be <span class="math inline">\(G\)</span>; all that matters is that <span class="math inline">\(G\)</span> is standardized.</p>
@@ -99,7 +99,7 @@
 <p>Now, let's talk about <strong>extension fields</strong>. You have probably already seen an extension field before; the most common example that you encounter in math textbooks is the field of complex numbers, where the field of real numbers is "extended" with the additional element <span class="math inline">\(\sqrt{-1} = i\)</span>. Basically, extension fields work by taking an existing field, then "inventing" a new element and defining the relationship between that element and existing elements (in this case, <span class="math inline">\(i^2 + 1 = 0\)</span>), making sure that this equation does not hold true for any number that is in the original field, and looking at the set of all linear combinations of elements of the original field and the new element that you have just created.</p>
 <br/>
 <center>
-<img class="padded" src="https://cdn-images-1.medium.com/max/2000/1*qDOPI299SKvZuzeNnik4JA.png"/>
+<img class="padded" src="https://cdn-images-1.medium.com/max/2000/1*qDOPI299SKvZuzeNnik4JA.png" style="display: block; margin-left: auto; margin-right: auto;"/>
 </center>
 <p><br/></p>
 <p>We can do extensions of prime fields too; for example, we can extend the prime field <span class="math inline">\(\bmod 7\)</span> that we described above with <span class="math inline">\(i\)</span>, and then we can do:</p>
@@ -143,7 +143,7 @@
 <p>Where <span class="math inline">\(a\)</span>, <span class="math inline">\(b\)</span> and <span class="math inline">\(c\)</span> are carefully chosen so that the line passes through points <span class="math inline">\(P\)</span> and <span class="math inline">\(Q\)</span>. Because of how elliptic curve addition works (see the diagram at the top), this also means that it passes through <span class="math inline">\(-P-Q\)</span>. And it goes up to infinity dependent on both <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span>, so the divisor becomes <span class="math inline">\([P]+ [Q] + [-P-Q] - 3 \cdot [O]\)</span>.</p>
 <br/>
 <center>
-<img class="padded" src="https://cdn-images-1.medium.com/max/2000/1*alHa7VxwcLoJk4C_YU9Iog.png"/>
+<img class="padded" src="https://cdn-images-1.medium.com/max/2000/1*alHa7VxwcLoJk4C_YU9Iog.png" style="display: block; margin-left: auto; margin-right: auto;"/>
 </center>
 <p><br/></p>
 <p>We know that every "rational function" (ie. a function defined only using a finite number of <span class="math inline">\(+, -, \cdot\)</span> and <span class="math inline">\(/\)</span> operations on the coordinates of the point) uniquely corresponds to some divisor, up to multiplication by a constant (ie. if two functions <span class="math inline">\(F\)</span> and <span class="math inline">\(G\)</span> have the same divisor, then <span class="math inline">\(F = G \cdot k\)</span> for some constant <span class="math inline">\(k\)</span>).</p>
