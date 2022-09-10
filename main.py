@@ -45,6 +45,14 @@ def parse_url_to_html(url, name):
             return False
 
         body = inner[0]
+        
+        for img in body.find_all("img"):
+            img_style = img.get("style")
+            style = "display: block; margin-left: auto; margin-right: auto;"
+            if img_style is not None:
+                style += img_style
+            img['style'] = style
+            
         html = str(body)
 
         pattern = "(<img .*?src=\")(.*?)(\")"
