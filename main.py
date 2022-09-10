@@ -86,7 +86,7 @@ def save_pdf(htmls, file_name):
             ('cookie-name1', 'cookie-value1'),
             ('cookie-name2', 'cookie-value2'),
         ],
-        'minimum-font-size': 12,
+        'minimum-font-size': 14,
     }
     try:
         pdfkit.from_file(htmls, file_name, options=options)
