@@ -46,6 +46,8 @@ def parse_url_to_html(url, name):
 
         body = inner[0]
         
+        body.find("div", {"id": "color-mode-switch"}).decompose()
+        
         for img in body.find_all("img"):
             img_style = img.get("style")
             style = "display: block; margin-left: auto; margin-right: auto;"
