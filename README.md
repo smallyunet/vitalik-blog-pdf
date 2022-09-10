@@ -1,6 +1,6 @@
 ### Vitalik blog to PDF
 
-All in [vitalik-blog.pdf](https://github.com/smallyunet/vitalik-blog-pdf/blob/main/vitalik-blog.pdf)
+All in [vitalik-blog.pdf](https://smallyunet.github.io/vitalik-blog-pdf/vitalik-blog.pdf)
 
 ### For developer
 
