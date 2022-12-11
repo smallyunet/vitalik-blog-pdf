@@ -42,201 +42,136 @@
   checkColorScheme();
 </script>
 <meta content="summary" name="twitter:card">
-<meta content="In Defense of Bitcoin Maximalism" name="twitter:title"/>
+<meta content="Where to use a blockchain in non-financial applications?" name="twitter:title"/>
 <meta content="http://vitalik.ca/images/icon.png" name="twitter:image"/>
 <br/>
-<h1 style="margin-bottom:7px"> In Defense of Bitcoin Maximalism </h1>
-<small style="float:left; color: #888"> 2022 Apr 01 </small>
+<h1 style="margin-bottom:7px"> Where to use a blockchain in non-financial applications? </h1>
+<small style="float:left; color: #888"> 2022 Jun 12 </small>
 <small style="float:right; color: #888"><a href="../../../../index.html">See all posts</a></small>
 <br/> <br/> <br/>
-<title> In Defense of Bitcoin Maximalism </title>
-<p>We've been hearing for years that the future is <a href="https://www.law.ox.ac.uk/business-law-blog/blog/2020/07/blockchain-not-bitcoin-represents-next-step-financial-evolution-and">blockchain, not Bitcoin</a>. The future of the world won't be one major cryptocurrency, or even a few, but many cryptocurrencies - and the winning ones will have strong leadership under one central roof to adapt rapidly to users' needs for scale. Bitcoin is a <a href="https://www.cnbc.com/2021/05/20/some-millennials-call-bitcoin-boomer-coin-prefer-dogecoin-altcoins.html">boomer</a> <a href="https://www.reddit.com/r/CryptoCurrency/comments/lrw9e4/bitcoin_is_now_boomer_crypto_prove_me_wrong/">coin</a>, and Ethereum is soon to follow; it will be newer and more energetic assets that attract the new waves of mass users who don't care about weird libertarian ideology or "self-sovereign verification", are turned off by toxicity and anti-government mentality, and just want blockchain defi and games that are <em>fast</em> and <em>work</em>.</p>
-<p>But what if this narrative is all wrong, and the ideas, habits and practices of Bitcoin maximalism are in fact pretty close to correct? What if Bitcoin is far more than an outdated pet rock tied to a network effect? What if Bitcoin maximalists actually deeply understand that they are operating in a very hostile and uncertain world where there are things that need to be fought for, and their actions, personalities and opinions on protocol design deeply reflect that fact? What if we live in a world of <em>honest</em> cryptocurrencies (of which there are very few) and <em>grifter</em> cryptocurrencies (of which there are very many), and a healthy dose of <em>intolerance</em> is in fact necessary to prevent the former from sliding into the latter? That is the argument that this post will make.</p>
-<h2 id="we-live-in-a-dangerous-world-and-protecting-freedom-is-serious-business">We live in a dangerous world, and protecting freedom is serious business</h2>
-<p>Hopefully, this is much more obvious now than it was six weeks ago, when many people still seriously thought that Vladimir Putin is a misunderstood and kindly character who is merely trying to protect Russia and save Western Civilization from the gaypocalypse. But it's still worth repeating. <strong>We live in a dangerous world, where there are plenty of bad-faith actors who do not listen to compassion and reason.</strong></p>
-<p>A blockchain is at its core a security technology - a technology that is fundamentally all about protecting people and helping them survive in such an unfriendly world. It is, like the <a href="https://lotr.fandom.com/wiki/Phial_of_Galadriel">Phial of Galadriel</a>, "a light to you in dark places, when all other lights go out". It is not a low-cost light, or a fluorescent hippie energy-efficient light, or a high-performance light. It is a light that sacrifices on <em>all</em> of those dimensions to optimize for one thing and one thing only: <em>to be a light that does when it needs to do when you're facing the toughest challenge of your life and there is a friggin twenty foot spider staring at you in the face</em>.</p>
-<center>
-<p><br/></p>
-<p><img src="https://vitalik.ca/images/maximalist/shelob.jpg" style="display: block; margin-left: auto; margin-right: auto;"/></p>
-<p><small><i></i></small></p>
-<p><em>Source: <a href="https://www.blackgate.com/2014/12/23/frodo-baggins-lady-galadriel-and-the-games-of-the-mighty/">https://www.blackgate.com/2014/12/23/frodo-baggins-lady-galadriel-and-the-games-of-the-mighty/</a></em></p>
-
-</center>
-<p><br/></p>
-<p>Blockchains are being used every day by unbanked and underbanked people, by activists, by sex workers, by refugees, and by many other groups either who are uninteresting for profit-seeking centralized financial institutions to serve, or who have enemies that don't <em>want</em> them to be served. They are used as a primary lifeline by many people to make their payments and store their savings.</p>
-<p>And to that end, public blockchains sacrifice <em>a lot</em> for security:</p>
+<title> Where to use a blockchain in non-financial applications? </title>
+<p><em>Special thanks to Shrey Jain and Puja Ohlhaver for substantial feedback and review</em></p>
+<p>Recently, there has been a growing amount of interest in using blockchains for not-just-financial applications. This is a trend that I <a href="https://www.youtube.com/watch?v=oLsb7clrXMQ">have been</a> strongly <a href="https://vitalik.ca/general/2021/09/26/limits.html">in favor</a> of, for <a href="https://vitalik.ca/general/2022/01/26/soulbound.html">various</a> <a href="https://vitalik.ca/general/2021/08/16/voting3.html">reasons</a>. In the last month, Puja Ohlhaver, Glen Weyl and I collaborated on a <a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4105763">paper</a> describing a more detailed vision for what could be done with a richer ecosystem of soulbound tokens making claims describing various kinds of relationships. This has led to some discussion, particularly focused on whether or not it makes any sense to use a blockchain in a decentralized identity ecosystem:</p>
 <ul>
-<li>Blockchains require each transaction to be independently verified thousands of times to be accepted.</li>
-<li>Unlike centralized systems that confirm transactions in a few hundred milliseconds, blockchains require users to wait anywhere from 10 seconds to 10 minutes to get a confirmation.</li>
-<li>Blockchains require users to be fully in charge of authenticating themselves: if you lose your key, you lose your coins.</li>
-<li>Blockchains sacrifice privacy, requiring <a href="https://vitalik.ca/general/2021/01/26/snarks.html">even crazier and more expensive technology</a> to get that privacy back.</li>
+<li>Kate Sills <a href="https://katelynsills.com/blockchain/soulbound-tokens/">argues for off-chain signed claims</a></li>
+<li>Puja Ohlhaver <a href="https://twitter.com/pujaohlhaver/status/1534256764547375105">responds to Kate Sills</a></li>
+<li>Evin McMullen and myself <a href="https://twitter.com/BanklessHQ/status/1534569018702831616">have a podcast debating on-chain vs off-chain attestations</a></li>
+<li>Kevin Yu <a href="https://kevinyu.substack.com/p/a-technical-commentary-on-desoc-part">writes a technical overview</a> bringing up the on-chain versus off-chain question</li>
+<li>Molly White argues a <a href="https://blog.mollywhite.net/is-acceptably-non-dystopian-self-sovereign-identity-even-possible/">pessimistic case against self-sovereign identity</a></li>
+<li>Shrey Jain <a href="https://twitter.com/shreyjaineth/status/1534774425236537344">makes a meta-thread</a> containing the above and many other Twitter discussions</li>
 </ul>
-<p><strong>What are all of these sacrifices for? To create a system that can survive in an unfriendly world, and actually do the job of being "a light in dark places, when all other lights go out".</strong></p>
-<p>Excellent at that task requires two key ingredients: (i) a <strong>robust and defensible technology stack</strong> and (ii) a <strong>robust and defensible culture</strong>. The key property to have in a robust and defensible technology stack is a focus on <em>simplicity</em> and <em>deep mathematical purity</em>: a 1 MB block size, a 21 million coin limit, and a simple Nakamoto consensus proof of work mechanism that even a high school student can understand. The protocol design must be easy to justify decades and centuries down the line; <em>the technology and parameter choices must be a work of art</em>.</p>
-<p>The second ingredient is the <em>culture</em> of uncompromising, steadfast minimalism. This must be a culture that can stand unyieldingly in defending itself against corporate and government actors trying to co-opt the ecosystem from outside, as well as bad actors <em>inside</em> the crypto space trying to exploit it for personal profit, <a href="https://github.com/vbuterin/cult-of-craig">of</a> which <a href="https://www.theverge.com/21459906/bittorrent-tron-acquisition-justin-sun-us-china">there</a> are <a href="https://www.coindesk.com/tech/2022/01/27/how-did-a-former-quadriga-exec-end-up-running-a-defi-protocol-wonderland-founder-explains/">many</a>.</p>
-<p>Now, what do Bitcoin and Ethereum culture actually look like? Well, let's ask Kevin Pham:</p>
+<p>It's worth zooming out and asking a broader question: where does it make sense, in general, to use a blockchain in non-financial applications? Should we move toward a world where even decentralized chat apps work by every message being an on-chain transaction containing the encrypted message? Or, alternatively, are blockchains only good for finance (say, because network effects mean that money has a unique need for a "global view"), with all other applications better done using centralized or more local systems?</p>
+<p>My own view tends to be, like with <a href="https://vitalik.ca/general/2021/05/25/voting2.html">blockchain voting</a>, far from the "blockchain everywhere" viewpoint, but also far from a "blockchain minimalist". I see the value of blockchains in many situations, sometimes for <em>really important</em> goals like trust and censorship resistance but sometimes purely for convenience. This post will attempt to describe some types of situations where blockchains might be useful, especially in the context of identity, and where they are not. <strong>This post is not a complete list and intentionally leaves many things out. The goal is rather to elucidate some common categories.</strong></p>
+<h2 id="user-account-key-changes-and-recovery">User account key changes and recovery</h2>
+<p>One of the biggest challenges in a cryptographic account system is the issue of key changes. This can happen in a few cases:</p>
+<ol type="1">
+<li>You're worried that your current key might get lost or stolen, and you want to <strong>switch to a different key</strong></li>
+<li>You want to <strong>switch to a different cryptographic algorithm</strong> (eg. because you're worried quantum computers will come soon and you want to upgrade to post-quantum)</li>
+<li>Your <strong>key got lost</strong>, and you want to regain access to your account</li>
+<li>Your <strong>key got stolen</strong>, and you want to regain exclusive access to your account (and you don't want the thief to be able to do the same)</li>
+</ol>
+<p>[1] and [2] are relatively simple in that they can be done in a fully <em>self-sovereign</em> way: you control key X, you want to switch to key Y, so you publish a message signed with X saying "Authenticate me with Y from now on", and everyone accepts that.</p>
+<p>But notice that <strong>even for these simpler key change scenarios, you can't <em>just</em> use cryptography</strong>. Consider the following sequence of events:</p>
+<ul>
+<li>You are worried that key A might get stolen, so you sign a message with A saying "I use B now"</li>
+<li>A year later, a hacker actually does steal key A. They sign a message saying with A saying "I use C now", where C is their own key</li>
+</ul>
+<p>From the point of view of someone coming in later who just receives these two messages, they see that A is no longer used, but they don't know whether "replace A with B" or "replace A with C" has higher priority.</p>
 <center>
-<p><br/><a href="https://twitter.com/_kevin_pham/status/927792297365848064"></a></p>
-<p><img src="https://vitalik.ca/images/maximalist/pham1.png" style="display: block; margin-left: auto; margin-right: auto;"/></p>
-
+<p><br/></p>
+<p><img class="padded" src="https://vitalik.ca/images/nonfin/keychange.png" style="display: block; margin-left: auto; margin-right: auto;"/></p>
 </center>
 <p><br/></p>
-<p>Don't believe this is representative? Well, let's ask Kevin Pham again:</p>
-<center>
-<p><br/><a href="https://twitter.com/_kevin_pham/status/927795191985012736"></a></p>
-<p><img src="https://vitalik.ca/images/maximalist/pham2.png" style="display: block; margin-left: auto; margin-right: auto;"/></p>
-<br/>
-</center>
-<p>Now, you might say, this is just Ethereum people having fun, and at the end of the day they understand what they have to do and what they are dealing with. But do they? Let's look at the kinds of people that Vitalik Buterin, the founder of Ethereum, hangs out with:</p>
+<p>This is equivalent to the famous <a href="https://en.wikipedia.org/wiki/Double-spending">double-spend problem</a> in designing decentralized currencies, except instead of the goal being to prevent a previous owner of a coin from being able to send it again, here the goal is to prevent the previous key controlling an account from being able to change the key. <strong>Just like creating a decentralized currency, doing account management in a decentralized way requires something like a blockchain</strong>. A blockchain can timestamp the key change messages, providing common knowledge over whether B or C came first.</p>
+<p>[3] and [4] are harder. In general, my own preferred solution is <a href="https://vitalik.ca/general/2021/01/11/recovery.html">multisig and social recovery wallets</a>, where a group of friends, family members and other contacts can transfer control of your account to a new key if it gets lost or stolen. For critical operations (eg. transferring large quantities of funds, or signing an important contract), participation of this group can also be required.</p>
+<p>But this too requires a blockchain. Social recovery using <a href="https://en.wikipedia.org/wiki/Shamir%27s_Secret_Sharing">secret sharing</a> is possible, but it is more difficult in practice: if you no longer trust some of your contacts, or if they want to change their own keys, you have no way to revoke access without changing your key yourself. And so we're back to requiring some form of on-chain record.</p>
+<p>One subtle but important idea in <a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4105763">the DeSoc paper</a> is that to preserve non-transferability, social recovery (or "community recovery") of profiles might actually need to be <em>mandatory</em>. That is, even if you sell your account, you can always use community recovery to get the account back. This would solve problems like not-actually-reputable drivers <a href="https://restofworld.org/2020/stat-of-the-day/nigeria-bolt-driver-accounts/">buying verified accounts</a> on ride sharing platforms. That said, this is a speculative idea and does not have to be fully implemented to get the other benefits of blockchain-based identity and reputation systems.</p>
+<p><strong>Note that so far this is a limited use-case of blockchains: it's totally okay to have accounts on-chain but do everything else off-chain</strong>. There's a place for these kinds of hybrid visions; <a href="https://login.xyz/">Sign-in With Ethereum</a> is good simple example of how this could be done in practice.</p>
+<h2 id="modifying-and-revoking-attestations">Modifying and revoking attestations</h2>
+<p>Alice goes to Example College and gets a degree in example studies. She gets a digital record certifying this, signed with Example College's keys. Unfortunately, six months later, Example College discovers that Alice had committed a large amount of plagiarism, and revokes her degree. But Alice continues to use her old digital record to go around claiming to various people and institutions that she has a degree. Potentially, the attestation could even carry <em>permissions</em> - for example, the right to log in to the college's online forum - and Alice might try to inappropriately access that too. How do we prevent this?</p>
+<p>The "blockchain maximalist" approach would be to make the degree an on-chain NFT, so Example College can then issue an on-chain transaction to revoke the NFT. But perhaps this is needlessly expensive: issuance is common, revocation is rare, and we don't want to require Example College to issue transactions and pay fees for every issuance if they don't have to. So instead we can go with a hybrid solution: <strong>make initial degree an off-chain signed message, and do revocations on-chain</strong>. This is the <a href="https://www.opencerts.io/">approach that OpenCerts uses</a>.</p>
+<p>The <em>fully off-chain</em> solution, and the one advocated by <a href="https://w3c-ccg.github.io/vc-status-list-2021/#introduction">many off-chain verifiable credentials proponents</a>, is that Example College runs a server where they publish a full list of their revocations (to improve privacy, each attestation can come with an attached nonce and the revocation list can just be a list of nonces).</p>
+<p>For a college, running a server is not a large burden. But for any smaller organization or individual, managing "yet another server script" and making sure it stays online is a significant burden for IT people. <strong>If we tell people to "just use a server" out of blockchain-phobia, then the likely outcome is that everyone outsources the task to a centralized provider.</strong> Better to keep the system decentralized and just use a blockchain - especially now that rollups, sharding and other techniques are finally starting to come online to make the cost of a blockchain cheaper and cheaper.</p>
+<h2 id="negative-reputation">Negative reputation</h2>
+<p>Another important area where off-chain signatures do not suffice is <strong>negative reputation</strong> - that is, attestations where the person or organization that you're making attestations about might not want you to see them. I'm using "negative reputation" here as a technical term: the most obvious motivating use case is attestations saying bad things about someone, like a bad review or a report that someone acted abusively in some context, but there are also use cases where "negative" attestations don't imply bad behavior - for example, taking out a loan and wanting to prove that you have not taken out too many other loans at the same time.</p>
+<p>With off-chain claims, you can do <em>positive</em> reputation, because it's in the interest of the recipient of a claim to show it to appear more reputable (or make a ZK-proof about it), but you can't do <em>negative</em> reputation, because someone can always choose to only show the claims that make them look good and leave out all the others.</p>
+<p>Here, making attestations on-chain actually does fix things. To protect privacy, we can add encryption and zero knowledge proofs: an attestation can just be an on-chain record with data encrypted to the recipient's public key, and users could prove lack of negative reputation by running a zero knowledge proof that walks over the entire history of records on chain. The proofs being on-chain and the verification process being blockchain-aware makes it easy to verify that the proof actually did walk over the <em>whole</em> history and did not skip any records. To make this computationally feasible, a user could use <a href="https://eprint.iacr.org/2019/1407">incrementally verifiable computation</a> (eg. <a href="https://vitalik.ca/general/2021/11/05/halo.html">Halo</a>) to maintain and prove a tree of records that were encrypted to them, and then reveal parts of the tree when needed.</p>
+<p>Negative reputation and revoking attestations are in some sense equivalent problems: you can revoke an attestation by adding another negative-reputation attestation saying "this other attestation doesn't count anymore", and you can implement negative reputation with revocation by piggybacking on positive reputation: Alice's degree at Example College could be revoked and replaced with a degree saying "Alice got a degree in example studies, but she took out a loan".</p>
+<h3 id="is-negative-reputation-a-good-idea">Is negative reputation a good idea?</h3>
+<p>One critique of negative reputation that we sometimes hear is: but isn't negative reputation a dystopian scheme of "<em>scarlet letters</em>", and shouldn't we try our best to do things with positive reputation instead?</p>
+<p>Here, while I support the goal of avoiding <em>unlimited</em> negative reputation, I disagree with the idea of avoiding it entirely. Negative reputation is important for many use cases. Uncollateralized lending, which is highly valuable for improving capital efficiency within the blockchain space and outside, clearly benefits from it. <a href="https://unirep.gitbook.io/unirep-social/">Unirep Social</a> shows a proof-of-concept social media platform that combines a high level of anonymity with a privacy-preserving negative reputation system to limit abuse.</p>
+<p>Sometimes, negative reputation can be empowering and positive reputation can be exclusionary. An online forum where <a href="https://www.proofofhumanity.id/">every unique human</a> gets the right to post until they get too many "strikes" for misbehavior is more egalitarian than a forum that requires some kind of "proof of good character" to be admitted and allowed to speak in the first place. Marginalized people whose lives are mostly "outside the system", even if they actually are of good character, would have a hard time getting such proofs.</p>
+<p>Readers of the strong civil-libertarian persuasion may also want to consider the case of an anonymous reputation system for clients of sex workers: you want to protect privacy, but you also might want a system where if a client mistreats a sex worker, they get a "black mark" that encourages other workers to be more careful or stay away. In this way, negative reputation that's hard to hide can actually empower the vulnerable and protect safety. The point here is not to defend some <em>specific</em> scheme for negative reputation; rather, it's to show that there's very real value that negative reputation unlocks, and a successful system needs to support it <em>somehow</em>.</p>
+<p>Negative reputation does not have to be <em>unlimited</em> negative reputation: I would argue that it should always be possible to create a new profile at some cost (perhaps sacrificing a lot or all of your existing positive reputation). There is a balance between <a href="https://twitter.com/VitalikButerin/status/1534507352736645121">too little accountability and too much accountability</a>. But having <em>some</em> technology that makes negative reputation possible in the first place is a prerequisite for unlocking this design space.</p>
+<h2 id="committing-to-scarcity">Committing to scarcity</h2>
+<p>Another example of where blockchains are valuable is issuing attestations that have a provably limited quantity. If I want to make an endorsement for someone (eg. one might imagine a company looking for jobs or a government visa program looking at such endorsements), the third party looking at the endorsement would want to know whether I'm careful with endorsements or if I give them off to pretty much whoever is friends with me and asks nicely.</p>
+<p>The ideal solution to this problem would be to make endorsements public, so that endorsements become incentive-aligned: if I endorse someone who turns out to do something wrong, everyone can discount my endorsements in the future. But often, we also want to preserve privacy. So instead what I could do is publish hashes of each endorsement on-chain, so that anyone can see how many I have given out.</p>
+<p>An even more effective usecase is many-at-a-time issuance: if an artists wants to issue N copies of a "limited-edition" NFT, they could publish on-chain a <em>single</em> hash containing the Merkle root of the NFTs that they are issuing. The single issuance prevents them from issuing more after the fact, and you can publish the number (eg. 100) signifying the quantity limit along with the Merkle root, signifying that only the leftmost 100 Merkle branches are valid.</p>
 <center>
 <p><br/></p>
-<table class="transparent centered">
-<tr>
-<td style="width:50%">
-<p><img src="https://vitalik.ca/images/maximalist/meetingchina.jpg" style="display: block; margin-left: auto; margin-right: auto;width:360px"/></p>
-<small>
-<center>
-<i>Vitalik hangs out with elite tech CEOs in Beijing, China.</i>
+<p><img class="padded" src="https://vitalik.ca/images/nonfin/merkle.png" style="display: block; margin-left: auto; margin-right: auto;"/> <small><i></i></small></p>
+<p>By publishing a single Merkle root and max count on-chain, you can commit issue a limited quantity of attestations. In this example, there are only five possible valid Merkle branches that could satisfy the proof check. Astute readers may notice a conceptual similarity to <a href="https://ethereum.org/en/developers/docs/scaling/plasma/">Plasma chains</a>.</p>
+<p></p>
 </center>
-<p></p></small>
-</td>
-<td>
-<p><img src="https://vitalik.ca/images/maximalist/meetingputin.jpg" style="display: block; margin-left: auto; margin-right: auto;width:360px"/></p>
-<small>
+<p><br/></p>
+<h2 id="common-knowledge">Common knowledge</h2>
+<p>One of the powerful properties of blockchains is that they create <em><a href="https://en.wikipedia.org/wiki/Common_knowledge_(logic)">common knowledge</a></em>: if I publish something on-chain, then Alice can see it, Alice can see that Bob can see it, Charlie can see that Alice can see that Bob can see it, and so on.</p>
+<p>Common knowledge is often important for coordination. For example, a group of people might want to speak out about an issue, but only feel comfortable doing so if there's enough of them speaking out at the same time that they have safety in numbers. One possible way to do this is for one person to start a "commitment pool" around a particular statement, and invite others to publish hashes (which are private at first) denoting their agreement. Only if enough people participate within some period of time, all participants would be required to have their next on-chain message publicly reveal their position.</p>
+<p>A design like this could be accomplished with a combination of zero knowledge proofs and blockchains (it could be done without blockchains, but that requires either <a href="https://eprint.iacr.org/2013/258.pdf">witness encryption</a>, which is not yet available, or <a href="https://en.wikipedia.org/wiki/Trusted_Computing">trusted hardware</a>, which has deeply problematic security assumptions). There is a large design space around these kinds of ideas that is very underexplored today, but could easily start to grow once the ecosystem around blockchains and cryptographic tools grows further.</p>
+<h2 id="interoperability-with-other-blockchain-applications">Interoperability with other blockchain applications</h2>
+<p>This is an easy one: some things should be on-chain to better interoperate with other on-chain applications. Proof of humanity being an on-chain NFT makes it easier projects to automatically airdrop or give governance rights to accounts that have proof of humanity profiles. Oracle data being on-chain makes it easier for defi projects to read. In all of these cases, the blockchain does not remove the need for trust, though it can house structures like DAOs that manage the trust. But the main value that being on-chain provides is simply <em>being in the same place as the stuff that you're interacting with, which needs a blockchain for other reasons</em>.</p>
+<p>Sure, you <em>could</em> run an oracle off-chain and require the data to be imported only when it needs to be read, but in many cases that would actually be <em>more</em> expensive, and needlessly impose complexity and costs on developers.</p>
+<h2 id="open-source-metrics">Open-source metrics</h2>
+<p>One key goal of the <a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4105763">Decentralized Society paper</a> is the idea that it should be possible to <em>make calculations</em> over the graph of attestations. A really important one is <strong>measuring decentralization</strong> and diversity. For example, many people <a href="https://twitter.com/VitalikButerin/status/1264948490834247681">seem</a> to <a href="https://twitter.com/VitalikButerin/status/1265252184813420544">agree</a> that an ideal voting mechanism would somehow keep diversity in mind, giving greater weight to projects that are supported not just by the largest number of <em>coins</em> or even <em>humans</em>, but by the largest number of <em>truly distinct perspectives</em>.</p>
 <center>
-<i>Vitalik meets Vladimir Putin in Russia.</i>
-</center>
-<p></p></small>
-</td>
-</tr>
+<p><br/></p>
+<table class="transparent">
 <tr>
 <td>
-<p><img src="https://vitalik.ca/images/maximalist/meetingbakrat.jpg" style="display: block; margin-left: auto; margin-right: auto;width:360px"/></p>
-<small>
-<center>
-<i>Vitalik meets Nir Bakrat, mayor of Jerusalem.</i>
-</center>
-<p></p></small>
+<p><img src="https://vitalik.ca/images/nonfin/tweet1.png" style="display: block; margin-left: auto; margin-right: auto;"/></p>
 </td>
 <td>
-<center>
-<p><img src="https://vitalik.ca/images/maximalist/meetingmacri.jpg" style="display: block; margin-left: auto; margin-right: auto;width:360px"/></p>
-<small>
-<center>
-<i>Vitalik shakes hands with Argentinian former president Mauricio Macri.</i>
-</center>
-<p></p></small>
-</center>
-</td>
-</tr>
-<tr>
-<td>
-<p><img src="https://vitalik.ca/images/maximalist/meetingschmidt.jpg" style="display: block; margin-left: auto; margin-right: auto;width:360px"/></p>
-<small>
-<center>
-<i>Vitalik gives a friendly hello to Eric Schmidt, former CEO of Google and advisor to US Department of Defense.</i>
-</center>
-<p></p></small>
-</td>
-<td>
-<p><img src="https://vitalik.ca/images/maximalist/meetingaudrey.jpg" style="display: block; margin-left: auto; margin-right: auto;width:360px"/></p>
-<small>
-<center>
-<i>Vitalik has his first of many meetings with Audrey Tang, digital minister of Taiwan.</i>
-</center>
-<p></p></small>
+<p><img src="https://vitalik.ca/images/nonfin/tweet2.png" style="display: block; margin-left: auto; margin-right: auto;"/></p>
 </td>
 </tr>
 </table>
-<p><small></small></p>
-
 </center>
 <p><br/></p>
-<p>And this is only a small selection. The immediate question that anyone looking at this should ask is: <em>what the hell is the point of publicly meeting with all these people</em>? Some of these people are very decent entrepreneurs and politicians, but others are actively involved in serious human rights abuses that Vitalik certainly does not support. Does Vitalik not realize just how much some of these people are geopolitically at each other's throats?</p>
-<p>Now, maybe he is just an idealistic person who believes in talking to people to help bring about world peace, and a follower of <a href="https://en.wikipedia.org/wiki/Frederick_Douglass">Frederick Douglass's</a> dictum to "unite with anybody to do right and with nobody to do wrong". But there's also a simpler hypothesis: <em>Vitalik is a hippy-happy globetrotting pleasure and status-seeker, and he deeply enjoys meeting and feeling respected by people who are important</em>. And it's not just Vitalik; companies like Consensys are totally happy to <a href="https://consensys.net/blog/press-release/quara-holding-joins-consensys-partner-program/">partner with Saudi Arabia</a>, and the ecosystem as a whole keeps trying to look to mainstream figures for validation.</p>
-<p>Now ask yourself the question: when the time comes, <em>actually important</em> things are happening on the blockchain - <em>actually important things that offend people who are powerful</em> - which ecosystem would be more willing to put its foot down and refuse to censor them no matter how much pressure is applied on them to do so? The ecosystem with globe-trotting nomads who really really care about being everyone's friend, or the ecosystem with people who take pictures of themslves with an AR15 and an axe as a side hobby?</p>
-<h2 id="currency-is-not-just-the-first-app.-its-by-far-the-most-successful-one.">Currency is not "just the first app". It's by far the most successful one.</h2>
-<p>Many people of the "blockchain, not Bitcoin" persuasion argue that cryptocurrency is the first application of blockchains, but it's a very boring one, and the true potential of blockchains lies in bigger and more exciting things. Let's go through the list of applications in <a href="https://ethereum.org/en/whitepaper/#applications">the Ethereum whitepaper</a>:</p>
-<ul>
-<li>Issuing tokens</li>
-<li>Financial derivatives</li>
-<li>Stablecoins</li>
-<li>Identity and reputation systems</li>
-<li>Decentralized file storage</li>
-<li>Decentralized autonomous organizations (DAOs)</li>
-<li>Peer-to-peer gambling</li>
-<li>Prediction markets</li>
-</ul>
-<p>Many of these categories have applications that have launched and that have at least <em>some</em> users. That said, cryptocurrency people really value empowering under-banked people in the "Global South". Which of these applications actually have lots of users in the Global South?</p>
-<p>As it turns out, by far the most successful one is storing wealth and payments. <a href="https://triple-a.io/crypto-ownership-argentina/">3% of Argentinians</a> own cryptocurrency, as do <a href="https://triple-a.io/crypto-ownership-nigeria/">6% of Nigerians</a> and <a href="https://triple-a.io/crypto-ownership-ukraine/">12% of people in Ukraine</a>. By far the biggest instance of a government using blockchains to <em>accomplish something useful today</em> is <a href="https://donate.thedigital.gov.ua/">cryptocurrency donations to the government of Ukraine</a>, which have raised <a href="https://twitter.com/antiprosynth/status/1506192508799361024">more than $100 million</a> if you include donations to non-governmental Ukraine-related efforts.</p>
-<p><a href="https://donate.thedigital.gov.ua/"></a></p>
-<p><img src="https://vitalik.ca/images/maximalist/donateukraine.png" style="display: block; margin-left: auto; margin-right: auto;"/></p>
-<p><br/></p>
-<p>What other application has anywhere close to that level of actual, real adoption today? Perhaps the closest is <a href="https://ens.domains/">ENS</a>. DAOs are real and growing, but today far too many of them are appealing to wealthy rich-country people whose main interest is having fun and using cartoon-character profiles to satisfy their first-world need for self-expression, and not build schools and hospitals and solve other real world problems.</p>
-<p>Thus, we can see the two sides pretty clearly: team "blockchain", privileged people in wealthy countries who love to virtue-signal about "moving beyond money and capitalism" and can't help being excited about "decentralized governance experimentation" as a hobby, and team "Bitcoin", a highly diverse group of both rich and poor people in many countries around the world including the Global South, who are actually using the capitalist tool of free self-sovereign money to provide real value to human beings today.</p>
-<h2 id="focusing-exclusively-on-being-money-makes-for-better-money">Focusing exclusively on being money makes for better money</h2>
-<p>A common misconception about why Bitcoin does not support "richly stateful" smart contracts goes as follows. Bitcoin really really values being simple, and particularly having low technical complexity, to reduce the chance that something will go wrong. As a result, it doesn't want to add the more complicated features and opcodes that are necessary to be able to support more complicated smart contracts in Ethereum.</p>
-<p>This misconception is, of course, wrong. In fact, there are <em>plenty</em> of ways to add rich statefulness into Bitcoin; search for the word "<a href="https://bitcoinops.org/en/topics/covenants/">covenants</a>" in Bitcoin chat archives to see many proposals being discussed. And many of these proposals are surprisingly simple. The reason why covenants have not been added is <em>not</em> that Bitcoin developers see the value in rich statefulness but find even a little bit more protocol complexity intolerable. Rather, it's because Bitcoin developers are <a href="https://bitcoinops.org/en/newsletters/2022/03/09/#limiting-script-language-expressiveness">worried about the risks</a> of the <a href="https://vitalik.ca/general/2022/02/28/complexity.html">systemic complexity</a> that rich statefulness being possible would introduce into the ecosystem!</p>
-<center>
-<p><br/></p>
-<p><img class="padded" src="https://vitalik.ca/images/maximalist/bitcoinpaper.png" style="display: block; margin-left: auto; margin-right: auto;"/></p>
-<p><small><i></i></small></p>
-<p>A recent <a href="https://arxiv.org/pdf/2006.16714.pdf">paper by Bitcoin researchers</a> describes some ways to introduce covenants to add some degree of rich statefulness to Bitcoin.</p>
-<p><br/></p>
-</center>
-<p>Ethereum's <a href="https://coinmarketcap.com/alexandria/glossary/miner-extractable-value-mev">battle with miner-extractable value (MEV)</a> is an excellent example of this problem appearing in practice. It's very easy in Ethereum to build applications where the next person to interact with some contract gets a substantial reward, causing transactors and miners to fight over it, and contributing greatly to network centralization risk and <a href="https://notes.ethereum.org/@vbuterin/pbs_censorship_resistance">requiring complicated workarounds</a>. In Bitcoin, building such systemically risky applications is hard, in large part because Bitcoin lacks rich statefulness and focuses on the simple (and MEV-free) use case of <em>just being money</em>.</p>
-<p>Systemic contagion can happen in non-technical ways too. Bitcoin just being money means that Bitcoin requires relatively few developers, helping to reduce the risk that developers will start demanding <a href="https://ethereum-magicians.org/t/eip-2025-a-proposal-to-fund-eth1-x-through-18-months-of-a-0-044eth-developer-block-reward/3282">to print themselves free money</a> to build new protocol features. Bitcoin just being money reduces pressure for core developers to keep adding features to "keep up with the competition" and "serve developers' needs".</p>
-<p>In so many ways, systemic effects are real, and it's just not possible for a currency to "enable" an ecosystem of highly complex and risky decentralized applications without that complexity biting it back <em>somehow</em>. Bitcoin makes the safe choice. If Ethereum continues its layer-2-centric approach, ETH-the-currency <em>may</em> gain some distance from the application ecosystem that it's enabling and thereby get some protection. So-called high-performance layer-1 platforms, on the other hand, stand no chance.</p>
-<h2 id="in-general-the-earliest-projects-in-an-industry-are-the-most-genuine">In general, the earliest projects in an industry are the most "genuine"</h2>
-<p>Many industries and fields follow a similar pattern. First, some new exciting technology either gets invented, or gets a big leap of improvement to the point where it's actually usable for something. At the beginning, the technology is still clunky, it is too risky for almost anyone to touch as an investment, and there is no "social proof" that people can use it to become successful. As a result, the first people involved are going to be the idealists, tech geeks and others who are genuinely excited about the technology and its potential to improve society.</p>
-<p>Once the technology proves itself enough, however, the normies come in - an event that in internet culture is often called <a href="https://en.wikipedia.org/wiki/Eternal_September">Eternal September</a>. And these are not just regular kindly normies who want to feel part of something exciting, but <em>business</em> normies, wearing <em>suits</em>, who start scouring the ecosystem wolf-eyed for ways to make money - with armies of venture capitalists just as eager to make their own money supporting them from the sidelines. In the extreme cases, outright <em>grifters</em> come in, creating blockchains with no redeeming social or technical value which are basically borderline scams. But the reality is that the line from "altruistic idealist" and "grifter" is really a spectrum. And the longer an ecosystem keeps going, the harder it is for any new project on the altruistic side of the spectrum to get going.</p>
-<p>One noisy proxy for the blockchain industry's slow replacement of philosophical and idealistic values with short-term profit-seeking values is the larger and larger size of premines: the allocations that developers of a cryptocurrency give to themselves.</p>
-<center>
-<p><img class="padded" src="https://vitalik.ca/images/maximalist/premine.png" style="display: block; margin-left: auto; margin-right: auto;"/></p>
-<p><i><small></small></i></p>
-<p>Source for insider allocations: <a href="https://twitter.com/RyanWatkins_/status/1394283802009145348">Messari</a>.</p>
-<p></p>
-</center>
-<p>Which blockchain communities deeply value self-sovereignty, privacy and decentralization, and are making to get big sacrifices to get it? And which blockchain communities are just trying to pump up their market caps and make money for founders and investors? The above chart should make it pretty clear.</p>
-<h2 id="intolerance-is-good">Intolerance is good</h2>
-<p>The above makes it clear why Bitcoin's status as the first cryptocurrency gives it unique advantages that are extremely difficult for any cryptocurrency created within the last five years to replicate. But now we get to the biggest objection against Bitcoin maximalist culture: <em>why is it so toxic</em>?</p>
-<p>The case for Bitcoin toxicity stems from <a href="https://www.nationalreview.com/corner/conquests-laws-john-derbyshire/">Conquest's second law</a>. In Robert Conquest's original formulation, the law says that "<strong>any organization not explicitly and constitutionally right-wing will sooner or later become left-wing</strong>". But really, this is just a special case of a much more general pattern, and one that in the modern age of relentlessly homogenizing and conformist social media is more relevant than ever:</p>
+<p>Quadratic funding as implemented in <a href="https://gitcoin.co/grants">Gitcoin Grants</a> also includes some <a href="https://ethresear.ch/t/pairwise-coordination-subsidies-a-new-quadratic-funding-design/5553">explicitly diversity-favoring logic</a> to mitigate attacks.</p>
+<p>Another natural place where measurements and scores are going to be valuable is <strong>reputation systems</strong>. This already exists in a centralized form with ratings, but it can be done in a much more decentralized way where the algorithm is transparent while at the same time preserving more user privacy.</p>
+<p>Aside from tightly-coupled use cases like this, where attempts to measure to what extent some set of people is connected and feed that directly into a mechanism, there's also broader use case of helping a community understand itself. In the case of measuring decentralization, this might be a matter of identifying areas where concentration is getting too high, which might require a response. In all of these cases, running computerized algorithms over large bodies of attestations and commitments and doing actually important things with the outputs is going to be unavoidable.</p>
+<h3 id="we-should-not-try-to-abolish-quantified-metrics-we-should-try-to-make-better-ones">We should not try to <em>abolish</em> quantified metrics, we should try to make <em>better</em> ones</h3>
+<p>Kate Sills expressed her skepticism of the goal of making calculations over reputation, an argument that applies both for public analytics and for individuals ZK-proving over their reputation (as in Unirep Social):</p>
 <blockquote>
-<p><strong>If you want to retain an identity that is different from the mainstream, then you need a really strong culture that actively resists and fights assimilation into the mainstream every time it tries to assert its hegemony.</strong></p>
+<p>The process of evaluating a claim is very subjective and context-dependent. People will naturally disagree about the trustworthiness of other people, and trust depends on the context ... [because of this] we should be extremely skeptical of any proposal to "calculate over" claims to get objective results.</p>
 </blockquote>
-<p>Blockchains are, as I mentioned above, very fundamentally and explicitly a counterculture movement that is trying to create and preserve something different from the mainstream. At a time when the world is splitting up into great power blocs that actively suppress social and economic interaction between them, blockchains are one of the very few things that can remain global. At a time when more and more people are reaching for censorship to defeat their short-term enemies, blockchains steadfastly continue to censor nothing.</p>
-<center>
-<p><br/></p>
-<p><img src="https://vitalik.ca/images/maximalist/300.png" style="display: block; margin-left: auto; margin-right: auto;"/></p>
-<p><small></small></p>
-<p><em>The only correct way to respond to "reasonable adults" trying to tell you that to "become mainstream" you have to compromise on your "extreme" values. Because once you compromise once, you can't stop.</em></p>
-
-</center>
-<p><br/></p>
-<p>Blockchain communities also have to fight bad actors on the <em>inside</em>. Bad actors include:</p>
+<p>I this case, I agree with the importance of subjectivity and context, but I would disagree with the more expansive claim that avoiding calculations around reputation entirely is the right goal to be aiming towards. Pure individualized analysis does not scale far beyond Dunbar's number, and any complex society that is attempting to support large-scale cooperation has to rely on aggregations and simplifications to some extent.</p>
+<p>That said, I would argue that an open-participation ecosystem of attestations (as opposed to the centralized one we have today) can get us the best of both worlds by opening up space for <em>better</em> metrics. Here are some principles that such designs could follow:</p>
 <ul>
-<li><strong>Scammers</strong>, who make and sell projects that are ultimately valueless (or worse, actively harmful) but cling to the "crypto" and "decentralization" brand (as well as highly abstract ideas of humanism and friendship) for legitimacy.</li>
-<li><strong>Collaborationists</strong>, who publicly and loudly virtue-signal about working together with governments and actively <a href="https://twitter.com/vitalikbuterin/status/1341219519545556992">try</a> to <a href="https://cryptonews.com/news/bitcoin-digital-property-ethereum-digital-security-argues-michael-saylor.htm">convince</a> governments to use coercive force against their competitors.</li>
-<li><strong>Corporatists</strong>, who try to use their resources to take over the development of blockchains, and often push for protocol changes that enable centralization.</li>
+<li><strong>Inter-subjectivity</strong>: eg. a reputation should not be a single global score; instead, it should be a more subjective calculation involving the person or entity being evaluated but also the viewer checking the score, and potentially even other aspects of the local context.</li>
+<li><strong><a href="https://nakamoto.com/credible-neutrality/">Credible neutrality</a></strong>: the scheme should clearly not leave room for powerful elites to constantly manipulate it in their own favor. Some possible ways to achieve this are maximum <strong>transparency</strong> and <strong>infrequent change</strong> of the algorithm.</li>
+<li><strong>Openness</strong>: the ability to make meaningful inputs, and to audit other people's outputs by running the check yourself, should be open to anyone, and not just restricted to a small number of powerful groups.</li>
 </ul>
-<p>One <em>could</em> stand against all of these actors with a smiling face, politely telling the world why they "disagree with their priorities". But this is unrealistic: the bad actors will try hard to embed themselves into your community, and at that point it becomes psychologically hard to criticize them with the sufficient level of scorn that they truly require: the people you're criticizing are <em>friends of your friends</em>. And so any culture that values <a href="https://en.wikipedia.org/wiki/Agreeableness">agreeableness</a> will simply fold before the challenge, and let scammers roam freely through the wallets of innocent newbies.</p>
-<p>What kind of culture <em>won't</em> fold? A culture that is willing and eager to tell both scammers on the inside and powerful opponents on the outside to <a href="https://en.wikipedia.org/wiki/Russian_warship,_go_fuck_yourself">go the way of the Russian warship</a>.</p>
-<h2 id="weird-crusades-against-seed-oils-are-good">Weird crusades against seed oils are good</h2>
-<p>One powerful bonding tool to help a community maintain internal cohesion around its distinctive values, and avoid falling into the morass that is the mainstream, is weird beliefs and crusades that are in a similar spirit, even if not directly related, to the core mission. Ideally, these crusades should be at least partially <em>correct</em>, poking at a genuine blind spot or inconsistency of mainstream values.</p>
-<p>The Bitcoin community is good at this. Their most recent crusade is a <a href="https://www.vice.com/en/article/v7djay/the-newest-bitcoin-diet-trend-is-hating-seed-oils">war against seed oils</a>, oils derived from vegetable seeds <a href="https://www.healthline.com/nutrition/are-vegetable-and-seed-oils-bad">high in omega-6</a> fatty acids that are <a href="https://scholar.google.com/scholar?q=omega+6+health">harmful</a> to human health.</p>
-<center>
-<p><br/></p>
-<p><img class="padded" src="https://vitalik.ca/images/maximalist/seedoils.jpg" style="display: block; margin-left: auto; margin-right: auto;"/></p>
-</center>
-<p><br/></p>
-<p>This Bitcoiner crusade gets treated skeptically when <a href="https://www.vice.com/en/article/v7djay/the-newest-bitcoin-diet-trend-is-hating-seed-oils">reviewed in the media</a>, but the media treats the topic <a href="https://techcrunch.com/2022/02/02/zero-acre-biotech-fermentation-alternative-to-wasteful-unhealthy-vegetable-oils/">much more favorably</a> when "respectable" tech firms are tackling it. The crusade helps to remind Bitcoiners that the mainstream media is fundamentally tribal and hypocritical, and so the media's <a href="https://www.pymnts.com/cryptocurrency/2022/from-the-us-and-eu-to-russia-crypto-money-laundering-is-under-attack/">shrill attempts</a> to <a href="https://www.coindesk.com/policy/2022/03/22/crypto-implicated-in-child-porn-terrorism-french-official-says-calling-for-end-to-online-anynomity/">slander</a> cryptocurrency as being primarily for money laundering and terrorism should be treated with the same level of scorn.</p>
-<h2 id="be-a-maximalist">Be a maximalist</h2>
-<p>Maximalism is often derided in the media as both a dangerous toxic right-wing cult, and as a paper tiger that will disappear as soon as some other cryptocurrency comes in and takes over Bitcoin's supreme network effect. But the reality is that <strong>none of the arguments for maximalism that I describe above depend at all on network effects</strong>. Network effects really are logarithmic, not quadratic: once a cryptocurrency is "big enough", it has enough liquidity to function and multi-cryptocurrency payment processors will easily add it to their collection. But the claim that Bitcoin is an outdated pet rock and its value derives <em>entirely</em> from a walking-zombie network effect that just needs a little push to collapse is similarly completely wrong.</p>
-<p>Crypto-assets like Bitcoin have real cultural and structural advantages that make them powerful assets worth holding and using. Bitcoin is an excellent example of the category, though it's certainly not the only one; other honorable cryptocurrencies do exist, and maximalists have been willing to support and use them. Maximalism is not just Bitcoin-for-the-sake-of-Bitcoin; rather, it's a very genuine realization that most other cryptoassets are scams, and a culture of intolerance is unavoidable and necessary to protect newbies and make sure at least one corner of that space continues to be a corner worth living in.</p>
-<p><strong>It's better to mislead ten newbies into avoiding an investment that turns out good than it is to allow a single newbie to get bankrupted by a grifter.</strong></p>
-<p><strong>It's better to make your protocol too simple and fail to serve ten low-value short-attention-span gambling applications than it is to make it too complex and fail to serve the central sound money use case that underpins everything else.</strong></p>
-<p><strong>And it's better to offend millions by standing aggressively for what you believe in than it is to try to keep everyone happy and end up standing for nothing.</strong></p>
-<p><strong>Be brave. Fight for your values. Be a maximalist.</strong></p>
+<p>If we don't create good large-scale aggregates of social data, then we risk ceding market share to opaque and centralized social credit scores instead.</p>
+<p>Not all data should be on-chain, but making <em>some</em> data public in a common-knowledge way can help increase a community's legibility to itself without creating data-access disparities that could be abused to centralize control.</p>
+<h2 id="as-a-data-store">As a data store</h2>
+<p>This is the really controversial use case, even among those who accept most of the others. There is a common viewpoint in the blockchain space that blockchains should only be used in those cases where they are truly needed and unavoidable, and everywhere else we should use other tools.</p>
+<p>This attitude makes sense in a world where transaction fees are very expensive, and blockchains are uniquely incredibly inefficient. But it makes less sense in a world where blockchains have rollups and sharding and transaction fees have dropped down to a few cents, and the difference in redundancy between a blockchain and non-blockchain decentralized storage might only be 100x.</p>
+<p>Even in such a world, it would not make sense to store <em>all</em> data on-chain. But small text records? Absolutely. Why? Because <strong>blockchains are just a really convenient place to store stuff</strong>. I maintain a copy of this blog on IPFS. But uploading to IPFS often takes an hour, it requires centralized gateways for users to access it with anything close to website levels of latency, and occasionally files drop off and no longer become visible. Dumping the entire blog on-chain, on the other hand, would solve that problem completely. Of course, the blog is too big to <em>actually</em> be dumped on-chain, even post-sharding, but the same principle applies to smaller records.</p>
+<p>Some examples of small cases where putting data on-chain just to store it may be the right decision include:</p>
+<ul>
+<li><strong><a href="https://ethresear.ch/t/m-of-n-secret-sharing-with-pre-known-shares/10074">Augmented secret sharing</a></strong>: splitting your password into <code>N</code> pieces where any <code>M = N-R</code> of the pieces can recover the password, but in a way where you can choose the contents of all <code>N</code> of the pieces. For example, the pieces could all be hashes of passwords, secrets generated through some other tool, or answers to security questions. This is done by publishing an extra <code>R</code> pieces (which are random-looking) on-chain, and doing <code>N</code>-of-<code>(N+R)</code> secret sharing on the whole set.</li>
+<li><strong>ENS optimization</strong>. ENS <em>could</em> be made more efficient by combining all records into a single hash, only publishing the hash on-chain, and requiring anyone accessing the data to get the full data off of IPFS. But this would significantly increase complexity, and add yet another software dependency. And so ENS keeps data on-chain even if it is longer than 32 bytes.</li>
+<li><strong>Social metadata</strong> - data connected to your account (eg. for <a href="https://login.xyz/">sign-in-with-Ethereum</a> purposes) that you want to be public and that is very short in length. This is generally not true for larger data like profile pictures (though if the picture happens to be a small <a href="https://en.wikipedia.org/wiki/Scalable_Vector_Graphics">SVG file</a> it could be!), but it is true for text records.</li>
+<li><strong>Attestations and access permissions</strong>. Especially if the data being stored is less than a few hundred bytes long, it might be more convenient to store the data on-chain than put the hash on-chain and the data off-chain.</li>
+</ul>
+<p>In a lot of these cases, the tradeoff isn't just cost but also privacy in those edge cases where keys or cryptography break. Sometimes, privacy is only somewhat important, and the occasional loss of privacy from leaked keys or the faraway specter of quantum computing revealing everything in 30 years is less important than having a very high degree of certainty that the data will remain accessible. After all, off-chain data stored in your "data wallet" can get hacked too.</p>
+<p>But sometimes, data is particularly sensitive, and that can be another argument against putting it on-chain, and keeping it stored locally as a second layer of defense. But note that in those cases, that privacy need is an argument not just against blockchains, but against <em>all</em> decentralized storage.</p>
+<h2 id="conclusions">Conclusions</h2>
+<p>Out of the above list, the two I am personally by far the most confident about are <strong>interoperability with other blockchain applications</strong> and <strong>account management</strong>. The first is on-chain already, and the second is relatively cheap (need to use the chain once per user, and not once per action), the case for it is clear, and there really isn't a good non-blockchain-based solution.</p>
+<p><strong>Negative reputation</strong> and <strong>revocations</strong> are also important, though they are still relatively early-stage use cases. A lot can be done with reputation by relying on off-chain positive reputation only, but I expect that the case for revocation and negative reputation will become more clear over time. I expect there to be attempts to do it with centralized servers, but over time it should become clear that blockchains are the only way to avoid a hard choice between inconvenience and centralization.</p>
+<p><strong>Blockchains as data stores</strong> for short text records may be marginal or may be significant, but I do expect at least some of that kind of usage to keep happening. Blockchains really are just incredibly convenient for cheap and reliable data retrieval, where data continues to be retrievable whether the application has two users or two million. <strong>Open-source metrics</strong> are still a very early-stage idea, and it remains to see just how much can be done and made open without it becoming exploitable (as eg. online reviews, social media karma and the like get exploited all the time). And <strong>common knowledge games</strong> require convincing people to accept entirely new workflows for socially important things, so of course that is an early-stage idea too.</p>
+<p>I have a large degree of uncertainty in exactly what level of non-financial blockchain usage in each of these categories makes sense, but it seems clear that blockchains as an enabling tool in these areas should not be dismissed.</p>
 </meta></div>
 </body>
 </html>

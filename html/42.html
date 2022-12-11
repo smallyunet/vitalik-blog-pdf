@@ -42,91 +42,52 @@
   checkColorScheme();
 </script>
 <meta content="summary" name="twitter:card">
-<meta content="Gitcoin Grants Round 6 Retrospective" name="twitter:title"/>
+<meta content="Trust Models" name="twitter:title"/>
 <meta content="http://vitalik.ca/images/icon.png" name="twitter:image"/>
 <br/>
-<h1 style="margin-bottom:7px"> Gitcoin Grants Round 6 Retrospective </h1>
-<small style="float:left; color: #888"> 2020 Jul 22 </small>
+<h1 style="margin-bottom:7px"> Trust Models </h1>
+<small style="float:left; color: #888"> 2020 Aug 20 </small>
 <small style="float:right; color: #888"><a href="../../../../index.html">See all posts</a></small>
 <br/> <br/> <br/>
-<title> Gitcoin Grants Round 6 Retrospective </title>
-<p>Round 6 of Gitcoin Grants has just finished, with $227,847 in contributions from 1,526 contributors and $175,000 in matched funds distributed across 695 projects. This time around, we had three categories: the two usual categories of "tech" and "community" (the latter renamed from "media" to reflect a desire for a broad emphasis), and the round-6-special category Crypto For Black Lives.</p>
-<p>First of all, here are the results, starting with the tech and community sections:</p>
+<title> Trust Models </title>
+<p>One of the most valuable properties of many blockchain applications is <em>trustlessness</em>: the ability of the application to continue operating in an expected way without needing to rely on a specific actor to behave in a specific way even when their interests might change and push them to act in some different unexpected way in the future. Blockchain applications are never <em>fully</em> trustless, but some applications are much closer to being trustless than others. If we want to make practical moves toward trust minimization, we want to have the ability to compare different degrees of trust.</p>
+<p>First, my simple one-sentence definition of trust: <strong>trust is the use of any assumptions about the behavior of other people</strong>. If before the pandemic you would walk down the street without making sure to keep two meters' distance from strangers so that they could not suddenly take out a knife and stab you, that's a kind of trust: both trust that people are very rarely completely deranged, and trust that the people managing the legal system continue to provide strong incentives against that kind of behavior. When you run a piece of code written by someone else, you trust that they wrote the code honestly (whether due to their own sense of decency or due to an economic interest in maintaining their reputations), or at least that <em>there exist</em> enough people checking the code that a bug would be found. Not growing your own food is another kind of trust: trust that enough people will realize that it's in <em>their</em> interests to grow food so they can sell it to you. You can trust different sizes of groups of people, and there are different kinds of trust.</p>
+<p>For the purposes of analyzing blockchain protocols, I tend to break down trust into four dimensions:</p>
+<ul>
+<li>How many people do you need to behave as you expect?</li>
+<li>Out of how many?</li>
+<li>What kinds of motivations are needed for those people to behave? Do they need to be altruistic, or just profit seeking? Do they <a href="https://vitalik.ca/general/2017/05/08/coordination_problems.html">need to be uncoordinated</a>?</li>
+<li>How badly will the system fail if the assumptions are violated?</li>
+</ul>
+<p>For now, let us focus on the first two. We can draw a graph:</p>
 <center>
-<img src="https://vitalik.ca/images/round6/tech.jpg" style="display: block; margin-left: auto; margin-right: auto;width:350px"/> <img src="https://vitalik.ca/images/round6/community.jpg" style="display: block; margin-left: auto; margin-right: auto;width:350px"/> <br/>
-</center>
-<h3 id="stability-of-income">Stability of income</h3>
-<p>In the last round, one <a href="https://vitalik.ca/general/2020/04/30/round5.html">concern I raised</a> was stability of income. People trying to earn a livelihood off of quadratic funding grants would want to have some guarantee that their income isn't going to completely disappear in the next round just because the hive mind suddenly gets excited about something else.</p>
-<p>Round 6 had two mechanisms to try to provide more stability of income:</p>
-<ol type="1">
-<li>A "shopping cart" interface for giving many contributions, with an explicit "repeat your contributions from the last round" feature</li>
-<li>A rule that the matching amounts are calculated using not just contributions from this round, but also "carrying over" 1/3 of the contributions from the previous round (ie. if you made a $10 grant in the previous round, the matching formula would pretend you made a $10 grant in the previous round and also a $3.33 grant this round)</li>
-</ol>
-<ol type="1">
-<li>was clearly successful at one goal: increasing the total number of contributions. But its effect in ensuring stability of income is hard to measure. The effect of (2), on the other hand, is easy to measure, because we have stats for the actual matching amount as well as what the matching amount "would have been" if the 1/3 carry-over rule was not in place.</li>
-</ol>
-<p>First from the tech category:</p>
-<center>
-<img src="https://vitalik.ca/images/round6/techtable.png" style="display: block; margin-left: auto; margin-right: auto;"/>
+<img src="https://vitalik.ca/images/trust/trustout.png" style="display: block; margin-left: auto; margin-right: auto;"/>
 </center>
 <p><br/></p>
-<p>Now from the community category:</p>
-<center>
-<img src="https://vitalik.ca/images/round6/communitytable.png" style="display: block; margin-left: auto; margin-right: auto;"/>
-</center>
-<p><br/></p>
-<p>Clearly, the rule helps reduce volatility, pretty much exactly as expected. That said, one could argue that this result is trivial: you could argue that all that's going on here is something very similar to grabbing part of the revenue from round N (eg. see how the new EIP-1559 Community Fund earned less than it otherwise would have) and moving it into round N+1. Sure, numerically speaking the revenues are more "stable", but individual projects could have just provided this stability to themselves by only spending 2/3 of the pot from each round, and using the remaining third later when some future round is unexpectedly low. Why should the quadratic funding mechanism significantly increase its complexity just to achieve a gain in stability that projects could simply provide for themselves?</p>
-<p>My instinct says that it would be best to try the next round with the "repeat last round" feature but <em>without</em> the 1/3 carryover, and see what happens. Particularly, note that the numbers seem to show that the media section would have been "stable enough" even without the carryover. The tech section was more volatile, but only because of the sudden entrance of the EIP 1559 community fund; it would be part of the experiment to see just how common that kind of situation is.</p>
-<h3 id="about-that-eip-1559-community-fund">About that EIP 1559 Community fund...</h3>
-<p>The big unexpected winner of this round was the EIP 1559 community fund. EIP 1559 (EIP <a href="https://github.com/ethereum/EIPs/issues/1559">here</a>, FAQ <a href="https://notes.ethereum.org/Wjr1SnW-QaST7phX9C5wkg?view">here</a>, original paper <a href="https://ethresear.ch/t/draft-position-paper-on-resource-pricing/2838">here</a>) is a major fee market reform proposal which far-reaching consequences; it aims to improve the user experience of sending Ethereum transactions, reduce economic inefficiencies, provide an accurate in-protocol gas price oracle and burn a portion of fee revenue.</p>
-<p>Many people in the Ethereum community are very excited about this proposal, though so far there has been fairly little funding toward getting it implemented. This gitcoin grant was a large community effort toward fixing this.</p>
-<p>The grant had quite a few very large contributions, including roughly $2,400 each from myself and Eric Conner, early on. Early in the round, one could clearly see the EIP 1559 community grant having an abnormally low ratio of matched funds to contributed funds; it was somewhere around $4k matched to $20k contributed. This was because while the amount contributed was large, it came from relatively few wealthier donors, and so the matching amount was less than it would have been had the same quantity of funds come from more diverse sources - the quadratic funding formula working as intended. However, a social media push advertising the grant then led to a large number of smaller contributors following along, which then quickly raised the match to its currently very high value ($35,578).</p>
-<h3 id="quadratic-signaling">Quadratic signaling</h3>
-<p>Unexpectedly, this grant proved to have a double function. First, it provided $65,473 of much-needed funding to EIP 1559 implementation. Second, it served as a credible community signal of the level of demand for the proposal. The Ethereum community has <a href="https://vitalik.ca/general/2017/12/17/voting.html">long been struggling</a> to find effective ways to determine what "the community" supports, especially in cases of controversy.</p>
-<p>Coin votes have been <a href="https://www.etherchain.org/coinvote">used in the past</a>, and have the advantage that they come with an answer to the key problem of determining who is a "real community member" - the answer is, your membership in the Ethereum community is proportional to how much ETH you have. However, they are plutocratic; in the famous DAO coin vote, a single "yes" voter voted with more ETH than all "no" voters put together (~20% of the total).</p>
-<center>
-<img src="https://vitalik.ca/images/round6/daocoinvote.png" style="display: block; margin-left: auto; margin-right: auto;width:350px"/>
-</center>
-<p><br/></p>
-<p>The alternative, looking at github, reddit and twitter comments and votes to measure sentiment (sometimes derided as "proof of social media") is egalitarian, but it is easily exploitable, comes with no skin-in-the-game, and frequently falls under criticisms of "foreign interference" (are those <em>really</em> ethereum community members disagreeing with the proposal, or just those dastardly bitcoiners coming in from across the pond to stir up trouble?).</p>
-<p>Quadratic funding falls perfectly in the middle: the need to contribute monetary value to vote ensures that the votes of those who <em>really</em> care about the project count more than the votes of less-concerned outsiders, and the square-root function ensures that the votes of individual ultra-wealthy "whales" cannot beat out a poorer, but broader, coalition.</p>
-<center>
-<img class="padded" src="https://vitalik.ca/images/round6/quadraticpayments.png" style="display: block; margin-left: auto; margin-right: auto;width:600px"/><br/><br/><small><i>A diagram from my <a href="https://vitalik.ca/general/2019/12/07/quadratic.html">post on quadratic payments</a> showing how quadratic payments is "in the middle" between the extremes of voting-like systems and money-like systems, and avoids the worst flaws of both.</i></small>
-</center>
-<p><br/></p>
-<p>This raises the question: might it make sense to try to use explicit quadratic <em>voting</em> (with the ability to vote "yes" or "no" to a proposal) as an additional signaling tool to determine community sentiment for ethereum protocol proposals?</p>
-<h3 id="how-well-are-guest-categories-working">How well are "guest categories" working?</h3>
-<p>Since round 5, Gitcoin Grants has had three categories per round: tech, community (called "media" before), and some "guest" category that appears only during that specific round. In round 5 this was COVID relief; in round 6, it's Crypto For Black Lives.</p>
-<center>
-<img src="https://vitalik.ca/images/round6/blacklives.jpg" style="display: block; margin-left: auto; margin-right: auto;width:350px"/>
-</center>
-<p>By far the largest recipient was Black Girls CODE, claiming over 80% of the matching pot. My guess for why this happened is simple: Black Girls CODE is an established project that has been participating in the grants for several rounds already, whereas the other projects were new entrants that few people in the Ethereum community knew well. In addition, of course, the Ethereum community "understands" the value of helping people code more than it understands chambers of commerce and bail funds.</p>
-<p>This raises the question: is Gitcoin's current approach of having a guest category each round actually working well? The case for "no" is basically this: while the individual causes (empowering black communities, and fighting covid) are certainly admirable, the Ethereum community is by and large not experts at these topics, and we're certainly not experts on <em>those specific projects</em> working on those challenges.</p>
-<p>If the goal is to try to bring quadratic funding to causes beyond Ethereum, the natural alternative is a separate funding round marketed specifically to those communities; <a href="https://downtownstimulus.com/">https://downtownstimulus.com/</a> is a great example of this. If the goal is to get the Ethereum community interested in other causes, then perhaps running more than one round on each cause would work better. For example, "guest categories" could last for three rounds (~6 months), with $8,333 matching per round (and there could be two or three guest categories running simultaneously). In any case, it seems like some revision of the model makes sense.</p>
-<h3 id="collusion">Collusion</h3>
-<p>Now, the bad news. This round saw an unprecedented amount of attempted collusion and other forms of fraud. Here are a few of the most egregious examples.</p>
-<p>Blatant attempted bribery:</p>
-<center>
-<br/> <img src="https://vitalik.ca/images/round6/pic1.jpeg" style="display: block; margin-left: auto; margin-right: auto;width:480px"/><br/>
-</center>
-<p><br/></p>
-<p>Impersonation:</p>
-<center>
-<br/> <img src="https://vitalik.ca/images/round6/pic2.png" style="display: block; margin-left: auto; margin-right: auto;width:480px"/><br/>
-</center>
-<p><br/></p>
-<p>Many contributions with funds clearly coming from a single address:</p>
-<center>
-<br/> <img src="https://vitalik.ca/images/round6/pic3.png" style="display: block; margin-left: auto; margin-right: auto;width:480px"/><br/>
-</center>
-<p><br/></p>
-<p>The big question is: how much fraudulent activity can be prevented in a fully automated/technological way, without requiring detailed analysis of each and every case? If quadratic funding cannot survive such fraud without needing to resort to expensive case-by-case judgement, then regardless of its virtues in an ideal world, in reality it would not be a very good mechanism!</p>
-<p>Fortunately, there is a lot that we can do to reduce harmful collusion and fraud that we are not yet doing. Stronger identity systems is one example; in this round, Gitcoin added optional SMS verification, and it seems like the in this round the detected instances of collusion were mostly github-verified accounts and not SMS-verified accounts. In the next round, making some form of extra verification beyond a github account (whether SMS or something more decentralized, eg. BrightID) seems like a good idea. To limit bribery, <a href="https://github.com/appliedzkp/maci">MACI</a> can help, by making it impossible for a briber to tell who actually voted for any particular project.</p>
-<p>Impersonation is not really a quadratic funding-specific challenge; this could be solved with manual verification, or if one wishes for a more decentralized solution one could try using <a href="https://kleros.io/">Kleros</a> or some similar system. One could even imagine incentivized reporting: anyone can lay down a deposit and flag a project as fraudulent, triggering an investigation; if the project turns out to be legitimate the deposit is lost but if the project turns out to be fraudulent, the challenger gets half of the funds that were sent to that project.</p>
-<h3 id="conclusion">Conclusion</h3>
-<p>The best news is the unmentioned news: many of the positive behaviors coming out of the quadratic funding rounds have stabilized. We're seeing valuable projects get funded in the tech and community categories, there has been less social media contention this round than in previous rounds, and people are getting better and better at understanding the mechanism and how to participate in it.</p>
-<p>That said, the mechanism is definitely at a scale where we are seeing the kinds of attacks and challenges that we would realistically see in a larger-scale context. There are some challenges that we have not yet worked through (one that I am particularly watching out for is: matched grants going to a project that one part of the community supports and another part of the community thinks is very harmful). That said, we've gotten as far as we have with fewer problems than even I had been anticipating.</p>
-<p>I recommend holding steady, focusing on security (and scalability) for the next few rounds, and coming up with ways to increase the size of the matching pots. And I continue to look forward to seeing valuable public goods get funded!</p>
+<p>The more green, the better. Let us explore the categories in more detail:</p>
+<ul>
+<li><strong>1 of 1</strong>: there is exactly one actor, and the system works if (and only if) that one actor does what you expect them to. This is the traditional "centralized" model, and it is what we are trying to do better than.</li>
+<li><strong>N of N</strong>: the "dystopian" world. You rely on a whole bunch of actors, <em>all</em> of whom need to act as expected for everything to work, with no backups if any of them fail.</li>
+<li><strong>N/2 of N</strong>: this is how blockchains work - they work if the majority of the miners (or PoS validators) are honest. Notice that N/2 of N becomes significantly more valuable the larger the N gets; a blockchain with a few miners/validators dominating the network is much less interesting than a blockchain with its miners/validators widely distributed. That said, we want to improve on even this level of security, hence the <a href="https://vitalik.ca/general/2020/08/17/philosophy.html">concern around surviving 51% attacks</a>.</li>
+<li><strong>1 of N</strong>: there are many actors, and the system works as long as at least one of them does what you expect them to. Any system based on fraud proofs falls into this category, as do trusted setups though in that case the N is often smaller. Note that you do want the N to be as large as possible!</li>
+<li><strong>Few of N</strong>: there are many actors, and the system works as long as at least some small fixed number of them do what you expect them do. <a href="https://arxiv.org/abs/1809.09044">Data availability checks</a> fall into this category.</li>
+<li><strong>0 of N</strong>: the systems works as expected without any dependence whatsoever on external actors. Validating a block by checking it yourself falls into this category.</li>
+</ul>
+<p>While all buckets other than "0 of N" can be considered "trust", they are very different from each other! Trusting that one particular person (or organization) will work as expected is very different from trusting that <em>some single person anywhere</em> will do what you expect them to. "1 of N" is arguably much closer to "0 of N" than it is to "N/2 of N" or "1 of 1". A 1-of-N model might perhaps feel like a 1-of-1 model because it feels like you're going through a single actor, but the reality of the two is <em>very</em> different: in a 1-of-N system, if the actor you're working with at the moment disappears or turns evil, you can just switch to another one, whereas in a 1-of-1 system you're screwed.</p>
+<p>Particularly, note that even the correctness of the software you're running typically depends on a "few of N" trust model to ensure that if there's bugs in the code someone will catch them. With that fact in mind, trying really hard to go from 1 of N to 0 of N on some other aspect of an application is often like making a reinforced steel door for your house when the windows are open.</p>
+<p>Another important distinction is: how does the system fail if your trust assumption is violated? In blockchains, two most common types of failure are <strong>liveness failure</strong> and <strong>safety failure</strong>. A liveness failure is an event in which you are temporarily unable to do something you want to do (eg. withdraw coins, get a transaction included in a block, read information from the blockchain). A safety failure is an event in which something actively happens that the system was meant to prevent (eg. an invalid block gets included in a blockchain).</p>
+<p>Here are a few examples of trust models of a few blockchain layer 2 protocols. I use "<strong>small N</strong>" to refer to the set of participants of the layer 2 system itself, and "<strong>big N</strong>" to refer to the participants of the blockchain; the assumption is always that the layer 2 protocol has a smaller community than the blockchain itself. I also limit my use of the word "liveness failure" to cases where coins are stuck for a significant amount of time; no longer being able to use the system but being able to near-instantly withdraw does not count as a liveness failure.</p>
+<ul>
+<li><strong>Channels</strong> (incl state channels, lightning network): 1 of 1 trust for liveness (your counterparty can temporarily freeze your funds, though the harms of this can be mitigated if you split coins between multiple counterparties), N/2 of big-N trust for safety (a blockchain 51% attack can steal your coins)</li>
+<li><strong>Plasma</strong> (assuming centralized operator): 1 of 1 trust for liveness (the operator can temporarily freeze your funds), N/2 of big-N trust for safety (blockchain 51% attack)</li>
+<li><strong>Plasma</strong> (assuming semi-decentralized operator, eg. DPOS): N/2 of small-N trust for liveness, N/2 of big-N trust for safety</li>
+<li><strong>Optimistic rollup</strong>: 1 of 1 or N/2 of small-N trust for liveness (depends on operator type), N/2 of big-N trust for safety</li>
+<li><strong>ZK rollup</strong>: 1 of small-N trust for liveness (if the operator fails to include your transaction, you can withdraw, and if the operator fails to include your withdrawal immediately they cannot produce more batches and you can self-withdraw with the help of any full node of the rollup system); no safety failure risks</li>
+<li><strong>ZK rollup</strong> (with <a href="https://ethresear.ch/t/efficient-unassisted-exit-witness-generation-from-rollups/7776">light-withdrawal enhancement</a>): no liveness failure risks, no safety failure risks</li>
+</ul>
+<p>Finally, there is the question of incentives: does the actor you're trusting need to be very altruistic to act as expected, only slightly altruistic, or is being rational enough? Searching for fraud proofs is "by default" slightly altruistic, though just how altruistic it is depends on the complexity of the computation (see <a href="https://eprint.iacr.org/2015/702.pdf">the verifier's dilemma</a>), and there are ways to modify the game to make it rational.</p>
+<p>Assisting others with withdrawing from a ZK rollup is rational if we add a way to micro-pay for the service, so there is <em>really</em> little cause for concern that you won't be able to exit from a rollup with any significant use. Meanwhile, the greater risks of the other systems can be alleviated if we <a href="https://vitalik.ca/general/2020/08/17/philosophy.html">agree as a community</a> to <a href="https://ethresear.ch/t/timeliness-detectors-and-51-attack-recovery-in-blockchains/6925">not accept 51% attack chains</a> that revert too far in history or censor blocks for too long.</p>
+<p>Conclusion: when someone says that a system "depends on trust", ask them in more detail what they mean! Do they mean 1 of 1, or 1 of N, or N/2 of N? Are they demanding these participants be altruistic or just rational? If altruistic, is it a tiny expense or a huge expense? And what if the assumption is violated - do you just need to wait a few hours or days, or do you have assets that are stuck forever? Depending on the answers, your own answer to whether or not you want to use that system might be very different.</p>
 </meta></div>
 </body>
 </html>

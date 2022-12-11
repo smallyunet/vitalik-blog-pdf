@@ -42,136 +42,193 @@
   checkColorScheme();
 </script>
 <meta content="summary" name="twitter:card">
-<meta content="Where to use a blockchain in non-financial applications?" name="twitter:title"/>
+<meta content="My 40-liter backpack travel guide" name="twitter:title"/>
 <meta content="http://vitalik.ca/images/icon.png" name="twitter:image"/>
 <br/>
-<h1 style="margin-bottom:7px"> Where to use a blockchain in non-financial applications? </h1>
-<small style="float:left; color: #888"> 2022 Jun 12 </small>
+<h1 style="margin-bottom:7px"> My 40-liter backpack travel guide </h1>
+<small style="float:left; color: #888"> 2022 Jun 20 </small>
 <small style="float:right; color: #888"><a href="../../../../index.html">See all posts</a></small>
 <br/> <br/> <br/>
-<title> Where to use a blockchain in non-financial applications? </title>
-<p><em>Special thanks to Shrey Jain and Puja Ohlhaver for substantial feedback and review</em></p>
-<p>Recently, there has been a growing amount of interest in using blockchains for not-just-financial applications. This is a trend that I <a href="https://www.youtube.com/watch?v=oLsb7clrXMQ">have been</a> strongly <a href="https://vitalik.ca/general/2021/09/26/limits.html">in favor</a> of, for <a href="https://vitalik.ca/general/2022/01/26/soulbound.html">various</a> <a href="https://vitalik.ca/general/2021/08/16/voting3.html">reasons</a>. In the last month, Puja Ohlhaver, Glen Weyl and I collaborated on a <a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4105763">paper</a> describing a more detailed vision for what could be done with a richer ecosystem of soulbound tokens making claims describing various kinds of relationships. This has led to some discussion, particularly focused on whether or not it makes any sense to use a blockchain in a decentralized identity ecosystem:</p>
-<ul>
-<li>Kate Sills <a href="https://katelynsills.com/blockchain/soulbound-tokens/">argues for off-chain signed claims</a></li>
-<li>Puja Ohlhaver <a href="https://twitter.com/pujaohlhaver/status/1534256764547375105">responds to Kate Sills</a></li>
-<li>Evin McMullen and myself <a href="https://twitter.com/BanklessHQ/status/1534569018702831616">have a podcast debating on-chain vs off-chain attestations</a></li>
-<li>Kevin Yu <a href="https://kevinyu.substack.com/p/a-technical-commentary-on-desoc-part">writes a technical overview</a> bringing up the on-chain versus off-chain question</li>
-<li>Molly White argues a <a href="https://blog.mollywhite.net/is-acceptably-non-dystopian-self-sovereign-identity-even-possible/">pessimistic case against self-sovereign identity</a></li>
-<li>Shrey Jain <a href="https://twitter.com/shreyjaineth/status/1534774425236537344">makes a meta-thread</a> containing the above and many other Twitter discussions</li>
-</ul>
-<p>It's worth zooming out and asking a broader question: where does it make sense, in general, to use a blockchain in non-financial applications? Should we move toward a world where even decentralized chat apps work by every message being an on-chain transaction containing the encrypted message? Or, alternatively, are blockchains only good for finance (say, because network effects mean that money has a unique need for a "global view"), with all other applications better done using centralized or more local systems?</p>
-<p>My own view tends to be, like with <a href="https://vitalik.ca/general/2021/05/25/voting2.html">blockchain voting</a>, far from the "blockchain everywhere" viewpoint, but also far from a "blockchain minimalist". I see the value of blockchains in many situations, sometimes for <em>really important</em> goals like trust and censorship resistance but sometimes purely for convenience. This post will attempt to describe some types of situations where blockchains might be useful, especially in the context of identity, and where they are not. <strong>This post is not a complete list and intentionally leaves many things out. The goal is rather to elucidate some common categories.</strong></p>
-<h2 id="user-account-key-changes-and-recovery">User account key changes and recovery</h2>
-<p>One of the biggest challenges in a cryptographic account system is the issue of key changes. This can happen in a few cases:</p>
-<ol type="1">
-<li>You're worried that your current key might get lost or stolen, and you want to <strong>switch to a different key</strong></li>
-<li>You want to <strong>switch to a different cryptographic algorithm</strong> (eg. because you're worried quantum computers will come soon and you want to upgrade to post-quantum)</li>
-<li>Your <strong>key got lost</strong>, and you want to regain access to your account</li>
-<li>Your <strong>key got stolen</strong>, and you want to regain exclusive access to your account (and you don't want the thief to be able to do the same)</li>
-</ol>
-<p>[1] and [2] are relatively simple in that they can be done in a fully <em>self-sovereign</em> way: you control key X, you want to switch to key Y, so you publish a message signed with X saying "Authenticate me with Y from now on", and everyone accepts that.</p>
-<p>But notice that <strong>even for these simpler key change scenarios, you can't <em>just</em> use cryptography</strong>. Consider the following sequence of events:</p>
-<ul>
-<li>You are worried that key A might get stolen, so you sign a message with A saying "I use B now"</li>
-<li>A year later, a hacker actually does steal key A. They sign a message saying with A saying "I use C now", where C is their own key</li>
-</ul>
-<p>From the point of view of someone coming in later who just receives these two messages, they see that A is no longer used, but they don't know whether "replace A with B" or "replace A with C" has higher priority.</p>
+<title> My 40-liter backpack travel guide </title>
+<p><em>Special thanks to Liam Horne for feedback and review. I received no money from and have never even met any of the companies making the stuff I'm shilling here (with the sole exception of Unisocks); this is all just an honest listing of what works for me today.</em></p>
+<p>I have lived as a nomad for the last nine years, taking 360 flights travelling over 1.5 million kilometers (assuming flight paths are straight, ignoring layovers) during that time. During this time, I've considerably optimized the luggage I carry along with me: from a 60-liter shoulder bag with a separate laptop bag, to a 60-liter shoulder bag that can contain the laptop bag, and now to a 40-liter packpage that can contain the laptop bag along with all the supplies I need to live my life.</p>
+<p>The purpose of this post will be to go through the contents, as well as some of the tips that I've learned for how you too can optimize your travel life and never have to wait at a luggage counter again. There is no obligation to follow this guide in its entirety; if you have important needs that differ from mine, you can still get a lot of the benefits by going a hybrid route, and I will talk about these options too.</p>
+<p>This guide is focused on my own experiences; plenty of other people have made their own guides and you should look at them too. <a href="https://www.reddit.com/r/onebag/">/r/onebag</a> is an excellent subreddit for this.</p>
 <center>
 <p><br/></p>
-<p><img class="padded" src="https://vitalik.ca/images/nonfin/keychange.png" style="display: block; margin-left: auto; margin-right: auto;"/></p>
+<p><img src="https://vitalik.ca/images/backpack/backpack.png" style="display: block; margin-left: auto; margin-right: auto;"/></p>
+<p><em>The backpack, with the various sub-bags laid out separately. Yes, this all fits in the backpack, and without that much effort to pack and unpack.</em></p>
 </center>
 <p><br/></p>
-<p>This is equivalent to the famous <a href="https://en.wikipedia.org/wiki/Double-spending">double-spend problem</a> in designing decentralized currencies, except instead of the goal being to prevent a previous owner of a coin from being able to send it again, here the goal is to prevent the previous key controlling an account from being able to change the key. <strong>Just like creating a decentralized currency, doing account management in a decentralized way requires something like a blockchain</strong>. A blockchain can timestamp the key change messages, providing common knowledge over whether B or C came first.</p>
-<p>[3] and [4] are harder. In general, my own preferred solution is <a href="https://vitalik.ca/general/2021/01/11/recovery.html">multisig and social recovery wallets</a>, where a group of friends, family members and other contacts can transfer control of your account to a new key if it gets lost or stolen. For critical operations (eg. transferring large quantities of funds, or signing an important contract), participation of this group can also be required.</p>
-<p>But this too requires a blockchain. Social recovery using <a href="https://en.wikipedia.org/wiki/Shamir%27s_Secret_Sharing">secret sharing</a> is possible, but it is more difficult in practice: if you no longer trust some of your contacts, or if they want to change their own keys, you have no way to revoke access without changing your key yourself. And so we're back to requiring some form of on-chain record.</p>
-<p>One subtle but important idea in <a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4105763">the DeSoc paper</a> is that to preserve non-transferability, social recovery (or "community recovery") of profiles might actually need to be <em>mandatory</em>. That is, even if you sell your account, you can always use community recovery to get the account back. This would solve problems like not-actually-reputable drivers <a href="https://restofworld.org/2020/stat-of-the-day/nigeria-bolt-driver-accounts/">buying verified accounts</a> on ride sharing platforms. That said, this is a speculative idea and does not have to be fully implemented to get the other benefits of blockchain-based identity and reputation systems.</p>
-<p><strong>Note that so far this is a limited use-case of blockchains: it's totally okay to have accounts on-chain but do everything else off-chain</strong>. There's a place for these kinds of hybrid visions; <a href="https://login.xyz/">Sign-in With Ethereum</a> is good simple example of how this could be done in practice.</p>
-<h2 id="modifying-and-revoking-attestations">Modifying and revoking attestations</h2>
-<p>Alice goes to Example College and gets a degree in example studies. She gets a digital record certifying this, signed with Example College's keys. Unfortunately, six months later, Example College discovers that Alice had committed a large amount of plagiarism, and revokes her degree. But Alice continues to use her old digital record to go around claiming to various people and institutions that she has a degree. Potentially, the attestation could even carry <em>permissions</em> - for example, the right to log in to the college's online forum - and Alice might try to inappropriately access that too. How do we prevent this?</p>
-<p>The "blockchain maximalist" approach would be to make the degree an on-chain NFT, so Example College can then issue an on-chain transaction to revoke the NFT. But perhaps this is needlessly expensive: issuance is common, revocation is rare, and we don't want to require Example College to issue transactions and pay fees for every issuance if they don't have to. So instead we can go with a hybrid solution: <strong>make initial degree an off-chain signed message, and do revocations on-chain</strong>. This is the <a href="https://www.opencerts.io/">approach that OpenCerts uses</a>.</p>
-<p>The <em>fully off-chain</em> solution, and the one advocated by <a href="https://w3c-ccg.github.io/vc-status-list-2021/#introduction">many off-chain verifiable credentials proponents</a>, is that Example College runs a server where they publish a full list of their revocations (to improve privacy, each attestation can come with an attached nonce and the revocation list can just be a list of nonces).</p>
-<p>For a college, running a server is not a large burden. But for any smaller organization or individual, managing "yet another server script" and making sure it stays online is a significant burden for IT people. <strong>If we tell people to "just use a server" out of blockchain-phobia, then the likely outcome is that everyone outsources the task to a centralized provider.</strong> Better to keep the system decentralized and just use a blockchain - especially now that rollups, sharding and other techniques are finally starting to come online to make the cost of a blockchain cheaper and cheaper.</p>
-<h2 id="negative-reputation">Negative reputation</h2>
-<p>Another important area where off-chain signatures do not suffice is <strong>negative reputation</strong> - that is, attestations where the person or organization that you're making attestations about might not want you to see them. I'm using "negative reputation" here as a technical term: the most obvious motivating use case is attestations saying bad things about someone, like a bad review or a report that someone acted abusively in some context, but there are also use cases where "negative" attestations don't imply bad behavior - for example, taking out a loan and wanting to prove that you have not taken out too many other loans at the same time.</p>
-<p>With off-chain claims, you can do <em>positive</em> reputation, because it's in the interest of the recipient of a claim to show it to appear more reputable (or make a ZK-proof about it), but you can't do <em>negative</em> reputation, because someone can always choose to only show the claims that make them look good and leave out all the others.</p>
-<p>Here, making attestations on-chain actually does fix things. To protect privacy, we can add encryption and zero knowledge proofs: an attestation can just be an on-chain record with data encrypted to the recipient's public key, and users could prove lack of negative reputation by running a zero knowledge proof that walks over the entire history of records on chain. The proofs being on-chain and the verification process being blockchain-aware makes it easy to verify that the proof actually did walk over the <em>whole</em> history and did not skip any records. To make this computationally feasible, a user could use <a href="https://eprint.iacr.org/2019/1407">incrementally verifiable computation</a> (eg. <a href="https://vitalik.ca/general/2021/11/05/halo.html">Halo</a>) to maintain and prove a tree of records that were encrypted to them, and then reveal parts of the tree when needed.</p>
-<p>Negative reputation and revoking attestations are in some sense equivalent problems: you can revoke an attestation by adding another negative-reputation attestation saying "this other attestation doesn't count anymore", and you can implement negative reputation with revocation by piggybacking on positive reputation: Alice's degree at Example College could be revoked and replaced with a degree saying "Alice got a degree in example studies, but she took out a loan".</p>
-<h3 id="is-negative-reputation-a-good-idea">Is negative reputation a good idea?</h3>
-<p>One critique of negative reputation that we sometimes hear is: but isn't negative reputation a dystopian scheme of "<em>scarlet letters</em>", and shouldn't we try our best to do things with positive reputation instead?</p>
-<p>Here, while I support the goal of avoiding <em>unlimited</em> negative reputation, I disagree with the idea of avoiding it entirely. Negative reputation is important for many use cases. Uncollateralized lending, which is highly valuable for improving capital efficiency within the blockchain space and outside, clearly benefits from it. <a href="https://unirep.gitbook.io/unirep-social/">Unirep Social</a> shows a proof-of-concept social media platform that combines a high level of anonymity with a privacy-preserving negative reputation system to limit abuse.</p>
-<p>Sometimes, negative reputation can be empowering and positive reputation can be exclusionary. An online forum where <a href="https://www.proofofhumanity.id/">every unique human</a> gets the right to post until they get too many "strikes" for misbehavior is more egalitarian than a forum that requires some kind of "proof of good character" to be admitted and allowed to speak in the first place. Marginalized people whose lives are mostly "outside the system", even if they actually are of good character, would have a hard time getting such proofs.</p>
-<p>Readers of the strong civil-libertarian persuasion may also want to consider the case of an anonymous reputation system for clients of sex workers: you want to protect privacy, but you also might want a system where if a client mistreats a sex worker, they get a "black mark" that encourages other workers to be more careful or stay away. In this way, negative reputation that's hard to hide can actually empower the vulnerable and protect safety. The point here is not to defend some <em>specific</em> scheme for negative reputation; rather, it's to show that there's very real value that negative reputation unlocks, and a successful system needs to support it <em>somehow</em>.</p>
-<p>Negative reputation does not have to be <em>unlimited</em> negative reputation: I would argue that it should always be possible to create a new profile at some cost (perhaps sacrificing a lot or all of your existing positive reputation). There is a balance between <a href="https://twitter.com/VitalikButerin/status/1534507352736645121">too little accountability and too much accountability</a>. But having <em>some</em> technology that makes negative reputation possible in the first place is a prerequisite for unlocking this design space.</p>
-<h2 id="committing-to-scarcity">Committing to scarcity</h2>
-<p>Another example of where blockchains are valuable is issuing attestations that have a provably limited quantity. If I want to make an endorsement for someone (eg. one might imagine a company looking for jobs or a government visa program looking at such endorsements), the third party looking at the endorsement would want to know whether I'm careful with endorsements or if I give them off to pretty much whoever is friends with me and asks nicely.</p>
-<p>The ideal solution to this problem would be to make endorsements public, so that endorsements become incentive-aligned: if I endorse someone who turns out to do something wrong, everyone can discount my endorsements in the future. But often, we also want to preserve privacy. So instead what I could do is publish hashes of each endorsement on-chain, so that anyone can see how many I have given out.</p>
-<p>An even more effective usecase is many-at-a-time issuance: if an artists wants to issue N copies of a "limited-edition" NFT, they could publish on-chain a <em>single</em> hash containing the Merkle root of the NFTs that they are issuing. The single issuance prevents them from issuing more after the fact, and you can publish the number (eg. 100) signifying the quantity limit along with the Merkle root, signifying that only the leftmost 100 Merkle branches are valid.</p>
+<p>As a point of high-level organization, notice the bag-inside-a-bag structure. I have a T-shirt bag, an underwear bag, a sock bag, a toiletries bag, a dirty-laundry bag, a medicine bag, a laptop bag, and various small bags inside the inner compartment of my backpack, which all fit into a <a href="https://www.amazon.com/Hynes-Eagle-Travel-Backpack-Approved/dp/B07JWDF8V9/ref=sr_1_2">40-liter Hynes Eagle backpack</a>. This structure makes it easy to keep things organized.</p>
+<h2 id="its-like-frugality-but-for-cm3-instead-of-dollars">It's like frugality, but for cm<sup>3</sup> instead of dollars</h2>
+<p>The general principle that you are trying to follow is that you're trying to stay within a "budget" while still making sure you have everything that you need - much like normal financial planning of the type that almost everyone, with the important exception of crypto participants during bull runs, is used to dealing with. A key difference here is that instead of optimizing for dollars, you're optimizing for <em>cubic centimeters</em>. Of course, none of the things that I recommend here are going to be particularly hard on your dollars either, but minimizing cm<sup>3</sup> is the primary objective.</p>
+<p>What do I mean by this? Well, I mean getting items like this:</p>
 <center>
 <p><br/></p>
-<p><img class="padded" src="https://vitalik.ca/images/nonfin/merkle.png" style="display: block; margin-left: auto; margin-right: auto;"/> <small><i></i></small></p>
-<p>By publishing a single Merkle root and max count on-chain, you can commit issue a limited quantity of attestations. In this example, there are only five possible valid Merkle branches that could satisfy the proof check. Astute readers may notice a conceptual similarity to <a href="https://ethereum.org/en/developers/docs/scaling/plasma/">Plasma chains</a>.</p>
-<p></p>
+<p><img src="https://vitalik.ca/images/backpack/shaver.png" style="display: block; margin-left: auto; margin-right: auto;"/></p>
+<p><small><i>Electric shaver. About 5cm long and 2.5cm wide at the top. No charger or handle is required: it's USBC pluggable, your phone is the charger and handle. Buy <a href="https://www.amazon.com/Electric-Portable-Adsorption-Interfence-Interface-Gray/dp/B08CK1QB8G?th=1">on Amazon here</a> (told you it's not hard on your dollars!)</i></small></p>
 </center>
 <p><br/></p>
-<h2 id="common-knowledge">Common knowledge</h2>
-<p>One of the powerful properties of blockchains is that they create <em><a href="https://en.wikipedia.org/wiki/Common_knowledge_(logic)">common knowledge</a></em>: if I publish something on-chain, then Alice can see it, Alice can see that Bob can see it, Charlie can see that Alice can see that Bob can see it, and so on.</p>
-<p>Common knowledge is often important for coordination. For example, a group of people might want to speak out about an issue, but only feel comfortable doing so if there's enough of them speaking out at the same time that they have safety in numbers. One possible way to do this is for one person to start a "commitment pool" around a particular statement, and invite others to publish hashes (which are private at first) denoting their agreement. Only if enough people participate within some period of time, all participants would be required to have their next on-chain message publicly reveal their position.</p>
-<p>A design like this could be accomplished with a combination of zero knowledge proofs and blockchains (it could be done without blockchains, but that requires either <a href="https://eprint.iacr.org/2013/258.pdf">witness encryption</a>, which is not yet available, or <a href="https://en.wikipedia.org/wiki/Trusted_Computing">trusted hardware</a>, which has deeply problematic security assumptions). There is a large design space around these kinds of ideas that is very underexplored today, but could easily start to grow once the ecosystem around blockchains and cryptographic tools grows further.</p>
-<h2 id="interoperability-with-other-blockchain-applications">Interoperability with other blockchain applications</h2>
-<p>This is an easy one: some things should be on-chain to better interoperate with other on-chain applications. Proof of humanity being an on-chain NFT makes it easier projects to automatically airdrop or give governance rights to accounts that have proof of humanity profiles. Oracle data being on-chain makes it easier for defi projects to read. In all of these cases, the blockchain does not remove the need for trust, though it can house structures like DAOs that manage the trust. But the main value that being on-chain provides is simply <em>being in the same place as the stuff that you're interacting with, which needs a blockchain for other reasons</em>.</p>
-<p>Sure, you <em>could</em> run an oracle off-chain and require the data to be imported only when it needs to be read, but in many cases that would actually be <em>more</em> expensive, and needlessly impose complexity and costs on developers.</p>
-<h2 id="open-source-metrics">Open-source metrics</h2>
-<p>One key goal of the <a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4105763">Decentralized Society paper</a> is the idea that it should be possible to <em>make calculations</em> over the graph of attestations. A really important one is <strong>measuring decentralization</strong> and diversity. For example, many people <a href="https://twitter.com/VitalikButerin/status/1264948490834247681">seem</a> to <a href="https://twitter.com/VitalikButerin/status/1265252184813420544">agree</a> that an ideal voting mechanism would somehow keep diversity in mind, giving greater weight to projects that are supported not just by the largest number of <em>coins</em> or even <em>humans</em>, but by the largest number of <em>truly distinct perspectives</em>.</p>
+<p>And this:</p>
 <center>
 <p><br/></p>
-<table class="transparent">
+<p><img src="https://vitalik.ca/images/backpack/charger.png" style="display: block; margin-left: auto; margin-right: auto;"/></p>
+<p><small><i>Charger for mobile phone and laptop (can charge both at the same time)! About 5x5x2.5 cm. Buy <a href="https://us.anker.com/collections/series7/products/a2666?variant=41530603602070&amp;ref=seriesBuy">here</a>.</i></small></p>
+</center>
+<p><br/></p>
+<p>And there's more. Electric toothbrushes are normally known for being wide and bulky. But they don't have to be! <a href="https://www.amazon.com/Philips-Sonicare-Rechargeable-Toothbrush-Shadow/dp/B09B17TS7N">Here</a> is an electric toothbrush that is rechargeable, USBC-friendly (so no extra charging equipment required), only slightly wider than a regular toothbrush, and costs about $30, plus a couple dollars every few months for replacement brush heads. For connecting to various different continents' plugs, you can either use <a href="https://www.amazon.com/NEWVANGA-International-Universal-Worldwide-Charging/dp/B01FO4W5W2">any regular reasonably small universal adapter</a>, or get the <a href="https://zendure.com/products/passport-iii-all-in-one-65w-adapter-for-home-travel">Zendure Passport III</a> which combines a universal adapter with a charger, so you can plug in USBC cables to charge your laptop and multiple other devices directly (!!).</p>
+<p>As you might have noticed, <strong>a key ingredient in making this work is to be a USBC maximalist. You should strive to ensure that every single thing you buy is USBC-friendly.</strong> Your laptop, your phone, your toothbrush, everything. This ensures that you don't need to carry any extra equipment beyond one charger and 1-2 charging cables. In the last ~3 years, it has become much easier to live the USBC maximalist life; enjoy it!</p>
+<h2 id="be-a-uniqlo-maximalist">Be a Uniqlo maximalist</h2>
+<p>For clothing, you have to navigate a tough tradeoff between price, cm<sup>3</sup> and the clothing looking reasonably good. Fortunately, many of the more modern brands do a great job of fulfilling all three at the same time! My current strategy is to be a Uniqlo maximalist: altogether, about 70% of the clothing items in my bag are from Uniqlo.</p>
+<p>This includes:</p>
+<ul>
+<li>8 T-shirts, of which 6 are <a href="https://www.uniqlo.com/eu/en/product/men-airism-crew-neck-short-sleeved-t-shirt-448823.html">this type from Uniqlo</a></li>
+<li>8 pairs of underwear, mostly various Uniqlo products</li>
+<li>8 socks, of which none are Uniqlo (I'm less confident about what to do with socks than with other clothing items, more on this later)</li>
+<li>Heat-tech <a href="https://www.uniqlo.com/uk/en/product/men-heattech-ultra-warm-thermal-tights-441624.html">tights</a>, from Uniqlo</li>
+<li>Heat-tech sweater, from Uniqlo</li>
+<li>Packable jacket, from Uniqlo</li>
+<li>Shorts that also double as a swimsuit, from.... ok fine, it's also Uniqlo.</li>
+</ul>
+<p>There are other stores that can give you often equally good products, but Uniqlo is easily accessible in many (though not all) of the regions I visit and does a good job, so I usually just start and stop there.</p>
+<h3 id="socks">Socks</h3>
+<p>Socks are a complicated balancing act between multiple desired traits:</p>
+<ul>
+<li>Low cm<sup>3</sup></li>
+<li>Easy to put on</li>
+<li>Warm (when needed)</li>
+<li>Comfortable</li>
+</ul>
+<p>The ideal scenario is if you find <a href="https://www.wholesalediabeticsocks.com/blog/different-types-of-socks-and-how-to-wear-them/">low-cut or ankle socks</a> comfortable to wear, and you never go to cold climates. These are very low on cm<sup>3</sup>, so you can just buy those and be happy. But this doesn't work for me: I sometimes visit cold areas, I don't find ankle socks comfortable and prefer something a bit longer, and I need to be comfortable for my long runs. Furthermore, my large foot size means that Uniqlo's one-size-fits-all approach does not work well for me: though I can put the socks on, it often takes a long time to do so (especially after a shower), and the socks rip often.</p>
+<p>So I've been exploring various brands to try to find a solution (recently trying <a href="https://www.amazon.com/s?k=cep+low+cut+socks">CEP</a> and <a href="https://www.amazon.com/Darn-Tough-Light-Lightweight-Cushion/dp/B08MWSXGLH">DarnTough</a>). I generally try to find socks that cover the ankle but don't go much higher than that, and I have one pair of long ones for when I go to the snowier places. My sock bag is currently larger than my underwear bag, and only a bit smaller than my T-shirt bag: both a sign of the challenge of finding good socks, and a testament to Uniqlo's amazing Airism T-shirts. Once you do find a pair of socks that you like, ideally you should just buy many copies of the same type. This removes the effort of searching for a matching pair in your bag, and it ensures that if one of your socks rips you don't have to choose between losing the whole pair and wearing mismatched socks.</p>
+<p>For shoes, you probably want to limit yourself to at most two: some heavier shoes that you can just wear, and some very cm<sup>3</sup>-light alternative, such as flip-flops.</p>
+<h3 id="layers">Layers</h3>
+<p>There is a key mathematical reason why dressing in layers is a good idea: it lets you cover many possible temperature ranges with fewer clothing items.</p>
+<p><br/></p>
+<table>
+<thead>
+<tr>
+<th>
+Temperature (°C)
+</th>
+<th>
+Clothing
+</th>
+</tr>
+</thead>
+<tbody>
 <tr>
 <td>
-<p><img src="https://vitalik.ca/images/nonfin/tweet1.png" style="display: block; margin-left: auto; margin-right: auto;"/></p>
+<span style="font-size:250%; text-align: center">20°</span>
 </td>
 <td>
-<p><img src="https://vitalik.ca/images/nonfin/tweet2.png" style="display: block; margin-left: auto; margin-right: auto;"/></p>
+<p><img class="transparent" src="https://vitalik.ca/images/backpack/tshirt.png" style="display: block; margin-left: auto; margin-right: auto;"/></p>
+</td>
+</tr>
+<tr>
+<td>
+<span style="font-size:250%; text-align: center">13°</span>
+</td>
+<td>
+<p><img class="transparent" src="https://vitalik.ca/images/backpack/tshirt.png" style="display: block; margin-left: auto; margin-right: auto;"/> + <img class="transparent" src="https://vitalik.ca/images/backpack/sweater.png" style="display: block; margin-left: auto; margin-right: auto;"/></p>
+</td>
+</tr>
+<tr>
+<td>
+<span style="font-size:250%; text-align: center">7°</span>
+</td>
+<td>
+<p><img class="transparent" src="https://vitalik.ca/images/backpack/tshirt.png" style="display: block; margin-left: auto; margin-right: auto;"/> + <img class="transparent" src="https://vitalik.ca/images/backpack/jacket.png" style="display: block; margin-left: auto; margin-right: auto;"/></p>
+</td>
+</tr>
+<tr>
+<td>
+<span style="font-size:250%; text-align: center">0°</span>
+</td>
+<td>
+<p><img class="transparent" src="https://vitalik.ca/images/backpack/tshirt.png" style="display: block; margin-left: auto; margin-right: auto;"/> + <img class="transparent" src="https://vitalik.ca/images/backpack/sweater.png" style="display: block; margin-left: auto; margin-right: auto;"/> + <img class="transparent" src="https://vitalik.ca/images/backpack/jacket.png" style="display: block; margin-left: auto; margin-right: auto;"/></p>
+</td>
+</tr>
+</tbody>
+</table>
+<p><br/></p>
+<p>You want to keep the T-shirt on in all cases, to protect the other layers from getting dirty. But aside from that, the general rule is: if you choose N clothing items, with levels of warmness spread out across powers of two, then you can be comfortable in <span class="math inline">\(2^N\)</span> different temperature ranges by binary-encoding the expected temperature in the clothing you wear. For not-so-cold climates, two layers (sweater and jacket) are fine. For a more universal range of climates you'll want three layers: light sweater, heavy sweater and heavy jacket, which can cover <span class="math inline">\(2^3 = 8\)</span> different temperature ranges all the way from summer to Siberian winter (of course, heavy winter jackets are not easily packable, so you may have to just wear it when you get on the plane).</p>
+<p>This layering principle applies not just to upper-wear, but also pants. I have a pair of thin pants plus Uniqlo tights, and I can wear the thin pants alone in warmer climates and put the Uniqlo tights under them in colder climates. The tights also double as pyjamas.</p>
+<h2 id="my-miscellaneous-stuff">My miscellaneous stuff</h2>
+<p>The internet constantly yells at me for not having a good microphone. I solved this problem by getting a portable microphone!</p>
+<center>
+<p><br/></p>
+<p><img src="https://vitalik.ca/images/backpack/workstation.png" style="display: block; margin-left: auto; margin-right: auto;"/></p>
+<p><small><i>My workstation, using the <a href="https://apogeedigital.com/products/hypemic">Apogee HypeMIC</a> travel microphone (unfortunately micro-USB, not USBC). A toilet paper roll works great as a stand, but I've also found that having a stand is not really necessary and you can just let the microphone lie down beside your laptop.</i></small></p>
+</center>
+<p><br/></p>
+<p>Next, my <strong>laptop stand</strong>. Laptop stands are great for improving your posture. I have two recommendations for laptop stands, one medium-effective but very light on cm<sup>3</sup>, and one very effective but heavier on cm<sup>3</sup>.</p>
+<ul>
+<li>The lighter one: <strong><a href="https://www.majextand.com/ajextand">Majextand</a></strong></li>
+<li>The more powerful one: <strong><a href="http://www.nexstand.com/">Nexstand</a></strong></li>
+</ul>
+<p>Nexstand is the one in the picture above. Majextand is the one glued to the bottom of my laptop now:</p>
+<center>
+<p><br/></p>
+<p><img src="https://vitalik.ca/images/backpack/majextand.png" style="display: block; margin-left: auto; margin-right: auto;"/></p>
+</center>
+<p><br/></p>
+<p>I have used both, and recommend both. In addition to this I also have another piece of laptop gear: a <a href="https://www.google.com/search?q=laptop+friendly+power+bank+20000+mah">20000 mAh laptop-friendly power bank</a>. This adds even more to my laptop's already decent battery life, and makes it generally easy to live on the road.</p>
+<p>Now, my <strong>medicine bag</strong>:</p>
+<center>
+<p><br/></p>
+<p><img src="https://vitalik.ca/images/backpack/medicine.png" style="display: block; margin-left: auto; margin-right: auto;"/></p>
+</center>
+<p><br/></p>
+<p>This contains a combination of various life-extension medicines (metformin, ashwagandha, and some vitamins), and covid defense gear: a CO2 meter (CO2 concentration minus 420 roughly gives you how much human-breathed-out air you're breathing in, so it's a good proxy for virus risk), masks, antigen tests and fluvoxamine. The tests were a free care package from the Singapore government, and they happened to be excellent on cm<sup>3</sup> so I carry them around. Covid defense and life extension are both fields where the science is rapidly evolving, so don't blindly follow this static list; follow the science yourself or listen to the latest advice of an expert that you do trust. Air filters and far-UVC (especially 222 nm) lamps are also promising covid defense options, and portable versions exist for both.</p>
+<p>At this particular time I don't happen to have a first aid kit with me, but in general it's also recommended; plenty of good travel options exist, eg. <a href="https://www.amazon.com/Small-Travel-First-Aid-Kit/dp/B07FL9SQZW">this</a>.</p>
+<p>Finally, <strong>mobile data</strong>. Generally, you want to make sure you have a phone that supports eSIM. These days, more and more phones do. Wherever you go, you can buy an eSIM for that place online. I personally use <a href="https://www.airalo.com/">Airalo</a>, but there are many options. If you are lazy, you can also just use <a href="https://fi.google.com/about/">Google Fi</a>, though in my experience Google Fi's quality and reliability of service tends to be fairly mediocre.</p>
+<h2 id="have-some-fun">Have some fun!</h2>
+<p>Not everything that you have needs to be designed around cm<sup>3</sup> minimization. For me personally, I have four items that are not particularly cm<sup>3</sup> optimized but that I still really enjoy having around.</p>
+<center>
+<p><br/></p>
+<table class="transparent centered">
+<tr>
+<td style="width:40%; vertical-align: top; padding: 25px">
+<p><img src="https://vitalik.ca/images/backpack/laptop_bag.png" style="display: block; margin-left: auto; margin-right: auto;"/></p>
+<p><em>My laptop bag, bought in an outdoor market in Zambia.</em></p>
+</td>
+<td style="width:40%; vertical-align: top; padding: 25px">
+<p><img src="https://vitalik.ca/images/backpack/unisocks.png" style="display: block; margin-left: auto; margin-right: auto;"/></p>
+<p><em><a href="https://unisocks.exchange/">Unisocks</a>.</em></p>
+</td>
+</tr>
+<tr>
+<td style="vertical-align: top; padding: 25px">
+<p><img src="https://vitalik.ca/images/backpack/pants.png" style="display: block; margin-left: auto; margin-right: auto;"/></p>
+<p><em>Sweatpants for indoor use, that are either fox-themed or Shiba Inu-themed depending on whom you ask.</em></p>
+</td>
+<td style="vertical-align: top; padding: 25px">
+<p><img src="https://vitalik.ca/images/backpack/gloves.png" style="display: block; margin-left: auto; margin-right: auto;"/></p>
+<p><em>Gloves (phone-friendly): I bought the left one for $4 in Mong Kok and the right one for $5 in Chinatown, Toronto back in 2016. By coincidence, I lost different ones from each pair, so the remaining two match. I keep them around as a reminder of the time when money was much more scarce for me.</em></p>
 </td>
 </tr>
 </table>
 </center>
 <p><br/></p>
-<p>Quadratic funding as implemented in <a href="https://gitcoin.co/grants">Gitcoin Grants</a> also includes some <a href="https://ethresear.ch/t/pairwise-coordination-subsidies-a-new-quadratic-funding-design/5553">explicitly diversity-favoring logic</a> to mitigate attacks.</p>
-<p>Another natural place where measurements and scores are going to be valuable is <strong>reputation systems</strong>. This already exists in a centralized form with ratings, but it can be done in a much more decentralized way where the algorithm is transparent while at the same time preserving more user privacy.</p>
-<p>Aside from tightly-coupled use cases like this, where attempts to measure to what extent some set of people is connected and feed that directly into a mechanism, there's also broader use case of helping a community understand itself. In the case of measuring decentralization, this might be a matter of identifying areas where concentration is getting too high, which might require a response. In all of these cases, running computerized algorithms over large bodies of attestations and commitments and doing actually important things with the outputs is going to be unavoidable.</p>
-<h3 id="we-should-not-try-to-abolish-quantified-metrics-we-should-try-to-make-better-ones">We should not try to <em>abolish</em> quantified metrics, we should try to make <em>better</em> ones</h3>
-<p>Kate Sills expressed her skepticism of the goal of making calculations over reputation, an argument that applies both for public analytics and for individuals ZK-proving over their reputation (as in Unirep Social):</p>
-<blockquote>
-<p>The process of evaluating a claim is very subjective and context-dependent. People will naturally disagree about the trustworthiness of other people, and trust depends on the context ... [because of this] we should be extremely skeptical of any proposal to "calculate over" claims to get objective results.</p>
-</blockquote>
-<p>I this case, I agree with the importance of subjectivity and context, but I would disagree with the more expansive claim that avoiding calculations around reputation entirely is the right goal to be aiming towards. Pure individualized analysis does not scale far beyond Dunbar's number, and any complex society that is attempting to support large-scale cooperation has to rely on aggregations and simplifications to some extent.</p>
-<p>That said, I would argue that an open-participation ecosystem of attestations (as opposed to the centralized one we have today) can get us the best of both worlds by opening up space for <em>better</em> metrics. Here are some principles that such designs could follow:</p>
+<p>The more you save space on the boring stuff, the more you can leave some space for a few special items that can bring the most joy to your life.</p>
+<h2 id="how-to-stay-sane-as-a-nomad">How to stay sane as a nomad</h2>
+<p>Many people find the nomad lifestyle to be disorienting, and report feeling comfort from having a "permanent base". I find myself not really having these feelings: I do feel disorientation when I change locations more than once every ~7 days, but as long as I'm in the same place for longer than that, I acclimate and it "feels like home". I can't tell how much of this is my unique difficult-to-replicate personality traits, and how much can be done by anyone. In general, some tips that I recommend are:</p>
 <ul>
-<li><strong>Inter-subjectivity</strong>: eg. a reputation should not be a single global score; instead, it should be a more subjective calculation involving the person or entity being evaluated but also the viewer checking the score, and potentially even other aspects of the local context.</li>
-<li><strong><a href="https://nakamoto.com/credible-neutrality/">Credible neutrality</a></strong>: the scheme should clearly not leave room for powerful elites to constantly manipulate it in their own favor. Some possible ways to achieve this are maximum <strong>transparency</strong> and <strong>infrequent change</strong> of the algorithm.</li>
-<li><strong>Openness</strong>: the ability to make meaningful inputs, and to audit other people's outputs by running the check yourself, should be open to anyone, and not just restricted to a small number of powerful groups.</li>
+<li><strong>Plan ahead</strong>: make sure you know where you'll be at least a few days in advance, and know where you're going to go when you land. This reduces feelings of uncertainty.</li>
+<li><strong>Have some other regular routine</strong>: for me, it's as simple as having a piece of dark chocolate and a cup of tea every morning (I prefer <a href="https://www.amazon.com/Bigelow-Tea-40-Bags-Decaffeinated/dp/B009S7K5JW">Bigelow green tea decaf</a>, specifically the 40-packs, both because it's the most delicious decaf green tea I've tried and because it's packaged in a four-teabag-per-bigger-bag format that makes it very convenient and at the same time cm<sup>3</sup>-friendly). Having <em>some</em> part of your lifestyle the same every day helps me feel grounded. The more digital your life is, the more you get this "for free" because you're staring into the same computer no matter what physical location you're in, though this does come at the cost of nomadding potentially providing fewer <em>benefits</em>.</li>
+<li><strong>Your nomadding should be embedded in some community</strong>: if you're just being a lowest-common-denominator tourist, you're doing it wrong. Find people in the places you visit who have some key common interest (for me, of course, it's blockchains). Make friends in different cities. This helps you learn about the places you visit and gives you an understanding of the local culture in a way that "ooh look at the 800 year old statue of the emperor" never will. Finally, find other nomad friends, and make sure to intersect with them regularly. If home can't be a single place, home can be the people you jump places with.</li>
+<li><strong>Have some semi-regular bases</strong>: you don't have to keep visiting a completely new location every time. Visiting a place that you have seen before reduces mental effort and adds to the feeling of regularity, and having places that you visit frequently gives you opportunities to put stuff down, and is important if you want your friendships and local cultural connections to actually develop.</li>
 </ul>
-<p>If we don't create good large-scale aggregates of social data, then we risk ceding market share to opaque and centralized social credit scores instead.</p>
-<p>Not all data should be on-chain, but making <em>some</em> data public in a common-knowledge way can help increase a community's legibility to itself without creating data-access disparities that could be abused to centralize control.</p>
-<h2 id="as-a-data-store">As a data store</h2>
-<p>This is the really controversial use case, even among those who accept most of the others. There is a common viewpoint in the blockchain space that blockchains should only be used in those cases where they are truly needed and unavoidable, and everywhere else we should use other tools.</p>
-<p>This attitude makes sense in a world where transaction fees are very expensive, and blockchains are uniquely incredibly inefficient. But it makes less sense in a world where blockchains have rollups and sharding and transaction fees have dropped down to a few cents, and the difference in redundancy between a blockchain and non-blockchain decentralized storage might only be 100x.</p>
-<p>Even in such a world, it would not make sense to store <em>all</em> data on-chain. But small text records? Absolutely. Why? Because <strong>blockchains are just a really convenient place to store stuff</strong>. I maintain a copy of this blog on IPFS. But uploading to IPFS often takes an hour, it requires centralized gateways for users to access it with anything close to website levels of latency, and occasionally files drop off and no longer become visible. Dumping the entire blog on-chain, on the other hand, would solve that problem completely. Of course, the blog is too big to <em>actually</em> be dumped on-chain, even post-sharding, but the same principle applies to smaller records.</p>
-<p>Some examples of small cases where putting data on-chain just to store it may be the right decision include:</p>
+<h2 id="how-to-compromise">How to compromise</h2>
+<p>Not everyone can survive with just the items I have. You might have some need for heavier clothing that cannot fit inside one backpack. You might be a big nerd in some physical-stuff-dependent field: I know life extension nerds, covid defense nerds, and many more. You might really love your three monitors and keyboard. You might have children.</p>
+<p>The 40-liter backpack is in my opinion a truly ideal size if you <em>can</em> manage it: 40 liters lets you carry a week's worth of stuff, and generally all of life's basic necessities, and it's at the same time very carry-friendly: I have never had it rejected from carry-on in all the flights on many kinds of airplane that I have taken it, and when needed I can just barely stuff it under the seat in front of me in a way that looks legit to staff. Once you start going lower than 40 liters, the disadvantages start stacking up and exceeding the marginal upsides. But if 40 liters is not enough for you, there are two natural fallback options:</p>
 <ul>
-<li><strong><a href="https://ethresear.ch/t/m-of-n-secret-sharing-with-pre-known-shares/10074">Augmented secret sharing</a></strong>: splitting your password into <code>N</code> pieces where any <code>M = N-R</code> of the pieces can recover the password, but in a way where you can choose the contents of all <code>N</code> of the pieces. For example, the pieces could all be hashes of passwords, secrets generated through some other tool, or answers to security questions. This is done by publishing an extra <code>R</code> pieces (which are random-looking) on-chain, and doing <code>N</code>-of-<code>(N+R)</code> secret sharing on the whole set.</li>
-<li><strong>ENS optimization</strong>. ENS <em>could</em> be made more efficient by combining all records into a single hash, only publishing the hash on-chain, and requiring anyone accessing the data to get the full data off of IPFS. But this would significantly increase complexity, and add yet another software dependency. And so ENS keeps data on-chain even if it is longer than 32 bytes.</li>
-<li><strong>Social metadata</strong> - data connected to your account (eg. for <a href="https://login.xyz/">sign-in-with-Ethereum</a> purposes) that you want to be public and that is very short in length. This is generally not true for larger data like profile pictures (though if the picture happens to be a small <a href="https://en.wikipedia.org/wiki/Scalable_Vector_Graphics">SVG file</a> it could be!), but it is true for text records.</li>
-<li><strong>Attestations and access permissions</strong>. Especially if the data being stored is less than a few hundred bytes long, it might be more convenient to store the data on-chain than put the hash on-chain and the data off-chain.</li>
+<li><strong>A larger-than-40 liter backpack</strong>. You can find <a href="https://www.amazon.com/s?k=%2250+liter%22+backpack">50 liter backpacks</a>, <a href="https://www.amazon.com/s?k=%2260+liter%22+backpack">60 liter backpacks</a> or <a href="https://www.amazon.com/s?k=%22100+liter%22+backpack">even larger</a> (I highly recommend backpacks over shoulder bags for carrying friendliness). But the higher you go, the more tiring it is to carry, the more risk there is on your spine, and the more you incur the risk that you'll have a difficult situation bringing it as a carry-on on the plane and might even have to check it.</li>
+<li><strong>Backpack plus mini-suitcase.</strong> There are plenty of <a href="https://www.google.com/search?q=carry+on+suitcase">carry-on suitcases</a> that you can buy. You can often make it onto a plane with a backpack <em>and</em> a mini-suitcase. This depends on you: you may find this to be an easier-to-carry option than a really big backpack. That said, there is sometimes a risk that you'll have a hard time carrying it on (eg. if the plane is very full) and occasionally you'll have to check something.</li>
 </ul>
-<p>In a lot of these cases, the tradeoff isn't just cost but also privacy in those edge cases where keys or cryptography break. Sometimes, privacy is only somewhat important, and the occasional loss of privacy from leaked keys or the faraway specter of quantum computing revealing everything in 30 years is less important than having a very high degree of certainty that the data will remain accessible. After all, off-chain data stored in your "data wallet" can get hacked too.</p>
-<p>But sometimes, data is particularly sensitive, and that can be another argument against putting it on-chain, and keeping it stored locally as a second layer of defense. But note that in those cases, that privacy need is an argument not just against blockchains, but against <em>all</em> decentralized storage.</p>
-<h2 id="conclusions">Conclusions</h2>
-<p>Out of the above list, the two I am personally by far the most confident about are <strong>interoperability with other blockchain applications</strong> and <strong>account management</strong>. The first is on-chain already, and the second is relatively cheap (need to use the chain once per user, and not once per action), the case for it is clear, and there really isn't a good non-blockchain-based solution.</p>
-<p><strong>Negative reputation</strong> and <strong>revocations</strong> are also important, though they are still relatively early-stage use cases. A lot can be done with reputation by relying on off-chain positive reputation only, but I expect that the case for revocation and negative reputation will become more clear over time. I expect there to be attempts to do it with centralized servers, but over time it should become clear that blockchains are the only way to avoid a hard choice between inconvenience and centralization.</p>
-<p><strong>Blockchains as data stores</strong> for short text records may be marginal or may be significant, but I do expect at least some of that kind of usage to keep happening. Blockchains really are just incredibly convenient for cheap and reliable data retrieval, where data continues to be retrievable whether the application has two users or two million. <strong>Open-source metrics</strong> are still a very early-stage idea, and it remains to see just how much can be done and made open without it becoming exploitable (as eg. online reviews, social media karma and the like get exploited all the time). And <strong>common knowledge games</strong> require convincing people to accept entirely new workflows for socially important things, so of course that is an early-stage idea too.</p>
-<p>I have a large degree of uncertainty in exactly what level of non-financial blockchain usage in each of these categories makes sense, but it seems clear that blockchains as an enabling tool in these areas should not be dismissed.</p>
+<p>Either option can get you up to a respectable 80 liters, and still preserve <em>a lot</em> of the benefits of the 40-liter backpack lifestyle. Backpack plus mini-suitcase generally seems to be more popular than the big backpack route. It's up to you to decide which tradeoffs to take, and where your personal values lie!</p>
 </meta></div>
 </body>
 </html>
