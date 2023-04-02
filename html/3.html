@@ -42,198 +42,179 @@
   checkColorScheme();
 </script>
 <meta content="summary" name="twitter:card">
-<meta content="Updating my blog: a quick GPT chatbot coding experiment" name="twitter:title"/>
+<meta content="What even is an institution?" name="twitter:title"/>
 <meta content="http://vitalik.ca/images/icon.png" name="twitter:image"/>
 <br/>
-<h1 style="margin-bottom:7px"> Updating my blog: a quick GPT chatbot coding experiment </h1>
-<small style="float:left; color: #888"> 2022 Dec 06 </small>
+<h1 style="margin-bottom:7px"> What even is an institution? </h1>
+<small style="float:left; color: #888"> 2022 Dec 30 </small>
 <small style="float:right; color: #888"><a href="../../../../index.html">See all posts</a></small>
 <br/> <br/> <br/>
-<title> Updating my blog: a quick GPT chatbot coding experiment </title>
-<p>The <a href="https://chat.openai.com/">GPT chatbot</a> has been all the rage the last few days. Along with many important use cases like <a href="https://twitter.com/VitalikButerin/status/1598313413389819905">writing song lyrics</a>, acting as a <a href="https://twitter.com/VitalikButerin/status/1597631275942445057">language learning buddy</a> and coming up with convincing-sounding arguments <a href="https://twitter.com/Psythor/status/1599011573296599041">for arbitrary political opinions</a>, one of the things that many people are excited about is the possibility of using the chatbot to write code.</p>
-<p>In a lot of cases, it can succeed and write some pretty good code especially for common tasks. In cases that cover less well-trodden ground, however, it can fail: witness its hilariously broken attempt to <a href="https://twitter.com/VitalikButerin/status/1598419299638644740">write a PLONK verifier</a>:</p>
+<title> What even is an institution? </title>
+<p><em>Special thanks to Dennis Pourteaux and Tina Zhen for discussion that led to this post.</em></p>
+<p>A recent alternative political compass proposed by Dennis Pourteaux proposes that the most important political divide of our present time is not liberty vs authoritarianism or left vs right, <a href="https://pourteaux.substack.com/p/institutional-alignment">but rather how we think about "institutions"</a>. Are the institutions that society runs on today good or bad, and is the solution to work incrementally to improve them, replace them with radically different institutions, or do away with institutions altogether?</p>
+<br/>
 <center>
-<p><br/></p>
-<p><img src="https://vitalik.ca/images/gpt3/plonk.png" style="display: block; margin-left: auto; margin-right: auto;"/></p>
+<img src="https://substackcdn.com/image/fetch/f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fbucketeer-e05bbc84-baa3-437e-9518-adb32be77984.s3.amazonaws.com%2Fpublic%2Fimages%2F1b7ab13d-2733-4de9-a9f0-50e2ecfdcfed_1024x924.png" style="display: block; margin-left: auto; margin-right: auto;width:450px"/>
 </center>
 <p><br/></p>
-<p>(In case you want to know how to do it kinda-properly, <a href="https://github.com/ethereum/research/blob/master/py_plonk/verifier.py">here is a PLONK verifier</a> written by me)</p>
-<p>But how well do these tools actually perform in the average case? I decided to take the GPT3 chatbot for a spin, and see if I could get it to solve a problem very relevant to me personally: changing the IPFS hash registered in my <code>vitalik.eth</code> ENS record, in order to make the <a href="https://vitalik.eth.limo/general/2022/12/05/excited.html">new article</a> that I just released on my blog viewable through ENS.</p>
-<p>The process of updating the ENS view of my blog normally consists of two steps: first, publish the updated contents to IPFS, and second, update my ENS record to contain the IPFS hash of the new contents. <a href="https://fleek.co/">Fleek</a> has automated the first part of this for me for a long time: I just push the contents to Github, and Fleek uploads the new version to IPFS automatically. I have been told that I could change the settings to give Fleek the power to also edit my ENS, but here I want to be fully "self-sovereign" and not trust third parties, so I have not done this. Instead, so far, I have had to go to the GUI at <a href="https://app.ens.domains/">app.ens.domains</a>, click a few times, wait for a few loading screens to pass, and finally click "ADD / EDIT RECORD", change the <code>CONTENT</code> hash and click "Confirm". This is all a cumbersome process, and so today I finally thought that I would write a script in javascript to automate this all down to a single piece of Javascript that I could just copy-paste into my browser console in the future.</p>
-<p>The task is simple: send an Ethereum transaction to the right address with the right calldata to update the content hash record in the ENS contract to equal the IPFS hash that Fleek gives to me. Yesterday, I did this all manually (twice, once to publish and again to add some corrections), and the IPFS hashes I got were:</p>
-<p><a href="https://cloudflare-ipfs.com/ipfs/bafybeifvvseiarzdfoqadphxtfu5yjfgj3cr6x344qce4s4f7wqyf3zv4e"><code>bafybeifvvseiarzdfoqadphxtfu5yjfgj3cr6x344qce4s4f7wqyf3zv4e</code></a></p>
-<p><a href="https://cloudflare-ipfs.com/ipfs/bafybeieg6fhbjlhkzhbyfnmyid3ko5ogxp3mykdarsfyw66lmq6lq5z73m"><code>bafybeieg6fhbjlhkzhbyfnmyid3ko5ogxp3mykdarsfyw66lmq6lq5z73m</code></a></p>
-<p>If you click through to the top article in each one, you'll see the two different versions.</p>
-<p>This hash format is often called a "bafyhash", because the hashes all begin with "bafy". But there is a problem: the format of the hash that is saved in Ethereum is <em>not</em> a bafyhash. Here's the calldata of the transaction that made one of the update operations:</p>
+<p>This, however, raises a really important question: <strong>what even is an "institution" anyway?</strong></p>
+<p>The word "institution" in political discourse brings to mind things like national governments, the New York Times, universities and <em>maybe</em> the local public library. But the word also gets used to describe other kinds of things. The phrase "the institution of marriage" is common in English-language discourse, and gets <a href="https://www.google.com/search?q=%22the+institution+of+marriage%22">over two million search results</a> on Google. If you ask Google point-blank, "is family an institution", it answers yes.</p>
 <center>
 <p><br/></p>
-<p><img src="https://vitalik.ca/images/gpt3/i1.png" style="display: block; margin-left: auto; margin-right: auto;"/></p>
-<p><small><i>Yes, I checked, that is <strong>not</strong> hexadecimalized ASCII.</i></small></p>
+<p><img src="https://vitalik.ca/images/institutions/google_answer.png" style="display: block; margin-left: auto; margin-right: auto;"/></p>
 </center>
 <p><br/></p>
-<p>I do know that the IPFS content hash is the last two rows of the data. How do I know? Well, I checked the <a href="https://etherscan.io/tx/0xc68f8de2028ca2c3cdd7c7b5c67356f5c25364bdc1883c27a31fb771a9752208">two</a> different <a href="https://etherscan.io/tx/0xd75e6dd713730e8b95f5dbe6de289c11e8960d9a0e888f94acd7b460598eef4a">transactions</a> I sent for my two updates, and I saw that the top row is the same and the bottom two rows are different. Good enough.</p>
-<p>So what do I do to convert from a bafyhash into a binary IPFS content hash? Well, let me try asking the GPT3 chatbot!</p>
+<p>ChatGPT agrees:</p>
 <center>
 <p><br/></p>
-<p><img src="https://vitalik.ca/images/gpt3/i2.png" style="display: block; margin-left: auto; margin-right: auto;"/></p>
+<p><img src="https://vitalik.ca/images/institutions/chatgpt_answer.png" style="display: block; margin-left: auto; margin-right: auto;"/></p>
 </center>
 <p><br/></p>
-<p>Noooo!!!!!!!!!! Many issues. First, two things that are my fault:</p>
-<ol type="1">
-<li>I forgot to mention this, but I wanted Javascript, not python.</li>
-<li>It uses external dependencies. I want my javascript copy-pasteable into the console, so I don't want any libraries.</li>
-</ol>
-<p>These are on me to specify, though, and in my next instruction to the chatbot I will. But now we get to the things that <em>are</em> its fault:</p>
-<ol type="1">
-<li>Bafyhashes are base 32, <em>not</em> base 58. There is a base-58 format for IPFS hashes, but those are called "QM hashes", not "bafyhashes".</li>
-<li>By "binary" I didn't want literal ones and zeroes, I wanted the normal binary format, a bytes or bytearray.</li>
-</ol>
-<p>That said, at this part of the story I did not even realize that bafyhashes are base 32. I fixed the two issues that <em>were</em> my fault first:</p>
-<center>
-<p><br/></p>
-<p><img src="https://vitalik.ca/images/gpt3/i3.png" style="display: block; margin-left: auto; margin-right: auto;"/></p>
-</center>
-<p><br/></p>
-<p>BAAAAAAAAAAAAAD, the AI trainer said sheepishly! The <code>atob</code> function is for <a href="https://developer.mozilla.org/en-US/docs/Web/API/atob#:~:text=See%20also-,atob(),to%20decode%20the%20data%20again.">base 64, not base 58</a>.</p>
-<p>OK, let's keep going. A few rounds later...</p>
-<center>
-<p><br/></p>
-<p><img src="https://vitalik.ca/images/gpt3/i4.png" style="display: block; margin-left: auto; margin-right: auto;"/></p>
-</center>
-<p><br/></p>
-<p>It's hard to see what's going on at first, but it's incredibly wrong. Basically, instead of converting the whole string from base 58 to base 16, it's converting <em>each individual digit</em> to base 16. Not what I want to do!</p>
-<p>Guess I'll have to tell it what strategy it should use:</p>
-<center>
-<p><br/></p>
-<p><img src="https://vitalik.ca/images/gpt3/i5.png" style="display: block; margin-left: auto; margin-right: auto;"/></p>
-</center>
-<p><br/></p>
-<p>Better! I soon start to realize that I don't need base 58, I need base 32, and furthermore I need the <em>lowercase</em> version of base 32. I also want the code wrapped in a function. For these simpler steps, it gets much more cooperative:</p>
-<center>
-<p><br/></p>
-<p><img src="https://vitalik.ca/images/gpt3/i6.png" style="display: block; margin-left: auto; margin-right: auto;"/></p>
-</center>
-<p><br/></p>
-<p>At this point, I try actually passing the bafyhashes I have into this function, and I get unrecognizably different outputs. Looks like I can't just assume this is generic base 32, and I have to poke into the details. Hmm, can I perhaps ask the GPT3 chatbot?</p>
-<center>
-<p><br/></p>
-<p><img src="https://vitalik.ca/images/gpt3/i7.png" style="display: block; margin-left: auto; margin-right: auto;"/></p>
-</center>
-<p><br/></p>
-<p>OK, this is not helpful. Let me try to be more specific.</p>
-<center>
-<p><br/></p>
-<p><img src="https://vitalik.ca/images/gpt3/i8.png" style="display: block; margin-left: auto; margin-right: auto;"/></p>
-</center>
-<p><br/></p>
-<p>This is an.... interesting guess, but it's totally wrong. After this point, I give up on the GPT3 for a while, and keep poking at the generated hex and the actual hex in python until I find similarities. Eventually, I figure it out: I actually do convert both hexes to literal binary, and search from a binary substring of one in the other. I discover that there is an offset of 2 bits.</p>
-<p>I just edit the code manually, compensating for the offset by dividing the bigint by 4:</p>
-<center>
-<p><br/></p>
-<p><img src="https://vitalik.ca/images/gpt3/i9.png" style="display: block; margin-left: auto; margin-right: auto;"/></p>
-</center>
-<p><br/></p>
-<p>Because I already know what to do, I also just code the part that generates the entire calldata myself:</p>
-<center>
-<p><br/></p>
-<p><img src="https://vitalik.ca/images/gpt3/i10.png" style="display: block; margin-left: auto; margin-right: auto;"/></p>
-</center>
-<p><br/></p>
-<p>Anyway, then I switch to the next task: the portion of the Javascript that actually sends a transaction. I go back to the GPT3.</p>
-<center>
-<p><br/></p>
-<p><img src="https://vitalik.ca/images/gpt3/i11.png" style="display: block; margin-left: auto; margin-right: auto;"/></p>
-</center>
-<p><br/></p>
-<p>NOOOOO! I SAID NO LIBRARIES!!!!1!1!</p>
-<p>I tell it what to use directly:</p>
-<center>
-<p><br/></p>
-<p><img src="https://vitalik.ca/images/gpt3/i12.png" style="display: block; margin-left: auto; margin-right: auto;"/></p>
-</center>
-<p><br/></p>
-<p>This is more successful. Two errors though:</p>
-<ol type="1">
-<li>A <code>from</code> address actually is required.</li>
-<li>You can't stick an integer into the <code>gas</code> field, you need a hex value.</li>
-</ol>
-<p>Also, post EIP-1559, there really isn't much point in hard-coding a <code>gasPrice</code>. From here, I do the rest of the work myself.</p>
-<div style="height: 300px; margin-top: 40px; margin-bottom: 40px; overflow-y: scroll">
-<pre>
-
-function bafyToHex(bafyString) {
-  // Create a lookup table for the base32 alphabet
-  var alphabet = 'abcdefghijklmnopqrstuvwxyz234567';
-  var base = alphabet.length;
-  var lookupTable = {};
-  alphabet.split('').forEach(function(char, i) {
-    lookupTable[char] = i;
-  });
-
-  // Decode the base32-encoded string into a big integer
-  var bigInt = bafyString.split('').reduce(function(acc, curr) {
-    return acc * BigInt(base) + BigInt(lookupTable[curr]);
-  }, BigInt(0)) / BigInt(4);
-
-  // Convert the big integer into a hexadecimal string
-  var hexString = bigInt.toString(16);
-
-  return 'e30101701220' + hexString.slice(-64);
-}
-
-function bafyToCalldata(bafyString) {
-    return (
-        '0x304e6ade' +
-        'ee6c4522aab0003e8d14cd40a6af439055fd2577951148c14b6cea9a53475835' +
-        '0000000000000000000000000000000000000000000000000000000000000040' +
-        '0000000000000000000000000000000000000000000000000000000000000026' +
-        bafyToHex(bafyString) +
-        '0000000000000000000000000000000000000000000000000000'
-    )
-}
-
-async function setBafyhash(bafyString) {
-  calldata = bafyToCalldata(bafyString);
-  const addr = (await window.ethereum.enable())[0];
-  // Set the "to" address for the transaction
-  const to = '0x4976fb03c32e5b8cfe2b6ccb31c09ba78ebaba41';
-
-  // Set the transaction options
-  const options = {
-    from: addr,
-    to: to,
-    data: calldata,
-    gas: "0x040000"
-  };
-  console.log(options);
-
-  // Send the transaction
-  window.ethereum.send('eth_sendTransaction', [options], function(error, result) {
-    if (error) {
-      console.error(error);
-    } else {
-      console.log(result);
-    }
-  });
-}
-
-</pre>
-</div>
-<p>I ask the GPT-3 some minor questions: how to declare an <code>async</code> function, and what keyword to use in Twitter search to search only tweets that contain images (needed to write this post). It answers both flawlessly: do <code>async function functionName</code> to declare an async function, and use <code>filter:images</code> to filter for tweets that contain images.</p>
-<h2 id="conclusions">Conclusions</h2>
-<p>The GPT-3 chatbot was helpful as a programming aid, but it also made plenty of mistakes. Ultimately, I was able to get past its mistakes quickly because I had lots of domain knowledge:</p>
+<p>If we take ChatGPT's definition that "a social institution is a pattern of behaviors and norms that exist within a society and are thought to be essential to its functioning" seriously, then the New York Times is not an institution - no one argues that it's literally essential, and many people consider it to be actively harmful! And on the other side, we can think of examples of things that <em>maybe are institutions</em> that Pourteaux's "anti-institutionalists" would approve of!</p>
 <ul>
-<li>I know that it was unlikely that browsers would have a builtin for base 58, which is a relatively niche format mostly used in the crypto world, and so I immediately got suspicious of its attempt to suggest <code>atob</code></li>
-<li>I could eventually recall that the hash being all-lowercase means it's base 32 and not base 58</li>
-<li>I knew that the data in the Ethereum transaction had to encode the IPFS hash in <em>some</em> sensible way, which led me to eventually come up with the idea of checking bit offsets</li>
-<li>I know that a simple "correct" way to convert between base A and base B is to go through some abstract integer representation as an in-between, and that Javascript supported big integers.</li>
-<li>I knew about <code>window.ethereum.send</code></li>
-<li>When I got the error that I was not allowed to put an integer into the <code>gas</code> field, I knew immediately that it was supposed to be hex.</li>
+<li>Twitter</li>
+<li>The Bitcoin or Ethereum blockchains</li>
+<li>The English language</li>
+<li>Substack</li>
+<li>Markets</li>
+<li>Standards organizations dealing with international shipping</li>
 </ul>
-<p>At this point, AI is quite far from being a substitute for human programmers. In this particular case, it only sped me up by a little bit: I could have figured things out with Google eventually, and indeed in one or two places I <em>did</em> go back to googling. That said, it did introduce me to some coding patterns I had not seen before, and it wrote the base converter faster than I would have on my own. For the boilerplate operation of writing the Javascript to send a simple transaction, it did quite well.</p>
-<p>That said, AI is improving quickly and I expect it to keep improving further and ironing out bugs like this over time.</p>
+<p>This leads us to two related, but also somewhat separate, questions:</p>
+<ol type="1">
+<li><strong>What is <em>really</em> the dividing line that makes some things "institutions" in people's eyes and others not?</strong></li>
+<li><strong>What kind of world do people who consider themselves anti-institutionalists actually want to see? And what <em>should</em> an anti-institutionalist in today's world be doing?</strong></li>
+</ol>
+<h2 id="a-survey-experiment">A survey experiment</h2>
+<p>Over the past week, I made a <a href="https://cryptodon.lol/@vbuterin/109570542347764470">series</a> of <a href="https://cryptodon.lol/@vbuterin/109576148299374533">polls</a> on Mastodon where I provided many examples of different objects, practices and social structures, and asked: is this an institution or not? In some cases, I made different spins on the same concept to see the effects of changing some specific variables. There were some fascinating results.</p>
+<p>Here are a few examples:</p>
+<p><br/> <img src="https://vitalik.ca/images/institutions/m1.png" style="display: block; margin-left: auto; margin-right: auto;height:320px; padding-right: 20px; padding-bottom: 20px"/> <img src="https://vitalik.ca/images/institutions/m2.png" style="display: block; margin-left: auto; margin-right: auto;height:320px; padding-bottom: 20px"/> <br/><br/></p>
+<p>And:</p>
+<p><br/> <img src="https://vitalik.ca/images/institutions/m3.png" style="display: block; margin-left: auto; margin-right: auto;height:320px; padding-right: 20px; padding-bottom: 20px"/> <img src="https://vitalik.ca/images/institutions/m4.png" style="display: block; margin-left: auto; margin-right: auto;height:320px; padding-right: 20px; padding-bottom: 20px"/> <img src="https://vitalik.ca/images/institutions/m5.png" style="display: block; margin-left: auto; margin-right: auto;height:320px; padding-right: 20px; padding-bottom: 20px"/> <br/><br/></p>
+<p>And:</p>
+<p><br/> <img src="https://vitalik.ca/images/institutions/m6.png" style="display: block; margin-left: auto; margin-right: auto;height:320px; padding-right: 20px; padding-bottom: 20px"/> <img src="https://vitalik.ca/images/institutions/m7.png" style="display: block; margin-left: auto; margin-right: auto;height:320px; padding-right: 20px; padding-bottom: 20px"/> <br/><br/></p>
+<p>And, of course:</p>
+<p><br/> <img src="https://vitalik.ca/images/institutions/m8.png" style="display: block; margin-left: auto; margin-right: auto;height:250px; padding-right: 20px; padding-bottom: 20px"/> <img src="https://vitalik.ca/images/institutions/m9.png" style="display: block; margin-left: auto; margin-right: auto;height:250px; padding-right: 20px; padding-bottom: 20px"/> <img src="https://vitalik.ca/images/institutions/mx.png" style="display: block; margin-left: auto; margin-right: auto;height:250px; padding-right: 20px; padding-bottom: 20px"/> <br/><br/></p>
+<p>There's more fun ones: <a href="https://cryptodon.lol/@vbuterin/109570543708271381">NYT</a> vs <a href="https://cryptodon.lol/@vbuterin/109570629589076709">Russia Today</a> vs <a href="https://cryptodon.lol/@vbuterin/109570548373455136">Bitcoin Magazine</a>, the <a href="https://cryptodon.lol/@vbuterin/109576276734493858">solar system</a> vs <a href="https://cryptodon.lol/@vbuterin/109576290616996040">what if we started re-engineering it</a>, <a href="https://cryptodon.lol/@vbuterin/109576149554493641">prediction markets</a>, various <a href="https://cryptodon.lol/@vbuterin/109570587677425299">social</a> <a href="https://cryptodon.lol/@vbuterin/109570583709002906">customs</a>, and a lot more.</p>
+<p>Here, we can already start to see some common factors. Marriage is more institution-y than romantic relationships, likely because of its official stamp of recognition, and more mainstream relationship styles are more institution-y than less mainstream styles (a pattern that repeats itself when comparing NYT vs Russia Today vs Bitcoin Magazine). Systems with clearly visible human beings making decisions are more institution-y than more impersonal algorithmic structures, even if their outputs are ultimately entirely a function of human-provided inputs.</p>
+<p>To try to elucidate things further, I decided to do a more systematic analysis.</p>
+<h2 id="what-are-some-common-factors">What are some common factors?</h2>
+<p>Robin Hanson <a href="https://www.overcomingbias.com/2022/12/elites-must-rule.html">recently made a post</a> in which he argued that:</p>
+<blockquote>
+<p>At least on prestigious topics, most people want relevant institutions to take the following ideal form:</p>
+<p><strong>Masses recognize elites, who oversee experts, who pick details.</strong></p>
+</blockquote>
+<p>This seemed to me to be an important and valuable insight, though in a somewhat different direction: yes, that is the style of institution that people find familiar and are not <em>weirded out by</em> (as they might when they see many of the "alternative institutions" that Hanson <a href="https://mason.gmu.edu/~rhanson/altinst.html">likes to propose</a>), but it's also exactly the style of institutions that anti-institutionalists tend to most strongly rail against! Mark Zuckerberg's very institution-y <a href="https://transparency.fb.com/oversight/creation-of-oversight-board/">oversight board</a> certainly followed the "masses recognize elites who oversee experts" template fairly well, but it did not really make a lot of people happy.</p>
+<p>I decided to give this theory of institution-ness, along with some other theories, a test. I identified seven properties that seemed to me possible important characteristics of institutions, with the goal of identifying which ones are most strongly correlated to people thinking of something as being an institution:</p>
+<ul>
+<li>Does it have a "<strong>masses recognize elites</strong>" pattern?</li>
+<li>Does it have a "<strong>elites oversee experts</strong>" pattern?</li>
+<li>Is it <strong>mainstream</strong>?</li>
+<li>Is it <a href="https://medium.com/@VitalikButerin/the-meaning-of-decentralization-a0c92b76a274"><strong>logically centralized</strong></a>?</li>
+<li>Does it involve <strong>interaction between people</strong>? (eg. intermittent fasting doesn't, as everyone just chooses whether or not to do it separately, but a government does)</li>
+<li>Does it have a specific <strong><em>structure</em></strong> that has a lot of <strong>intentional design</strong> behind it? (eg. corporations do, friendship doesn't)</li>
+<li>Does it have <strong><em>roles</em></strong> that take on a life <strong>independent of the individuals</strong> that fill them? (eg. democratically elected governments do, after all they even call the leader "Mr. President", but a podcast which is named after its sole host does not at all)</li>
+</ul>
+<p>I went through the list and personally graded the 35 maybe-institutions from my polls on these categories. For example, Tesla got:</p>
+<ul>
+<li><strong>25% on "masses recognize elites"</strong> (because it's run by Elon Musk, who does in practice have a lot of recognition and support as a celebrity, but this isn't a deeply intrinsic feature of Tesla, Elon won't get kicked out of Tesla if he loses legitimacy, etc)</li>
+<li><strong>100% on "elites oversee experts"</strong> (all large corporations follow this pattern)</li>
+<li><strong>75% on "is mainstream"</strong> (almost everyone knows about it, lots of people have them, but it's not <em>quite</em> a New York Times-level household name)</li>
+<li><strong>100% on "logical centralization"</strong> (most things get 100% on this score; as a counterexample, "dating sites" get 50% because there are many dating sites and "intermittent fasting" gets 0%)</li>
+<li><strong>100% on "involves interaction between people"</strong> (Tesla produces products that it sells to people, and it hires employees, has investors, etc)</li>
+<li><strong>75% on "intentional structure"</strong> (Tesla definitely has a deep structure with shareholders, directors, management, etc, but that structure isn't really part of its <em>identity</em> in the way that, say, proof of stake consensus is for Ethereum or voting and congress are for a government)</li>
+<li><strong>50% for "roles independent of individuals"</strong> (while roles in companies are generally interchangeable, Tesla does get large gains from being part of the Elon-verse specifically)</li>
+</ul>
+<p>The full data is <a href="https://vitalik.ca/files/misc_files/institution_analysis.ods">here</a>. I know that many people will have many disagreements over various individual rankings I make, and readers could probably convince me that a few of my scores are wrong; I am mainly hoping that I've included a sufficient number of diverse maybe-instiutions in the list that individual disagreement or errors get roughly averaged out.</p>
+<p>Here's the table of correlations:</p>
+<br/>
+<table>
+<tr>
+<td>
+Masses recognize elites
+</td>
+<td>
+0.491442156943094
+</td>
+</tr>
+<tr>
+<td>
+Elites oversee experts
+</td>
+<td>
+0.697483431580409
+</td>
+</tr>
+<tr>
+<td>
+Is mainstream
+</td>
+<td>
+0.477135770662517
+</td>
+</tr>
+<tr>
+<td>
+Logical centralization
+</td>
+<td>
+0.406758324754985
+</td>
+</tr>
+<tr>
+<td>
+Interaction between people
+</td>
+<td>
+0.570201749796132
+</td>
+</tr>
+<tr>
+<td>
+Intelligently designed structure
+</td>
+<td>
+0.365640100778201
+</td>
+</tr>
+<tr>
+<td>
+Roles independent of individuals
+</td>
+<td>
+0.199412937985826
+</td>
+</tr>
+</table>
 <p><br/></p>
-<p><em>Addendum: while writing the part of this post that involved more copy-paste than thinking, I put on my music playlist on shuffle. The first song that started playing was, coincidentally, <a href="https://www.youtube.com/watch?v=1XK5-n4rR7Q">Basshunter's Boten Anna</a> ("Anna The Bot").</em></p>
+<p>But as it turns out, the correlations are misleading. "Interaction between people" turns out to be an almost unquestionably <em>necessary</em> property for something to have to be an institution. The correlation of 0.57 <em>kind of</em> shows it, but it understates the strength of the relationship:</p>
+<center>
+<p><br/></p>
+<p><img src="https://vitalik.ca/images/institutions/correl1.png" style="display: block; margin-left: auto; margin-right: auto;"/></p>
+</center>
+<p><br/></p>
+<p>Literally <em>every</em> thing that I labeled as clearly involving interaction had a higher percentage of people considering it an institution than <em>every</em> thing I labeled as not involving interaction. The single dot in the center is my hypothetical example of an island where people with odd-numbered birthdays are not allowed to eat meat before 12:00; I didn't want to give it 100% because the not-meat-eating is a private activity, but the question still strongly implies some social or other pressure to follow the rule so it's also not really 0%. This is a place where <a href="https://en.wikipedia.org/wiki/Spearman%27s_rank_correlation_coefficient">Spearman's coefficient</a> outperforms Pearson's, but rather than spurting out exotic numbers I'd rather just show the charts. Here are the other six:</p>
+<p><br/> <img src="https://vitalik.ca/images/institutions/correl2.png" style="display: block; margin-left: auto; margin-right: auto;width: 340px; padding-right: 20px; padding-bottom: 20px"/> <img src="https://vitalik.ca/images/institutions/correl3.png" style="display: block; margin-left: auto; margin-right: auto;width: 340px; padding-right: 20px; padding-bottom: 20px"/> <img src="https://vitalik.ca/images/institutions/correl4.png" style="display: block; margin-left: auto; margin-right: auto;width: 340px; padding-right: 20px; padding-bottom: 20px"/> <img src="https://vitalik.ca/images/institutions/correl5.png" style="display: block; margin-left: auto; margin-right: auto;width: 340px; padding-right: 20px; padding-bottom: 20px"/> <img src="https://vitalik.ca/images/institutions/correl6.png" style="display: block; margin-left: auto; margin-right: auto;width: 340px; padding-right: 20px; padding-bottom: 20px"/> <img src="https://vitalik.ca/images/institutions/correl7.png" style="display: block; margin-left: auto; margin-right: auto;width: 340px; padding-right: 20px; padding-bottom: 20px"/> <br/><br/></p>
+<p>The most surprising finding for me is that <strong>"roles independent of individuals" is by far the weakest correlation</strong>. Twitter run by a democracy is the most institution-y of all, but Twitter run by a pay-to-govern scheme is as institution-y as Twitter that's just run by Elon directly. Roles being independent of individuals adds a guarantee of stability, but roles being independent of individuals <em>in the wrong way</em> feels too unfamiliar, or casual, or otherwise not institution-like. Dating sites are more independent of individuals than professional matchmaking agencies, and yet it's the matchmaking agencies that are seen as more institution-like. Attempts at highly role-driven and mechanistic credibly-neutral media, (eg. <a href="https://cryptodon.lol/@vbuterin/109576172987142068">this contraption</a>, which I actually think would be really cool) just feel <em>alien</em> - perhaps in a bad way, but also perhaps in a good way, if you find the institutions of today frustrating and you're open-minded about possible alternatives.</p>
+<p>Correlations with "masses recognize elites" and "elites oversee experts" were high; higher for the second than the first, though perhaps Hanson and I had different meanings in mind for "recognize". The "intentional structure" chart has an empty bottom-right corner but a full top-left corner, suggesting that <strong>intentional structure is necessary but not sufficient for something to be an institution</strong>.</p>
+<p><strong>That said, my main conclusion is probably that the term "institution" is a big mess</strong>. Rather than the term "institution" referring to a single coherent cluster of concepts (as eg. <a href="https://slatestarcodex.com/2017/03/16/book-review-seeing-like-a-state/">"high modernism" does</a>), the term seems to have a number of <em>different</em> definitions at play:</p>
+<ol type="1">
+<li>A structure that fits the familiar pattern of "masses recognize elites who oversee experts"</li>
+<li>Any intentionally designed large-scale structure that mediates human interaction (including things like financial markets, social media platforms and dating sites)</li>
+<li>Widely spread and standardized social customs in general</li>
+</ol>
+<p>I suspect that anti-institutionalists focus their suspicion on (1), and especially instances of (1) that have been captured by the wrong tribe. <strong>Whether a structure is personalistic or role-driven does not seem to be very important to anti-institutionalists</strong>: both personalities ("<a href="https://brief.bismarckanalysis.com/p/the-strategy-of-klaus-schwabs-world">Klaus Schwab</a>") and bureaucracies ("woke academics") are equally capable of coming from the wrong tribe. Anti-institutionalists generally do not oppose (3), and indeed in many cases want to see (3) replace (1) as much as possible.</p>
+<p><strong>Support for (2) probably maps closely to Pourteaux's "techno-optimist" vs "techno-minimalist" distinction</strong>. Techno-minimalists don't see things like Twitter, Substack, Bitcoin, Ethereum, etc as part of the solution, though there are "Bitcoin minimalists" who see the Bitcoin blockchain as a narrow exception and otherwise want to see a world where things like family decide more of the outcomes. "Techno-optimist anti-institutionalists" are specifically engaged in a political project of either trying to replace (1) with the right kind of (2), or trying to reform (1) by introducing more elements of the right kind of (2).</p>
+<h2 id="which-way-forward-for-anti-institutionalists-or-institutional-reformers">Which way forward for anti-institutionalists or institutional reformers?</h2>
+<p>It would be wrong to ascribe too much intentional strategy to anti-institutionalists: anti-institutionalism is a movement that is much more united in what is against than in support of any specific particular alternative. But what <em>is</em> possible is to recognize this pattern, and ask the question of which paths forward make sense for anti-institutionalists.</p>
+<p>From a language point of view, <strong>even using the word "institution" at all seems more likely to confuse than enlighten at this point</strong>. There is a crucial difference between (i) a desire to replace structures that contain enshrined elite roles with structures that don't, (ii) a preference for small-scale and informal structures over large-scale and formal ones, (iii) a desire to simply swap the current elites out for new elites, and (iv) a kind of social libertinist position that individuals should be driven by their own whims and not by incentives created by other people. The word "institution" obscures that divide, and probably focuses too much attention on what is being torn down rather than what is to be built up in its place.</p>
+<center>
+<p><br/></p>
+<p><img src="https://vitalik.ca/images/institutions/whichway.png" style="display: block; margin-left: auto; margin-right: auto;"/></p>
+<p><small><i>Different anti-institutionalists have different goals in mind. Sure, the person on Twitter delivering that powerful incisive criticism of the New York Times agrees with you on how society <strong>should not</strong> be run, but are you sure they'll be your ally when it comes time to decide how society <strong>should</strong> be run?</i></small></p>
+</center>
+<p><br/></p>
+<p>The challenge with avoiding structures entirely is clear: prisoner's dilemmas exist and we need incentives. The challenge with small-scale and informal structures is often clear: economies of scale and gains from standardization - though sometimes there are other benefits from informal approaches that are worth losing those gains. The challenge with simply swapping the elites is clear: it has no path to socially scale into a cross-tribal consensus. If the goal is not to enshrine a new set of elites forever, but for elites to permanently be high-churn (cf. Balaji's <a href="https://thenetworkstate.com/founding-vs-inheriting">founder vs inheritor</a> dichotomy), that is more credibly neutral, but then it starts getting closer to the territory of avoiding <em>enshrined elites</em> in general.</p>
+<p>Creating formal structures without enshrined elites is fascinating, not least because it's under-explored: there's a strong case that institutions with enshrined elite roles might be an unfortunate historical necessity from when communication was more constrained, but modern information technology (including the internet and also newer spookier stuff like zero-knowledge cryptography, blockchains and DAOs) could rapidly expand our available options. That said, as Hanson points out, this path has its own fair share of challenges too.</p>
 </meta></div>
 </body>
 </html>

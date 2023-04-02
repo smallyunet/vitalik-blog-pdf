@@ -42,179 +42,121 @@
   checkColorScheme();
 </script>
 <meta content="summary" name="twitter:card">
-<meta content="What even is an institution?" name="twitter:title"/>
+<meta content="An incomplete guide to stealth addresses" name="twitter:title"/>
 <meta content="http://vitalik.ca/images/icon.png" name="twitter:image"/>
 <br/>
-<h1 style="margin-bottom:7px"> What even is an institution? </h1>
-<small style="float:left; color: #888"> 2022 Dec 30 </small>
+<h1 style="margin-bottom:7px"> An incomplete guide to stealth addresses </h1>
+<small style="float:left; color: #888"> 2023 Jan 20 </small>
 <small style="float:right; color: #888"><a href="../../../../index.html">See all posts</a></small>
 <br/> <br/> <br/>
-<title> What even is an institution? </title>
-<p><em>Special thanks to Dennis Pourteaux and Tina Zhen for discussion that led to this post.</em></p>
-<p>A recent alternative political compass proposed by Dennis Pourteaux proposes that the most important political divide of our present time is not liberty vs authoritarianism or left vs right, <a href="https://pourteaux.substack.com/p/institutional-alignment">but rather how we think about "institutions"</a>. Are the institutions that society runs on today good or bad, and is the solution to work incrementally to improve them, replace them with radically different institutions, or do away with institutions altogether?</p>
-<br/>
-<center>
-<img src="https://substackcdn.com/image/fetch/f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fbucketeer-e05bbc84-baa3-437e-9518-adb32be77984.s3.amazonaws.com%2Fpublic%2Fimages%2F1b7ab13d-2733-4de9-a9f0-50e2ecfdcfed_1024x924.png" style="display: block; margin-left: auto; margin-right: auto;width:450px"/>
-</center>
-<p><br/></p>
-<p>This, however, raises a really important question: <strong>what even is an "institution" anyway?</strong></p>
-<p>The word "institution" in political discourse brings to mind things like national governments, the New York Times, universities and <em>maybe</em> the local public library. But the word also gets used to describe other kinds of things. The phrase "the institution of marriage" is common in English-language discourse, and gets <a href="https://www.google.com/search?q=%22the+institution+of+marriage%22">over two million search results</a> on Google. If you ask Google point-blank, "is family an institution", it answers yes.</p>
+<title> An incomplete guide to stealth addresses </title>
+<p><em>Special thanks to Ben DiFrancesco, Matt Solomon, Toni Wahrstätter and Antonio Sanso for feedback and review</em></p>
+<p>One of the largest remaining challenges in the Ethereum ecosystem is privacy. By default, anything that goes onto a public blockchain is public. Increasingly, this means not just money and financial transactions, but also ENS names, POAPs, NFTs, <a href="https://vitalik.ca/general/2022/01/26/soulbound.html">soulbound tokens</a>, and much more. In practice, using the entire suite of Ethereum applications involves making a significant portion of your life public for anyone to see and analyze.</p>
+<p>Improving this state of affairs is an important problem, and this is widely recognized. So far, however, discussions on improving privacy have largely centered around one specific use case: privacy-preserving transfers (and usually self-transfers) of ETH and mainstream ERC20 tokens. This post will describe the mechanics and use cases of a different category of tool that could improve the state of privacy on Ethereum in a number of other contexts: <strong>stealth addresses</strong>.</p>
+<h2 id="what-is-a-stealth-address-system">What is a stealth address system?</h2>
+<p>Suppose that Alice wants to send Bob an asset. This could be some quantity of cryptocurrency (eg. 1 ETH, 500 RAI), or it could be an NFT. When Bob receives the asset, he does not want the entire world to know that it was he who got it. Hiding the fact that a transfer happened is impossible, especially if it's an NFT of which there is only one copy on-chain, but hiding <em>who is the recipient</em> may be much more viable. Alice and Bob are also lazy: they want a system where the payment workflow is exactly the same as it is today. Bob sends Alice (or registers on ENS) some kind of "address" encoding how someone can pay him, and that information alone is enough for Alice (or anyone else) to send him the asset.</p>
+<p>Note that this is a different kind of privacy than what is provided by eg. Tornado Cash. Tornado Cash can hide transfers of mainstream fungible assets such as ETH or major ERC20s (though it's most easily useful for privately <em>sending to yourself</em>), but it's very weak at adding privacy to transfers of obscure ERC20s, and it cannot add privacy to NFT transfers at all.</p>
 <center>
 <p><br/></p>
-<p><img src="https://vitalik.ca/images/institutions/google_answer.png" style="display: block; margin-left: auto; margin-right: auto;"/></p>
+<p><img src="https://vitalik.ca/images/stealth/payment_workflow.png" style="display: block; margin-left: auto; margin-right: auto;"/></p>
+<p><small><i>The ordinary workflow of making a payment with cryptocurrency. We want to add privacy (no one can tell that it was Bob who received the asset), but keep the workflow the same.</i></small></p>
 </center>
 <p><br/></p>
-<p>ChatGPT agrees:</p>
-<center>
+<p>Stealth addresses provide such a scheme. A stealth address is an address that can be generated by either Alice or Bob, but which can only be controlled by Bob. Bob generates and keeps secret a <strong>spending key</strong>, and uses this key to generate a <strong>stealth meta-address</strong>. He passes this meta-address to Alice (or registers it on ENS). Alice can perform a computation on this meta-address to generate a <strong>stealth address</strong> belonging to Bob. She can then send any assets she wants to send to this address, and Bob will have full control over them. Along with the transfer, she publishes some extra cryptographic data (an <strong>ephemeral pubkey</strong>) on-chain that helps Bob discover that this address belongs to him.</p>
+<p>Another way to look at it is: stealth addresses give the same privacy properties as Bob generating a fresh address for each transaction, but without requiring any interaction from Bob.</p>
+<p>The full workflow of a stealth address scheme can be viewed as follows:</p>
 <p><br/></p>
-<p><img src="https://vitalik.ca/images/institutions/chatgpt_answer.png" style="display: block; margin-left: auto; margin-right: auto;"/></p>
-</center>
+<p><img src="https://vitalik.ca/images/stealth/stealth_workflow.png" style="display: block; margin-left: auto; margin-right: auto;"/></p>
 <p><br/></p>
-<p>If we take ChatGPT's definition that "a social institution is a pattern of behaviors and norms that exist within a society and are thought to be essential to its functioning" seriously, then the New York Times is not an institution - no one argues that it's literally essential, and many people consider it to be actively harmful! And on the other side, we can think of examples of things that <em>maybe are institutions</em> that Pourteaux's "anti-institutionalists" would approve of!</p>
-<ul>
-<li>Twitter</li>
-<li>The Bitcoin or Ethereum blockchains</li>
-<li>The English language</li>
-<li>Substack</li>
-<li>Markets</li>
-<li>Standards organizations dealing with international shipping</li>
-</ul>
-<p>This leads us to two related, but also somewhat separate, questions:</p>
 <ol type="1">
-<li><strong>What is <em>really</em> the dividing line that makes some things "institutions" in people's eyes and others not?</strong></li>
-<li><strong>What kind of world do people who consider themselves anti-institutionalists actually want to see? And what <em>should</em> an anti-institutionalist in today's world be doing?</strong></li>
+<li>Bob generates his <strong>root spending key</strong> (<code>m</code>) and <strong>stealth meta-address</strong> (<code>M</code>).</li>
+<li>Bob adds an ENS record to register <code>M</code> as the stealth meta-address for <code>bob.eth</code>.</li>
+<li>We assume Alice knows that Bob is <code>bob.eth</code>. Alice looks up his stealth meta-address <code>M</code> on ENS.</li>
+<li>Alice generates an <strong>ephemeral key</strong> that only she knows, and that she only uses once (to generate this specific stealth address).</li>
+<li>Alice uses an algorithm that combines her ephemeral key and Bob's meta-address to <strong>generate a stealth address</strong>. She can now send assets to this address.</li>
+<li>Alice also <strong>generates her ephemeral public key, and publishes it to the ephemeral public key registry</strong> (this can be done in the same transaction as the first transaction sending assets to this stealth address).</li>
+<li>For Bob to discover stealth addresses belonging to him, Bob needs to <strong>scan the ephemeral public key registry for the <em>entire list</em> of ephemeral public keys</strong> published by anyone for any reason since the last time he did the scan.</li>
+<li>For each ephemeral public key, Bob attempts to combine it with his root spending key to generate a stealth address, and checks if there are any assets in that address. If there are, Bob computes the spending key for that address and remembers it.</li>
 </ol>
-<h2 id="a-survey-experiment">A survey experiment</h2>
-<p>Over the past week, I made a <a href="https://cryptodon.lol/@vbuterin/109570542347764470">series</a> of <a href="https://cryptodon.lol/@vbuterin/109576148299374533">polls</a> on Mastodon where I provided many examples of different objects, practices and social structures, and asked: is this an institution or not? In some cases, I made different spins on the same concept to see the effects of changing some specific variables. There were some fascinating results.</p>
-<p>Here are a few examples:</p>
-<p><br/> <img src="https://vitalik.ca/images/institutions/m1.png" style="display: block; margin-left: auto; margin-right: auto;height:320px; padding-right: 20px; padding-bottom: 20px"/> <img src="https://vitalik.ca/images/institutions/m2.png" style="display: block; margin-left: auto; margin-right: auto;height:320px; padding-bottom: 20px"/> <br/><br/></p>
-<p>And:</p>
-<p><br/> <img src="https://vitalik.ca/images/institutions/m3.png" style="display: block; margin-left: auto; margin-right: auto;height:320px; padding-right: 20px; padding-bottom: 20px"/> <img src="https://vitalik.ca/images/institutions/m4.png" style="display: block; margin-left: auto; margin-right: auto;height:320px; padding-right: 20px; padding-bottom: 20px"/> <img src="https://vitalik.ca/images/institutions/m5.png" style="display: block; margin-left: auto; margin-right: auto;height:320px; padding-right: 20px; padding-bottom: 20px"/> <br/><br/></p>
-<p>And:</p>
-<p><br/> <img src="https://vitalik.ca/images/institutions/m6.png" style="display: block; margin-left: auto; margin-right: auto;height:320px; padding-right: 20px; padding-bottom: 20px"/> <img src="https://vitalik.ca/images/institutions/m7.png" style="display: block; margin-left: auto; margin-right: auto;height:320px; padding-right: 20px; padding-bottom: 20px"/> <br/><br/></p>
-<p>And, of course:</p>
-<p><br/> <img src="https://vitalik.ca/images/institutions/m8.png" style="display: block; margin-left: auto; margin-right: auto;height:250px; padding-right: 20px; padding-bottom: 20px"/> <img src="https://vitalik.ca/images/institutions/m9.png" style="display: block; margin-left: auto; margin-right: auto;height:250px; padding-right: 20px; padding-bottom: 20px"/> <img src="https://vitalik.ca/images/institutions/mx.png" style="display: block; margin-left: auto; margin-right: auto;height:250px; padding-right: 20px; padding-bottom: 20px"/> <br/><br/></p>
-<p>There's more fun ones: <a href="https://cryptodon.lol/@vbuterin/109570543708271381">NYT</a> vs <a href="https://cryptodon.lol/@vbuterin/109570629589076709">Russia Today</a> vs <a href="https://cryptodon.lol/@vbuterin/109570548373455136">Bitcoin Magazine</a>, the <a href="https://cryptodon.lol/@vbuterin/109576276734493858">solar system</a> vs <a href="https://cryptodon.lol/@vbuterin/109576290616996040">what if we started re-engineering it</a>, <a href="https://cryptodon.lol/@vbuterin/109576149554493641">prediction markets</a>, various <a href="https://cryptodon.lol/@vbuterin/109570587677425299">social</a> <a href="https://cryptodon.lol/@vbuterin/109570583709002906">customs</a>, and a lot more.</p>
-<p>Here, we can already start to see some common factors. Marriage is more institution-y than romantic relationships, likely because of its official stamp of recognition, and more mainstream relationship styles are more institution-y than less mainstream styles (a pattern that repeats itself when comparing NYT vs Russia Today vs Bitcoin Magazine). Systems with clearly visible human beings making decisions are more institution-y than more impersonal algorithmic structures, even if their outputs are ultimately entirely a function of human-provided inputs.</p>
-<p>To try to elucidate things further, I decided to do a more systematic analysis.</p>
-<h2 id="what-are-some-common-factors">What are some common factors?</h2>
-<p>Robin Hanson <a href="https://www.overcomingbias.com/2022/12/elites-must-rule.html">recently made a post</a> in which he argued that:</p>
-<blockquote>
-<p>At least on prestigious topics, most people want relevant institutions to take the following ideal form:</p>
-<p><strong>Masses recognize elites, who oversee experts, who pick details.</strong></p>
-</blockquote>
-<p>This seemed to me to be an important and valuable insight, though in a somewhat different direction: yes, that is the style of institution that people find familiar and are not <em>weirded out by</em> (as they might when they see many of the "alternative institutions" that Hanson <a href="https://mason.gmu.edu/~rhanson/altinst.html">likes to propose</a>), but it's also exactly the style of institutions that anti-institutionalists tend to most strongly rail against! Mark Zuckerberg's very institution-y <a href="https://transparency.fb.com/oversight/creation-of-oversight-board/">oversight board</a> certainly followed the "masses recognize elites who oversee experts" template fairly well, but it did not really make a lot of people happy.</p>
-<p>I decided to give this theory of institution-ness, along with some other theories, a test. I identified seven properties that seemed to me possible important characteristics of institutions, with the goal of identifying which ones are most strongly correlated to people thinking of something as being an institution:</p>
+<p>This all relies on two uses of cryptographic trickery. First, we need a pair of algorithms to generate a <strong>shared secret</strong>: one algorithm which uses Alice's secret thing (her ephemeral key) and Bob's public thing (his meta-address), and another algorithm which uses Bob's secret thing (his root spending key) and Alice's public thing (her ephemeral public key). This can be done in many ways; <a href="https://en.wikipedia.org/wiki/Diffie%E2%80%93Hellman_key_exchange">Diffie-Hellman key exchange</a> was one of the results that founded the field of modern cryptography, and it accomplishes exactly this.</p>
+<p>But a shared secret by itself is not enough: if we just generate a private key from the shared secret, then Alice and Bob could both spend from this address. We could leave it at that, leaving it up to Bob to move the funds to a new address, but this is inefficient and needlessly reduces security. So we also add a <strong>key blinding mechanism</strong>: a pair of algorithms where Bob can combine the shared secret with his root spending key, and Alice can combine the shared secret with Bob's meta-address, in such a way that Alice can generate the stealth address, and Bob can generate the spending key for that stealth address, all without creating a public link between the stealth address and Bob's meta-address (or between one stealth address and another).</p>
+<h2 id="stealth-addresses-with-elliptic-curve-cryptography">Stealth addresses with elliptic curve cryptography</h2>
+<p>Stealth addresses using elliptic curve cryptography were originally introduced in the context of Bitcoin <a href="https://lists.linuxfoundation.org/pipermail/bitcoin-dev/2014-January/004020.html">by Peter Todd in 2014</a>. This technique works as follows (this assumes prior knowledge of basic elliptic curve cryptography; see <a href="https://blog.cloudflare.com/a-relatively-easy-to-understand-primer-on-elliptic-curve-cryptography/">here</a>, <a href="https://matt-rickard.com/elliptic-curve-cryptography">here</a> and <a href="https://andrea.corbellini.name/2015/05/17/elliptic-curve-cryptography-a-gentle-introduction/">here</a> for some tutorials):</p>
 <ul>
-<li>Does it have a "<strong>masses recognize elites</strong>" pattern?</li>
-<li>Does it have a "<strong>elites oversee experts</strong>" pattern?</li>
-<li>Is it <strong>mainstream</strong>?</li>
-<li>Is it <a href="https://medium.com/@VitalikButerin/the-meaning-of-decentralization-a0c92b76a274"><strong>logically centralized</strong></a>?</li>
-<li>Does it involve <strong>interaction between people</strong>? (eg. intermittent fasting doesn't, as everyone just chooses whether or not to do it separately, but a government does)</li>
-<li>Does it have a specific <strong><em>structure</em></strong> that has a lot of <strong>intentional design</strong> behind it? (eg. corporations do, friendship doesn't)</li>
-<li>Does it have <strong><em>roles</em></strong> that take on a life <strong>independent of the individuals</strong> that fill them? (eg. democratically elected governments do, after all they even call the leader "Mr. President", but a podcast which is named after its sole host does not at all)</li>
+<li>Bob generates a key <code>m</code>, and computes <code>M = G * m</code>, where <code>G</code> is a commonly-agreed generator point for the elliptic curve. The stealth meta-address is an encoding of <code>M</code>.</li>
+<li>Alice generates an ephemeral key <code>r</code>, and publishes the ephemeral public key <code>R = G * r</code>.</li>
+<li>Alice can compute a shared secret <code>S = M * r</code>, and Bob can compute the same shared secret <code>S = m * R</code>.</li>
+<li>In general, in both Bitcoin and Ethereum (including correctly-designed <a href="https://eips.ethereum.org/EIPS/eip-4337">ERC-4337 accounts</a>), an address is a hash containing the public key used to verify transactions from that address. So you can compute the address if you compute the public key. To compute the public key, Alice or Bob can compute <code>P = M + G * hash(S)</code></li>
+<li>To compute the private key for that address, Bob (and Bob alone) can compute <code>p = m + hash(S)</code></li>
 </ul>
-<p>I went through the list and personally graded the 35 maybe-institutions from my polls on these categories. For example, Tesla got:</p>
-<ul>
-<li><strong>25% on "masses recognize elites"</strong> (because it's run by Elon Musk, who does in practice have a lot of recognition and support as a celebrity, but this isn't a deeply intrinsic feature of Tesla, Elon won't get kicked out of Tesla if he loses legitimacy, etc)</li>
-<li><strong>100% on "elites oversee experts"</strong> (all large corporations follow this pattern)</li>
-<li><strong>75% on "is mainstream"</strong> (almost everyone knows about it, lots of people have them, but it's not <em>quite</em> a New York Times-level household name)</li>
-<li><strong>100% on "logical centralization"</strong> (most things get 100% on this score; as a counterexample, "dating sites" get 50% because there are many dating sites and "intermittent fasting" gets 0%)</li>
-<li><strong>100% on "involves interaction between people"</strong> (Tesla produces products that it sells to people, and it hires employees, has investors, etc)</li>
-<li><strong>75% on "intentional structure"</strong> (Tesla definitely has a deep structure with shareholders, directors, management, etc, but that structure isn't really part of its <em>identity</em> in the way that, say, proof of stake consensus is for Ethereum or voting and congress are for a government)</li>
-<li><strong>50% for "roles independent of individuals"</strong> (while roles in companies are generally interchangeable, Tesla does get large gains from being part of the Elon-verse specifically)</li>
-</ul>
-<p>The full data is <a href="https://vitalik.ca/files/misc_files/institution_analysis.ods">here</a>. I know that many people will have many disagreements over various individual rankings I make, and readers could probably convince me that a few of my scores are wrong; I am mainly hoping that I've included a sufficient number of diverse maybe-instiutions in the list that individual disagreement or errors get roughly averaged out.</p>
-<p>Here's the table of correlations:</p>
-<br/>
-<table>
-<tr>
-<td>
-Masses recognize elites
-</td>
-<td>
-0.491442156943094
-</td>
-</tr>
-<tr>
-<td>
-Elites oversee experts
-</td>
-<td>
-0.697483431580409
-</td>
-</tr>
-<tr>
-<td>
-Is mainstream
-</td>
-<td>
-0.477135770662517
-</td>
-</tr>
-<tr>
-<td>
-Logical centralization
-</td>
-<td>
-0.406758324754985
-</td>
-</tr>
-<tr>
-<td>
-Interaction between people
-</td>
-<td>
-0.570201749796132
-</td>
-</tr>
-<tr>
-<td>
-Intelligently designed structure
-</td>
-<td>
-0.365640100778201
-</td>
-</tr>
-<tr>
-<td>
-Roles independent of individuals
-</td>
-<td>
-0.199412937985826
-</td>
-</tr>
-</table>
-<p><br/></p>
-<p>But as it turns out, the correlations are misleading. "Interaction between people" turns out to be an almost unquestionably <em>necessary</em> property for something to have to be an institution. The correlation of 0.57 <em>kind of</em> shows it, but it understates the strength of the relationship:</p>
+<p>This satisfies all of our requirements above, and is remarkably simple!</p>
+<p>There is even an <a href="https://eips.ethereum.org/EIPS/eip-5564">EIP</a> trying to define a stealth address standard for Ethereum today, that both supports this approach and gives space for users to develop other approaches (eg. that support Bob having separate spending and viewing keys, or that use different cryptography for quantum-resistant security). Now you might think: stealth addresses are not too difficult, the theory is already solid, and getting them adopted is just an implementation detail. The problem is, however, that there are some pretty big implementation details that a truly effective implementation would need to get through.</p>
+<h2 id="stealth-addresses-and-paying-transaction-fees">Stealth addresses and paying transaction fees</h2>
+<p>Suppose that someone sends you an NFT. Mindful of your privacy, they send it to a stealth address that you control. After scanning the ephem pubkeys on-chain, your wallet automatically discovers this address. You can now freely prove ownership of the NFT or transfer it to someone else. But there's a problem! That account has 0 ETH in it, and so there is no way to pay transaction fees. Even <a href="https://eips.ethereum.org/EIPS/eip-4337">ERC-4337 token paymasters</a> won't work, because those only work for fungible ERC20 tokens. And you can't send ETH into it from your main wallet, because then you're creating a publicly visible link.</p>
 <center>
 <p><br/></p>
-<p><img src="https://vitalik.ca/images/institutions/correl1.png" style="display: block; margin-left: auto; margin-right: auto;"/></p>
+<p><img src="https://vitalik.ca/images/stealth/meme.png" style="display: block; margin-left: auto; margin-right: auto;"/></p>
+<p><small><i>Inserting memes of 2017-era (or older) crypto scams is an important technique that writers can use to signal erudition and respectableness, because it shows that they have been around for a long time and have refined tastes, and are not easily swayed by current-thing scams like FTX.</i></small></p>
 </center>
 <p><br/></p>
-<p>Literally <em>every</em> thing that I labeled as clearly involving interaction had a higher percentage of people considering it an institution than <em>every</em> thing I labeled as not involving interaction. The single dot in the center is my hypothetical example of an island where people with odd-numbered birthdays are not allowed to eat meat before 12:00; I didn't want to give it 100% because the not-meat-eating is a private activity, but the question still strongly implies some social or other pressure to follow the rule so it's also not really 0%. This is a place where <a href="https://en.wikipedia.org/wiki/Spearman%27s_rank_correlation_coefficient">Spearman's coefficient</a> outperforms Pearson's, but rather than spurting out exotic numbers I'd rather just show the charts. Here are the other six:</p>
-<p><br/> <img src="https://vitalik.ca/images/institutions/correl2.png" style="display: block; margin-left: auto; margin-right: auto;width: 340px; padding-right: 20px; padding-bottom: 20px"/> <img src="https://vitalik.ca/images/institutions/correl3.png" style="display: block; margin-left: auto; margin-right: auto;width: 340px; padding-right: 20px; padding-bottom: 20px"/> <img src="https://vitalik.ca/images/institutions/correl4.png" style="display: block; margin-left: auto; margin-right: auto;width: 340px; padding-right: 20px; padding-bottom: 20px"/> <img src="https://vitalik.ca/images/institutions/correl5.png" style="display: block; margin-left: auto; margin-right: auto;width: 340px; padding-right: 20px; padding-bottom: 20px"/> <img src="https://vitalik.ca/images/institutions/correl6.png" style="display: block; margin-left: auto; margin-right: auto;width: 340px; padding-right: 20px; padding-bottom: 20px"/> <img src="https://vitalik.ca/images/institutions/correl7.png" style="display: block; margin-left: auto; margin-right: auto;width: 340px; padding-right: 20px; padding-bottom: 20px"/> <br/><br/></p>
-<p>The most surprising finding for me is that <strong>"roles independent of individuals" is by far the weakest correlation</strong>. Twitter run by a democracy is the most institution-y of all, but Twitter run by a pay-to-govern scheme is as institution-y as Twitter that's just run by Elon directly. Roles being independent of individuals adds a guarantee of stability, but roles being independent of individuals <em>in the wrong way</em> feels too unfamiliar, or casual, or otherwise not institution-like. Dating sites are more independent of individuals than professional matchmaking agencies, and yet it's the matchmaking agencies that are seen as more institution-like. Attempts at highly role-driven and mechanistic credibly-neutral media, (eg. <a href="https://cryptodon.lol/@vbuterin/109576172987142068">this contraption</a>, which I actually think would be really cool) just feel <em>alien</em> - perhaps in a bad way, but also perhaps in a good way, if you find the institutions of today frustrating and you're open-minded about possible alternatives.</p>
-<p>Correlations with "masses recognize elites" and "elites oversee experts" were high; higher for the second than the first, though perhaps Hanson and I had different meanings in mind for "recognize". The "intentional structure" chart has an empty bottom-right corner but a full top-left corner, suggesting that <strong>intentional structure is necessary but not sufficient for something to be an institution</strong>.</p>
-<p><strong>That said, my main conclusion is probably that the term "institution" is a big mess</strong>. Rather than the term "institution" referring to a single coherent cluster of concepts (as eg. <a href="https://slatestarcodex.com/2017/03/16/book-review-seeing-like-a-state/">"high modernism" does</a>), the term seems to have a number of <em>different</em> definitions at play:</p>
-<ol type="1">
-<li>A structure that fits the familiar pattern of "masses recognize elites who oversee experts"</li>
-<li>Any intentionally designed large-scale structure that mediates human interaction (including things like financial markets, social media platforms and dating sites)</li>
-<li>Widely spread and standardized social customs in general</li>
-</ol>
-<p>I suspect that anti-institutionalists focus their suspicion on (1), and especially instances of (1) that have been captured by the wrong tribe. <strong>Whether a structure is personalistic or role-driven does not seem to be very important to anti-institutionalists</strong>: both personalities ("<a href="https://brief.bismarckanalysis.com/p/the-strategy-of-klaus-schwabs-world">Klaus Schwab</a>") and bureaucracies ("woke academics") are equally capable of coming from the wrong tribe. Anti-institutionalists generally do not oppose (3), and indeed in many cases want to see (3) replace (1) as much as possible.</p>
-<p><strong>Support for (2) probably maps closely to Pourteaux's "techno-optimist" vs "techno-minimalist" distinction</strong>. Techno-minimalists don't see things like Twitter, Substack, Bitcoin, Ethereum, etc as part of the solution, though there are "Bitcoin minimalists" who see the Bitcoin blockchain as a narrow exception and otherwise want to see a world where things like family decide more of the outcomes. "Techno-optimist anti-institutionalists" are specifically engaged in a political project of either trying to replace (1) with the right kind of (2), or trying to reform (1) by introducing more elements of the right kind of (2).</p>
-<h2 id="which-way-forward-for-anti-institutionalists-or-institutional-reformers">Which way forward for anti-institutionalists or institutional reformers?</h2>
-<p>It would be wrong to ascribe too much intentional strategy to anti-institutionalists: anti-institutionalism is a movement that is much more united in what is against than in support of any specific particular alternative. But what <em>is</em> possible is to recognize this pattern, and ask the question of which paths forward make sense for anti-institutionalists.</p>
-<p>From a language point of view, <strong>even using the word "institution" at all seems more likely to confuse than enlighten at this point</strong>. There is a crucial difference between (i) a desire to replace structures that contain enshrined elite roles with structures that don't, (ii) a preference for small-scale and informal structures over large-scale and formal ones, (iii) a desire to simply swap the current elites out for new elites, and (iv) a kind of social libertinist position that individuals should be driven by their own whims and not by incentives created by other people. The word "institution" obscures that divide, and probably focuses too much attention on what is being torn down rather than what is to be built up in its place.</p>
+<p>There is one "easy" way to solve the problem: just use ZK-SNARKs to transfer funds to pay for the fees! But this costs a lot of gas, an extra hundreds of thousands of gas just for a single transfer.</p>
+<p>Another clever approach involves trusting specialized transaction aggregators ("searchers" in MEV lingo). These aggregators would allow users to pay once to purchase a set of "tickets" that can be used to pay for transactions on-chain. When a user needs to spend an NFT in a stealth address that contains nothing else, they provide the aggregator with one of the tickets, encoded using a <a href="https://en.wikipedia.org/wiki/Blind_signature">Chaumian blinding</a> scheme. This is the original protocol that was used in centralized privacy-preserving e-cash schemes that were proposed in the 1980s and 1990s. The searcher accepts the ticket, and repeatedly includes the transaction in their bundle for free until the transaction is successfully accepted in a block. Because the quantity of funds involved is low, and it can only be used to pay for transaction fees, trust and regulatory issues are much lower than a "full" implementation of this kind of centralized privacy-preserving e-cash.</p>
+<h2 id="stealth-addresses-and-separating-spending-and-viewing-keys">Stealth addresses and separating spending and viewing keys</h2>
+<p>Suppose that instead of Bob just having a single master "root spending key" that can do everything, Bob wants to have a separate root spending key and viewing key. The viewing key can see all of Bob's stealth addresses, but cannot spend from them.</p>
+<p>In the elliptic curve world, this can be solved using a very simple cryptographic trick:</p>
+<ul>
+<li>Bob's meta-address <code>M</code> is now of the form <code>(K, V)</code>, encoding <code>G * k</code> and <code>G * v</code>, where <code>k</code> is the spending key and <code>v</code> is the viewing key.</li>
+<li>The shared secret is now <code>S = V * r = v * R</code>, where <code>r</code> is still Alice's ephemeral key and <code>R</code> is still the ephemeral public key that Alice publishes.</li>
+<li>The stealth address's public key is <code>P = K + G * hash(S)</code> and the private key is <code>p = k + hash(S)</code>.</li>
+</ul>
+<p>Notice that the first clever cryptographic step (generating the shared secret) uses the viewing key, and the second clever cryptographic step (Alice and Bob's parallel algorithms to generate the stealth address and its private key) uses the root spending key.</p>
+<p>This has many use cases. For example, if Bob wants to receive POAPs, then Bob could give his POAP wallet (or even a not-very-secure web interface) his viewing key to scan the chain and see all of his POAPs, without giving this interface the power to spend those POAPs.</p>
+<h2 id="stealth-addresses-and-easier-scanning">Stealth addresses and easier scanning</h2>
+<p>To make it easier to scan the total set of ephemeral public keys, one technique is to add a <strong>view tag</strong> to each ephemeral public key. One way to do this in the above mechanism is to make the view tag be one byte of the shared secret (eg. the x-coordinate of <code>S</code> modulo 256, or the first byte of <code>hash(S)</code>).</p>
+<p>This way, Bob only needs to do a single elliptic curve multiplication for each ephemeral public key to compute the shared secret, and only 1/256 of the time would Bob need to do more complex calculation to generate and check the full address.</p>
+<h2 id="stealth-addresses-and-quantum-resistant-security">Stealth addresses and quantum-resistant security</h2>
+<p>The above scheme depends on elliptic curves, which are great but are unfortunately vulnerable to quantum computers. If quantum computers become an issue, we would need to switch to quantum-resistant algorithms. There are two natural candidates for this: elliptic curve isogenies and lattices.</p>
+<p><a href="https://eprint.iacr.org/2019/1321.pdf">Elliptic curve isogenies</a> are a very different mathematical construction based on elliptic curves, that has the linearity properties that let us do similar cryptographic tricks to what we did above, but cleverly avoids constructing cyclic groups that might be vulnerable to discrete logarithm attacks with quantum computers.</p>
+<p>The main weakness of isogeny-based cryptography is its highly complicated underlying mathematics, and the risk that possible attacks are hidden under this complexity. Some isogeny-based protocols <a href="https://ellipticnews.wordpress.com/2022/07/31/breaking-supersingular-isogeny-diffie-hellman-sidh/">were broken last year</a>, though <a href="https://issikebrokenyet.github.io/">others remain safe</a>. The main strength of isogenies is the relatively small key sizes, and the ability to port over many kinds of elliptic curve-based approaches directly.</p>
 <center>
 <p><br/></p>
-<p><img src="https://vitalik.ca/images/institutions/whichway.png" style="display: block; margin-left: auto; margin-right: auto;"/></p>
-<p><small><i>Different anti-institutionalists have different goals in mind. Sure, the person on Twitter delivering that powerful incisive criticism of the New York Times agrees with you on how society <strong>should not</strong> be run, but are you sure they'll be your ally when it comes time to decide how society <strong>should</strong> be run?</i></small></p>
+<p><img src="https://vitalik.ca/images/stealth/isogeny.png" style="display: block; margin-left: auto; margin-right: auto;"/></p>
+<p><small><i>A 3-isogeny in CSIDH, <a href="https://simons.berkeley.edu/sites/default/files/docs/15466/simons.pdf">source here.</a></i></small></p>
 </center>
 <p><br/></p>
-<p>The challenge with avoiding structures entirely is clear: prisoner's dilemmas exist and we need incentives. The challenge with small-scale and informal structures is often clear: economies of scale and gains from standardization - though sometimes there are other benefits from informal approaches that are worth losing those gains. The challenge with simply swapping the elites is clear: it has no path to socially scale into a cross-tribal consensus. If the goal is not to enshrine a new set of elites forever, but for elites to permanently be high-churn (cf. Balaji's <a href="https://thenetworkstate.com/founding-vs-inheriting">founder vs inheritor</a> dichotomy), that is more credibly neutral, but then it starts getting closer to the territory of avoiding <em>enshrined elites</em> in general.</p>
-<p>Creating formal structures without enshrined elites is fascinating, not least because it's under-explored: there's a strong case that institutions with enshrined elite roles might be an unfortunate historical necessity from when communication was more constrained, but modern information technology (including the internet and also newer spookier stuff like zero-knowledge cryptography, blockchains and DAOs) could rapidly expand our available options. That said, as Hanson points out, this path has its own fair share of challenges too.</p>
+<p><a href="https://eprint.iacr.org/2015/938.pdf">Lattices</a> are a very different cryptographic construction that relies on far simpler mathematics than elliptic curve isogenies, and is capable of some very powerful things (eg. <a href="https://vitalik.ca/general/2020/07/20/homomorphic.html">fully homomorphic encryption</a>). Stealth address schemes could be built on lattices, though designing the best one is an open problem. However, lattice-based constructions tend to have much larger key sizes.</p>
+<center>
+<p><br/><a href="https://vitalik.ca/general/2020/07/20/homomorphic.html"></a></p>
+<p><img src="https://vitalik.ca/images/stealth/homomorphic.png" style="display: block; margin-left: auto; margin-right: auto;"/></p>
+<p><small><i>Fully homomorphic encryption, an application of lattices. FHE could also be used to help stealth address protocols in a different way: to help Bob outsource the computation of checking the entire chain for stealth addresses containing assets without revealing his view key.</i></small></p>
+</center>
+<p><br/></p>
+<p>A third approach is to construct a stealth address scheme from generic black-box primitives: basic ingredients that lots of people need for other reasons. The shared secret generation part of the scheme maps directly to <a href="https://en.wikipedia.org/wiki/Key_exchange">key exchange</a>, a, errr... <em>important</em> component in public key encryption systems. The harder part is the parallel algorithms that let Alice generate only the stealth address (and not the spending key) and let Bob generate the spending key.</p>
+<p>Unfortunately, you cannot build stealth addresses out of ingredients that are <em>simpler</em> than what is required to build a public-key encryption system. There is a simple proof of this: you can build a public-key encryption system out of a stealth address scheme. If Alice wants to encrypt a message to Bob, she can send N transactions, each transaction going to either a stealth address belonging to Bob or to a stealth address belonging to herself, and Bob can see which transactions he received to read the message. This is important because there are <a href="https://arxiv.org/abs/0801.3669">mathematical proofs</a> that you can't do public key encryption with just hashes, whereas you can do <a href="https://vitalik.ca/general/2018/07/21/starks_part_3.html">zero-knowledge proofs with just hashes</a> - hence, stealth addresses cannot be done with just hashes.</p>
+<p>Here is one approach that does use relatively simple ingredients: zero knowledge proofs, which can be made out of hashes, and (key-hiding) public key encryption. Bob's meta-address is a public encryption key plus a hash <code>h = hash(x)</code>, and his spending key is the corresponding decryption key plus <code>x</code>. To create a stealth address, Alice generates a value <code>c</code>, and publishes as her ephemeral pubkey an encryption of <code>c</code> readable by Bob. The address itself is an <a href="https://eips.ethereum.org/EIPS/eip-4337">ERC-4337 account</a> whose code verifies transactions by requiring them to come with a zero-knowledge proof proving ownership of values <code>x</code> and <code>c</code> such that <code>k = hash(hash(x), c)</code> (where <code>k</code> is part of the account's code). Knowing <code>x</code> and <code>c</code>, Bob can reconstruct the address and its code himself.</p>
+<center>
+<p><br/></p>
+<p><img src="https://vitalik.ca/images/stealth/zk_stealth.png" style="display: block; margin-left: auto; margin-right: auto;"/></p>
+</center>
+<p><br/></p>
+<p>The encryption of <code>c</code> tells no one other than Bob anything, and <code>k</code> is a hash, so it reveals almost nothing about <code>c</code>. The wallet code itself only contains <code>k</code>, and <code>c</code> being private means that <code>k</code> cannot be traced back to <code>h</code>.</p>
+<p>However, this requires a STARK, and STARKs are big. Ultimately, I think it is likely that a post-quantum Ethereum world will involve many applications using many starks, and so I would advocate for an aggregation protocol <a href="https://vitalik.ca/general/2022/09/17/layer_3.html#rollups-and-validiums-have-a-confirmation-time-vs-fixed-cost-tradeoff.-layer-3s-can-help-fix-this.-but-what-else-can">like that described here</a> to combine all of these STARKs into a single recursive STARK to save space.</p>
+<h2 id="stealth-addresses-and-social-recovery-and-multi-l2-wallets">Stealth addresses and social recovery and multi-L2 wallets</h2>
+<p>I have for a long time been a fan of <a href="https://vitalik.ca/general/2021/01/11/recovery.html">social recovery wallets</a>: wallets that have a multisig mechanism with keys shared between some combination of institutions, your other devices and your friends, where some supermajority of those keys can recover access to your account if you lose your primary key.</p>
+<p>However, social recovery wallets do not mix nicely with stealth addresses: if you have to recover your account (meaning, change which private key controls it), you would also have to perform some step to change the account verification logic of your N stealth wallets, and this would require N transactions, at a high cost to fees, convenience and privacy.</p>
+<p>A similar concern exists with the interaction of social recovery and a world of multiple layer-2 protocols: if you have an account on Optimism, and on Arbitrum, and on Starknet, and on Scroll, and on Polygon, and possibly some of these rollups have a dozen parallel instances for scaling reasons and you have an account on each of those, then changing keys may be a really complex operation.</p>
+<center>
+<p><br/></p>
+<p><img src="https://vitalik.ca/images/stealth/panda.png" style="display: block; margin-left: auto; margin-right: auto;width:70%"/></p>
+<p><br/><small><i>Changing the keys to many accounts across many chains is a huge effort.</i></small></p>
+</center>
+<p><br/></p>
+<p>One approach is to bite the bullet and accept that recoveries are rare and it's okay for them to be costly and painful. Perhaps you might have some automated software transfer the assets out into new stealth addresses at random intervals over a two-week time span to reduce the effectiveness of time-based linking. But this is far from perfect. Another approach is to secret-share the root key between the guardians instead of using smart contract recovery. However, this removes the ability to <em>de-activate</em> a guardian's power to help recover your account, and so is long-run risky.</p>
+<p>A more sophisticated approach involves zero-knowledge proofs. Consider the ZKP-based scheme above, but modifying the logic as follows. Instead of the account holding <code>k = hash(hash(x), c)</code> directly, the account would hold a (hiding) commitment to the <em>location</em> of <code>k</code> on the chain. Spending from that account would then require providing a zero-knowledge proof that (i) you know the location on the chain that matches that commitment, and (ii) the object in that location contains some value <code>k</code> (which you're not revealing), and that you have some values <code>x</code> and <code>c</code> that satisfy <code>k = hash(hash(x), c)</code>.</p>
+<p>This allows many accounts, even across many layer-2 protocols, to be controlled by a single <code>k</code> value somewhere (on the base chain or on some layer-2), where changing that one value is enough to change the ownership of all your accounts, all without revealing the link between your accounts and each other.</p>
+<h2 id="conclusions">Conclusions</h2>
+<p>Basic stealth addresses can be implemented fairly quickly today, and could be a significant boost to practical user privacy on Ethereum. They do require some work on the wallet side to support them. That said, it is my view that wallets should start moving toward a more natively multi-address model (eg. creating a new address for each application you interact with could be one option) for other privacy-related reasons as well.</p>
+<p>However, stealth addresses do introduce some longer-term usability concerns, such as difficulty of social recovery. It is probably okay to simply accept these concerns for now, eg. by accepting that social recovery will involve either a loss of privacy or a two-week delay to slowly release the recovery transactions to the various assets (which could be handled by a third-party service). In the longer term, these problems can be solved, but the stealth address ecosystem of the long term is looking like one that would really heavily depend on zero-knowledge proofs.</p>
 </meta></div>
 </body>
 </html>
