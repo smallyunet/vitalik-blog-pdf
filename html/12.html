@@ -42,148 +42,138 @@
   checkColorScheme();
 </script>
 <meta content="summary" name="twitter:card">
-<meta content="Having a safe CEX: proof of solvency and beyond" name="twitter:title"/>
+<meta content="What in the Ethereum application ecosystem excites me" name="twitter:title"/>
 <meta content="http://vitalik.ca/images/icon.png" name="twitter:image"/>
 <br/>
-<h1 style="margin-bottom:7px"> Having a safe CEX: proof of solvency and beyond </h1>
-<small style="float:left; color: #888"> 2022 Nov 19 </small>
+<h1 style="margin-bottom:7px"> What in the Ethereum application ecosystem excites me </h1>
+<small style="float:left; color: #888"> 2022 Dec 05 </small>
 <small style="float:right; color: #888"><a href="../../../../index.html">See all posts</a></small>
 <br/> <br/> <br/>
-<title> Having a safe CEX: proof of solvency and beyond </title>
-<p><em>Special thanks to Balaji Srinivasan, and Coinbase, Kraken and Binance staff for discussion.</em></p>
-<p>Every time a major centralized exchange blows up, a common question that comes up is whether or not we can use cryptographic techniques to solve the problem. Rather than relying solely on "fiat" methods like government licenses, auditors and examining the corporate governance and the backgrounds of the individuals running the exchange, exchanges could create cryptographic <em>proofs</em> that show that the funds they hold on-chain are enough to cover their liabilities to their users.</p>
-<p>Even more ambitiously, an exchange could build a system where it can't withdraw a depositor's funds at all without their consent. Potentially, we could explore the entire spectrum between the "don't be evil" aspiring-good-guy CEX and the "can't be evil", but for-now inefficient and privacy-leaking, on-chain DEX. This post will get into the history of attempts to move exchanges one or two steps closer to trustlessness, the limitations of these techniques, and some newer and more powerful ideas that rely on <a href="https://vitalik.ca/general/2021/01/26/snarks.html">ZK-SNARKs</a> and other advanced technologies.</p>
-<h2 id="balance-lists-and-merkle-trees-old-school-proof-of-solvency">Balance lists and Merkle trees: old-school proof-of-solvency</h2>
-<p>The earliest attempts by exchanges to try to cryptographically prove that they are not cheating their users go back quite far. In 2011, then-largest Bitcoin exchange MtGox proved that they had funds by sending <a href="https://www.blockchain.com/btc/tx/3a1b9e330d32fef1ee42f8e86420d2be978bbe0dc5862f17da9027cf9e11f8c4">a transaction</a> that <a href="https://en.bitcoin.it/wiki/Mt._Gox#Trading_incidents">moved 424242 BTC</a> to a pre-announced address. In 2013, <a href="https://web.archive.org/web/20170106070229/https://people.xiph.org/~greg/bitcoin-wizards-fraud-proof.log.txt">discussions started</a> on how to solve the other side of the problem: proving the total size of customers' deposits. If you prove that customers' deposits equal X ("<strong>proof of liabilities</strong>"), and prove ownership of the private keys of X coins ("<strong>proof of assets</strong>"), then you have a <strong>proof of solvency</strong>: you've proven the exchange has the funds to pay back all of its depositors.</p>
-<p>The simplest way to prove deposits is to simply publish a list of <code>(username, balance)</code> pairs. Each user can check that their balance is included in the list, and anyone can check the full list to see that (i) every balance is non-negative, and (ii) the total sum is the claimed amount. Of course, this breaks privacy, so we can change the scheme a little bit: publish a list of <code>(hash(username, salt), balance)</code> pairs, and send each user privately their <a href="https://en.wikipedia.org/wiki/Salt_(cryptography)"><code>salt</code></a> value. But even this leaks balances, and it leaks the pattern of changes in balances. The desire to preserve privacy <a href="https://bitcoin.stackexchange.com/questions/37060/is-there-a-generally-agreed-on-protocol-for-creating-proof-of-solvency">brings us</a> to the <a href="https://web.archive.org/web/20170114112433/https://iwilcox.me.uk/2014/proving-bitcoin-reserves#merkle_top">next invention</a>: <strong>the Merkle tree technique</strong>.</p>
+<title> What in the Ethereum application ecosystem excites me </title>
+<p><em>Special thanks to Matt Huang, Santi Siri and Tina Zhen for feedback and review</em></p>
+<p>Ten, five, or even two years ago, my opinions on what Ethereum and blockchains can do for the world were very abstract. "This is a general-purpose technology, like C++", I would say; of course, it has specific properties like decentralization, openness and censorship resistance, but beyond that it's just too early to say which specific applications are going to make the most sense.</p>
+<p>Today's world is no longer that world. Today, enough time has passed that there are few ideas that are completely unexplored: if something succeeds, it will <em>probably</em> be some version of something that has already been discussed in blogs and forums and conferences on multiple occasions. We've also come closer to identifying fundamental limits of the space. Many DAOs have had a fair chance with an enthusiastic audience willing to participate in them despite the inconveniences and fees, and many have underperformed. Industrial supply-chain applications <a href="https://www.theregister.com/2022/11/30/ibm_and_maersk_tradelens_shutdown/">have not gone anywhere</a>. Decentralized Amazon on the blockchain has not happened. But it's also a world where we have seen genuine and growing adoption of a few key applications that are meeting people's real needs - and those are the applications that we need to focus on.</p>
+<p>Hence my change in perspective: my excitement about Ethereum is now no longer based in the potential for undiscovered unknowns, but rather in a few specific categories of applications that are proving themselves already, and are only getting stronger. What are these applications, and which applications am I no longer optimistic about? That is what this post will be about.</p>
+<h2 id="money-the-first-and-still-most-important-app">1. Money: the first and still most important app</h2>
+<p>When I first visited Argentina in December last year, one of the experiences I remember well was walking around on Christmas Day, when almost everything is closed, looking for a coffee shop. After passing by about five closed ones, we finally found one that was open. When we walked in, the owner recognized me, and immediately showed me that he has ETH and other crypto-assets on his Binance account. We ordered tea and snacks, and we asked if we could pay in ETH. The coffee shop owner obliged, and showed me the QR code for his Binance deposit address, to which I sent about $20 of ETH from my Status wallet on my phone.</p>
+<p>This was far from the most meaningful use of cryptocurrency that is taking place in the country. Others are using it to save money, transfer money internationally, make payments for large and important transactions, and much more. But even still, the fact that I randomly found a coffee shop and it happened to accept cryptocurrency showed the sheer reach of adoption. Unlike wealthy countries like the United States, where financial transactions are easy to make and 8% inflation is considered extreme, in <a href="https://www.xe.com/currencycharts/?from=USD&amp;to=ARS&amp;view=5Y">Argentina</a> and <a href="http://www.farsinet.com/toman/exchange.html">many</a> other <a href="https://www.xe.com/currencycharts/?from=USD&amp;to=TRY&amp;view=5Y">countries</a> around the world, links to global financial systems are more limited and extreme inflation is a <a href="https://en.wikipedia.org/wiki/Hyperinflation_in_Venezuela">reality</a> every day. Cryptocurrency often steps in as a lifeline.</p>
 <center>
 <p><br/></p>
-<p><img src="https://vitalik.ca/images/proof_of_solvency/merkle_tree_1.png" style="display: block; margin-left: auto; margin-right: auto;"/></p>
-<p><i><small></small></i></p>
-<p>Green: Charlie's node. Blue: nodes Charlie will receive as part of his proof. Yellow: root node, publicly shown to everyone.</p>
-
+<p><img src="https://vitalik.ca/images/excited/exchange_ad.png" style="display: block; margin-left: auto; margin-right: auto;"/></p>
+<p><small><i>In addition to Binance, there is also an increasing number of local exchanges, and you can see advertisements for them everywhere including at airports.</i></small></p>
 </center>
 <p><br/></p>
-<p>The Merkle tree technique consists of putting the table of customers' balances into a <strong>Merkle sum tree</strong>. In a Merkle sum tree, each node is a <code>(balance, hash)</code> pair. The bottom-layer leaf nodes represent the balances and salted username hashes of individual customers. In each higher-layer node, the balance is the sum of the two balances below, and the hash is the hash of the two nodes below. A Merkle sum proof, like a Merkle proof, is a "branch" of the tree, consisting of the sister nodes along the path from a leaf to the root.</p>
-<p>The exchange would send each user a Merkle sum proof of their balance. The user would then have a guarantee that their balance is correctly included as part of the total. <strong>A simple example code implementation can be found <a href="https://github.com/ethereum/research/blob/master/proof_of_solvency/merkle_sum_tree.py">here</a></strong>.</p>
-<div style="height: 300px; margin-top: 40px; margin-bottom: 40px; overflow-y: scroll">
-<div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a aria-hidden="true" href="#cb1-1"></a><span class="co"># The function for computing a parent node given two child nodes</span></span>
-<span id="cb1-2"><a aria-hidden="true" href="#cb1-2"></a><span class="kw">def</span> combine_tree_nodes(L, R):</span>
-<span id="cb1-3"><a aria-hidden="true" href="#cb1-3"></a>    L_hash, L_balance <span class="op">=</span> L</span>
-<span id="cb1-4"><a aria-hidden="true" href="#cb1-4"></a>    R_hash, R_balance <span class="op">=</span> R</span>
-<span id="cb1-5"><a aria-hidden="true" href="#cb1-5"></a>    <span class="cf">assert</span> L_balance <span class="op">&gt;=</span> <span class="dv">0</span> <span class="kw">and</span> R_balance <span class="op">&gt;=</span> <span class="dv">0</span></span>
-<span id="cb1-6"><a aria-hidden="true" href="#cb1-6"></a>    new_node_hash <span class="op">=</span> <span class="bu">hash</span>(</span>
-<span id="cb1-7"><a aria-hidden="true" href="#cb1-7"></a>        L_hash <span class="op">+</span> L_balance.to_bytes(<span class="dv">32</span>, <span class="st">'big'</span>) <span class="op">+</span></span>
-<span id="cb1-8"><a aria-hidden="true" href="#cb1-8"></a>        R_hash <span class="op">+</span> R_balance.to_bytes(<span class="dv">32</span>, <span class="st">'big'</span>)</span>
-<span id="cb1-9"><a aria-hidden="true" href="#cb1-9"></a>    )</span>
-<span id="cb1-10"><a aria-hidden="true" href="#cb1-10"></a>    <span class="cf">return</span> (new_node_hash, L_balance <span class="op">+</span> R_balance)</span>
-<span id="cb1-11"><a aria-hidden="true" href="#cb1-11"></a></span>
-<span id="cb1-12"><a aria-hidden="true" href="#cb1-12"></a><span class="co"># Builds a full Merkle tree. Stored in flattened form where</span></span>
-<span id="cb1-13"><a aria-hidden="true" href="#cb1-13"></a><span class="co"># node i is the parent of nodes 2i and 2i+1</span></span>
-<span id="cb1-14"><a aria-hidden="true" href="#cb1-14"></a><span class="kw">def</span> build_merkle_sum_tree(user_table: <span class="st">"List[(username, salt, balance)]"</span>):</span>
-<span id="cb1-15"><a aria-hidden="true" href="#cb1-15"></a>    tree_size <span class="op">=</span> get_next_power_of_2(<span class="bu">len</span>(user_table))</span>
-<span id="cb1-16"><a aria-hidden="true" href="#cb1-16"></a>    tree <span class="op">=</span> (</span>
-<span id="cb1-17"><a aria-hidden="true" href="#cb1-17"></a>        [<span class="va">None</span>] <span class="op">*</span> tree_size <span class="op">+</span></span>
-<span id="cb1-18"><a aria-hidden="true" href="#cb1-18"></a>        [userdata_to_leaf(<span class="op">*</span>user) <span class="cf">for</span> user <span class="kw">in</span> user_table] <span class="op">+</span></span>
-<span id="cb1-19"><a aria-hidden="true" href="#cb1-19"></a>        [EMPTY_LEAF <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(tree_size <span class="op">-</span> <span class="bu">len</span>(user_table))]</span>
-<span id="cb1-20"><a aria-hidden="true" href="#cb1-20"></a>    )</span>
-<span id="cb1-21"><a aria-hidden="true" href="#cb1-21"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(tree_size <span class="op">-</span> <span class="dv">1</span>, <span class="dv">0</span>, <span class="op">-</span><span class="dv">1</span>):</span>
-<span id="cb1-22"><a aria-hidden="true" href="#cb1-22"></a>        tree[i] <span class="op">=</span> combine_tree_nodes(tree[i<span class="op">*</span><span class="dv">2</span>], tree[i<span class="op">*</span><span class="dv">2</span><span class="op">+</span><span class="dv">1</span>])</span>
-<span id="cb1-23"><a aria-hidden="true" href="#cb1-23"></a>    <span class="cf">return</span> tree</span>
-<span id="cb1-24"><a aria-hidden="true" href="#cb1-24"></a></span>
-<span id="cb1-25"><a aria-hidden="true" href="#cb1-25"></a><span class="co"># Root of a tree is stored at index 1 in the flattened form</span></span>
-<span id="cb1-26"><a aria-hidden="true" href="#cb1-26"></a><span class="kw">def</span> get_root(tree):</span>
-<span id="cb1-27"><a aria-hidden="true" href="#cb1-27"></a>    <span class="cf">return</span> tree[<span class="dv">1</span>]</span>
-<span id="cb1-28"><a aria-hidden="true" href="#cb1-28"></a></span>
-<span id="cb1-29"><a aria-hidden="true" href="#cb1-29"></a><span class="co"># Gets a proof for a node at a particular index</span></span>
-<span id="cb1-30"><a aria-hidden="true" href="#cb1-30"></a><span class="kw">def</span> get_proof(tree, index):</span>
-<span id="cb1-31"><a aria-hidden="true" href="#cb1-31"></a>    branch_length <span class="op">=</span> log2(<span class="bu">len</span>(tree)) <span class="op">-</span> <span class="dv">1</span></span>
-<span id="cb1-32"><a aria-hidden="true" href="#cb1-32"></a>    <span class="co"># ^ = bitwise xor, x ^ 1 = sister node of x</span></span>
-<span id="cb1-33"><a aria-hidden="true" href="#cb1-33"></a>    index_in_tree <span class="op">=</span> index <span class="op">+</span> <span class="bu">len</span>(tree) <span class="op">//</span> <span class="dv">2</span></span>
-<span id="cb1-34"><a aria-hidden="true" href="#cb1-34"></a>    <span class="cf">return</span> [tree[(index_in_tree <span class="op">//</span> <span class="dv">2</span><span class="op">**</span>i) <span class="op">^</span> <span class="dv">1</span>] <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(branch_length)]</span>
-<span id="cb1-35"><a aria-hidden="true" href="#cb1-35"></a></span>
-<span id="cb1-36"><a aria-hidden="true" href="#cb1-36"></a><span class="co"># Verifies a proof (duh)</span></span>
-<span id="cb1-37"><a aria-hidden="true" href="#cb1-37"></a><span class="kw">def</span> verify_proof(username, salt, balance, index, user_table_size, root, proof):</span>
-<span id="cb1-38"><a aria-hidden="true" href="#cb1-38"></a>    leaf <span class="op">=</span> userdata_to_leaf(username, salt, balance)</span>
-<span id="cb1-39"><a aria-hidden="true" href="#cb1-39"></a>    branch_length <span class="op">=</span> log2(get_next_power_of_2(user_table_size)) <span class="op">-</span> <span class="dv">1</span></span>
-<span id="cb1-40"><a aria-hidden="true" href="#cb1-40"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(branch_length):</span>
-<span id="cb1-41"><a aria-hidden="true" href="#cb1-41"></a>        <span class="cf">if</span> index <span class="op">&amp;</span> (<span class="dv">2</span><span class="op">**</span>i):</span>
-<span id="cb1-42"><a aria-hidden="true" href="#cb1-42"></a>            leaf <span class="op">=</span> combine_tree_nodes(proof[i], leaf)</span>
-<span id="cb1-43"><a aria-hidden="true" href="#cb1-43"></a>        <span class="cf">else</span>:</span>
-<span id="cb1-44"><a aria-hidden="true" href="#cb1-44"></a>            leaf <span class="op">=</span> combine_tree_nodes(leaf, proof[i])</span>
-<span id="cb1-45"><a aria-hidden="true" href="#cb1-45"></a>    <span class="cf">return</span> leaf <span class="op">==</span> root</span></code></pre></div>
-</div>
-<p>Privacy leakage in this design is much lower than with a fully public list, and it can be decreased further by shuffling the branches each time a root is published, but some privacy leakage is still there: Charlie learns that <em>someone</em> has a balance of 164 ETH, <em>some</em> two users have balances that add up to 70 ETH, etc. An attacker that controls many accounts could still potentially learn a significant amount about the exchange's users.</p>
-<p>One important subtlety of the scheme is the possibility of <em>negative</em> balances: what if an exchange that has 1390 ETH of customer balances but only 890 ETH in reserves tries to make up the difference by adding a -500 ETH balance under a fake account somewhere in the tree? It turns out that this possibility does not break the scheme, though this is the reason why we specifically need a Merkle sum tree and not a regular Merkle tree. Suppose that Henry is the fake account controlled by the exchange, and the exchange puts -500 ETH there:</p>
+<p>The one issue with my coffee transaction is that it did not really make pragmatic sense. The fee was high, about a third of the value of the transaction. The transaction took several minutes to confirm: I believe that at the time, Status did not yet support sending proper EIP-1559 transactions that more reliably confirm quickly. If, like many other Argentinian crypto users, I had simply had a Binance wallet, the transfer would have been free and instant.</p>
+<p>A year later, however, the calculus is different. As a side effect of the Merge, transactions get included significantly more quickly and the chain has become more stable, making it safer to accept transactions after fewer confirmations. Scaling technology such as <a href="https://vitalik.ca/general/2021/01/05/rollup.html">optimistic and ZK rollups</a> is proceeding quickly. <a href="https://vitalik.ca/general/2021/01/11/recovery.html">Social recovery and multisig</a> wallets are becoming more practical with <a href="https://eips.ethereum.org/EIPS/eip-4337">account abstraction</a>. These trends will take years to play out as the technology develops, but progress is already being made. At the same time, <strong>there is an important "push factor" driving interest in transacting on-chain: the FTX collapse</strong>, which has reminded everyone, Latin Americans included, that even the most trustworthy-seeming centralized services may not be trustworthy after all.</p>
+<h3 id="cryptocurrency-in-wealthy-countries">Cryptocurrency in wealthy countries</h3>
+<p>In wealthy countries, the more extreme use cases around surviving high inflation and doing basic financial activities at all usually do not apply. But cryptocurrency still has significant value. As someone who has used it to make donations (to quite normal organizations in many countries), I can personally confirm that it is <em>far</em> more convenient than traditional banking. It's also valuable for industries and activities at risk of being deplatformed by payment processors - a category which includes <a href="https://signaturepayments.com/why-high-risk-industries-are-avoided-by-payment-processors/">many industries</a> that are perfectly legal under most countries' laws.</p>
+<p>There is also the important broader philosophical case for cryptocurrency as private money: the transition to a "cashless society" is being taken advantage of by many governments as an opportunity to introduce levels of financial surveillance that would be unimaginable 100 years ago. <strong>Cryptocurrency is the <em>only</em> thing currently being developed that can realistically combine the benefits of digitalization with cash-like respect for personal privacy</strong>.</p>
+<p>But in either case, cryptocurrency is far from perfect. Even with all the technical, user experience and account safety problems solved, it remains a fact that cryptocurrency is volatile, and the volatility can make it difficult to use for savings and business. For that reason, we have...</p>
+<h3 id="stablecoins">Stablecoins</h3>
+<p>The value of stablecoins has been understood in the Ethereum community for a long time. Quoting <a href="https://blog.ethereum.org/2014/11/11/search-stable-cryptocurrency">a blog post from 2014</a>:</p>
+<blockquote>
+<p>Over the past eleven months, Bitcoin holders have lost about 67% of their wealth and quite often the price moves up or down by as much as 25% in a single week. Seeing this concern, there is a growing interest in a simple question: can we get the best of both worlds? Can we have the full decentralization that a cryptographic payment network offers, but at the same time have a higher level of price stability, without such extreme upward and downward swings?</p>
+</blockquote>
+<p>And indeed, stablecoins are very popular among precisely those users who are making pragmatic use of cryptocurrency today. That said, there is a reality that is not congenial to cypherpunk values today: the stablecoins that are most successful today are the centralized ones, mostly USDC, USDT and BUSD.</p>
 <center>
 <p><br/></p>
-<p><img src="https://vitalik.ca/images/proof_of_solvency/merkle_tree_2.png" style="display: block; margin-left: auto; margin-right: auto;"/></p>
+<p><img src="https://vitalik.ca/images/excited/coinmarketcap.png" style="display: block; margin-left: auto; margin-right: auto;"/></p>
+<p><small><i></i></small></p>
+<p>Top cryptocurrency market caps, data from CoinGecko, 2022-11-30. Three of the top six are centralized stablecoins.</p>
+<p></p>
 </center>
 <p><br/></p>
-<p>Greta's proof verification would fail: the exchange would have to give her Henry's -500 ETH node, which she would reject as invalid. Eve and Fred's proof verification would <em>also</em> fail, because the intermediate node above Henry has -230 total ETH, and so is also invalid! To get away with the theft, the exchange would have to hope that nobody in the entire right half of the tree checks their balance proof.</p>
-<p>If the exchange can identify 500 ETH worth of users that they are confident will either not bother to check the proof, or will not be believed when they complain that they never received a proof, they could get away with the theft. But then the exchange could also just exclude those users from the tree and have the same effect. Hence, the Merkle tree technique is basically as good as a proof-of-liabilities scheme can be, if only achieving a proof of liabilities is the goal. But its privacy properties are still not ideal. You can go a little bit further by using Merkle trees in more clever ways, like <a href="https://github.com/ethereum/research/blob/master/proof_of_solvency/crazy_merkle_tree.py">making each satoshi or wei a separate leaf</a>, but ultimately with more modern tech there are even better ways to do it.</p>
-<h3 id="improving-privacy-and-robustness-with-zk-snarks">Improving privacy and robustness with ZK-SNARKs</h3>
-<p>ZK-SNARKs are a powerful technology. ZK-SNARKs may be to cryptography what <a href="https://en.wikipedia.org/wiki/Transformer_(machine_learning_model)">transformers</a> are to AI: a general-purpose technology that is so powerful that it will completely steamroll a whole bunch of application-specific techniques for a whole bunch of problems that were developed in the decades prior. And so, of course, we can use ZK-SNARKs to greatly simplify and improve privacy in proof-of-liabilities protocols.</p>
-<p>The simplest thing that we can do is put all users' deposits into a Merkle tree (or, even simpler, a <a href="https://dankradfeist.de/ethereum/2020/06/16/kate-polynomial-commitments.html">KZG commitment</a>), and use a ZK-SNARK to prove that all balances in the tree are non-negative and add up to some claimed value. If we add a layer of hashing for privacy, the Merkle branch (or KZG proof) given to each user would reveal <em>nothing</em> about the balance of any other user.</p>
-<center>
+<p>Stablecoins issued on-chain have many convenient properties: they are open for use by anyone, they are resistant to the most large-scale and opaque forms of censorship (the issuer <em>can</em> blacklist and freeze addresses, but such blacklisting is transparent, and there are literal transaction fee costs associated with freezing each address), and they interact well with on-chain infrastructure (accounts, DEXes, etc). But it's not clear how long this state of affairs will last, and so there is a need to keep working on other alternatives.</p>
+<p>I see the stablecoin design space as basically being split into three different categories: <strong>centralized stablecoins</strong>, <strong>DAO-governed real-world-asset backed stablecoins</strong> and <strong>governance-minimized crypto-backed stablecoins</strong>.</p>
 <p><br/></p>
-<p><img src="https://vitalik.ca/images/proof_of_solvency/kzg.png" style="display: block; margin-left: auto; margin-right: auto;"/></p>
-<p><i><small></small></i></p>
-<p>Using KZG commitments is one way to avoid privacy leakage, as there is no need to provide "sister nodes" as proofs, and a simple ZK-SNARK can be used to prove the sum of the balances and that each balance is non-negative.</p>
-
-</center>
+<table>
+<colgroup>
+<col style="width: 20%"/>
+<col style="width: 20%"/>
+<col style="width: 20%"/>
+<col style="width: 20%"/>
+<col style="width: 20%"/>
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>Governance</th>
+<th>Advantages</th>
+<th>Disadvantages</th>
+<th>Examples</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Centralized stablecoins</strong></td>
+<td>Traditional legal entity</td>
+<td>• Maximum efficiency <br/> • Easy to understand</td>
+<td>Vulnerable to risks of a single issuer and a single jurisdiction</td>
+<td>USDC, USDT, BUSD</td>
+</tr>
+<tr class="even">
+<td><strong>DAO-governed RWA-backed stablecoins</strong></td>
+<td>DAO deciding on allowed collateral types and maximum per type</td>
+<td>• Adds resilience by diversifying issuers and jurisdictions <br/> • Still somewhat capital efficient</td>
+<td>Vulnerable to repeated issuer fraud or coordinated takedown</td>
+<td>DAI</td>
+</tr>
+<tr class="odd">
+<td><strong>Governance-minimized crypto-backed stablecoin</strong></td>
+<td>Price oracle only</td>
+<td>• Maximum resilience <br/> • No outside dependencies</td>
+<td>• High collateral requirements <br/> • Limited scale <br/> • Sometimes needs negative interest rates</td>
+<td>RAI, <br/> LUSD</td>
+</tr>
+</tbody>
+</table>
 <p><br/></p>
-<p>We can prove the sum and non-negativity of balances in the above KZG with a special-purpose ZK-SNARK. Here is one simple example way to do this. We introduce an auxiliary polynomial <span class="math inline">\(I(x)\)</span>, which "builds up the bits" of each balance (we assume for the sake of example that balances are under <span class="math inline">\(2^{15}\)</span>) and where every 16th position tracks a running total with an offset so that it sums to zero only if the actual total matches the declared total. If <span class="math inline">\(z\)</span> is an order-128 root of unity, we might prove the equations:</p>
-<center>
-<p><span class="math inline">\(I(z^{16x}) = 0\)</span></p>
-<p><span class="math inline">\(I(z^{16x + 14}) = P(\omega^{2x+1})\)</span></p>
-<p><span class="math inline">\(I(z^{i}) - 2*I(z^{i-1}) \in \{0, 1\}\ \ if\ \ i\ \ mod\ 16 \not \in \{0, 15\}\)</span></p>
-<p><span class="math inline">\(I(z^{16*x + 15}) = I(z^{16*x-1}) + I(z^{16*x+14}) - \frac{the\ declared\ total}{user\ count}\)</span></p>
-</center>
-<p>The first values of a valid setting for <span class="math inline">\(I(x)\)</span> would be <code>0 0 0 0</code> <code>0 0 0 0</code> <code>0 0 1 2</code> <code>5 10 20 -165</code> <code>0 0 0 0</code> <code>0 0 0 0</code> <code>0 1 3 6</code> <code>12 25 50 -300</code> ...</p>
-<p>See <a href="https://vitalik.ca/general/2021/01/26/snarks.html#comparing-a-polynomial-to-itself">here</a> and <a href="https://vitalik.ca/general/2021/01/26/snarks.html#whats-a-slightly-more-useful-example-of-a-computation-being-converted-into-a-set-of-polynomial-equations">here</a> in <a href="https://vitalik.ca/general/2021/01/26/snarks.html">my post on ZK-SNARKs</a> for further explanation of how to convert equations like these into a polynomial check and then into a ZK-SNARK. This isn't an optimal protocol, but it does show how these days these kinds of cryptographic proofs are not that spooky!</p>
-<p>With only a few extra equations, constraint systems like this can be adapted to more complex settings. For example, in a leverage trading system, an individual users having negative balances is acceptable but only if they have enough other assets to cover the funds with some collateralization margin. A SNARK could be used to prove this more complicated constraint, reassuring users that the exchange is not risking their funds by <a href="https://decrypt.co/114941/god-mode-sbf-alameda-secret-exemptions-ftx-liquidation">secretly exempting other users</a> from the rules.</p>
-<p>In the longer-term future, this kind of ZK proof of liabilities could perhaps be used not just for customer deposits at exchanges, but for lending more broadly. Anyone taking out a loan would put a record into a polynomial or a tree containing that loan, and the root of that structure would get published on-chain. This would let anyone seeking a loan ZK-prove to the lender that they have not yet taken out too many other loans. Eventually, legal innovation could even make loans that have been committed to in this way higher-priority than loans that have not. This leads us in exactly the same direction as one of the ideas that was discussed in the <a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4105763">"Decentralized Society: Finding Web3's Soul" paper</a>: a general notion of negative reputation or encumberments on-chain through some form of "soulbound tokens".</p>
-<h2 id="proof-of-assets">Proof of assets</h2>
-<p>The simplest version of proof of assets is the protocol that we saw above: to prove that you hold X coins, you simply move X coins around at some pre-agreed time or in a transaction where the data field contains the words "these funds belong to Binance". To avoid paying transaction fees, you could sign an off-chain message instead; both <a href="https://en.bitcoin.it/wiki/Message_signing">Bitcoin</a> and <a href="https://w3c-ccg.github.io/ethereum-eip712-signature-2021-spec/">Ethereum</a> have standards for <a href="https://github.com/bitcoin/bips/blob/master/bip-0322.mediawiki">off-chain</a> signed <a href="https://eips.ethereum.org/EIPS/eip-1271">messages</a>.</p>
-<p>There are two practical problems with this simple proof-of-assets technique:</p>
+<p><strong>From the user's perspective, the three types are arranged on a tradeoff spectrum between efficiency and resilience</strong>. USDC works today, and will almost certainly work tomorrow. But in the longer term, its ongoing stability depends on the macroeconomic and political stability of the United States, a continued US regulatory environment that supports making USDC available to everyone, and the trustworthiness of the issuing organization.</p>
+<p>RAI, on the other hand, can survive all of these risks, but it has a negative interest rate: at the time of this writing, <a href="https://stats.reflexer.finance/">-6.7%</a>. To make the system stable (so, <a href="https://vitalik.ca/general/2022/05/25/stable.html">not be vulnerable to collapse like LUNA</a>), every holder of RAI must be matched by a holder of negative RAI (aka. a "borrower" or "CDP holder") who puts in ETH as collateral. This rate could be improved with more people engaging in arbitrage, holding negative RAI and balancing it out with positive USDC or even interest-bearing bank account deposits, but interest rates on RAI will always be lower than in a functioning banking system, and the possibility of negative rates, and the user experience headaches that they imply, will always be there.</p>
+<p>The RAI model is ultimately ideal for the more pessimistic <a href="https://www.coindesk.com/layer2/2022/09/20/what-are-solarpunk-and-lunarpunk-anyway/">lunarpunk</a> world: it avoids all connection to non-crypto financial systems, making it much more difficult to attack. Negative interest rates prevent it from being a convenient proxy for the dollar, but one way to adapt would be to embrace the disconnection: <strong>a governance-minimized stablecoin could track some non-currency asset like a global average CPI index, and advertise itself as representing abstract "best-effort price stability"</strong>. This would also have lower inherent regulatory risk, as such an asset would not be attempting to provide a "digital dollar" (or euro, or...).</p>
+<p>DAO-governed RWA-backed stablecoins, if they can be made to work well, could be a happy medium. Such stablecoins could combine enough robustness, censorship resistance, scale and economic practicality to satisfy the needs of a large number of real-world crypto users. But making this work requires both real-world legal work to develop robust issuers, <em>and</em> a healthy dose of <a href="https://vitalik.ca/general/2022/09/20/daos.html">resilience-oriented DAO governance engineering</a>.</p>
+<p>In either case, <em>any</em> kind of stablecoin working well would be a boon for many kinds of currency and savings applications that are already concretely useful for millions of people today.</p>
+<h2 id="defi-keep-it-simple">2. Defi: keep it simple</h2>
+<p>Decentralized finance is, in my view, a category that started off honorable but limited, turned into somewhat of an overcapitalized monster that relied on unsustainable forms of yield farming, and is now in the early stages of setting down into a stable medium, improving security and refocusing on a few applications that are particularly valuable. Decentralized stablecoins are, and probably forever will be, the most important defi product, but there are a few others that have an important niche:</p>
 <ul>
-<li><strong>Dealing with cold storage</strong></li>
-<li><strong>Collateral dual-use</strong></li>
+<li><strong>Prediction markets</strong>: these have been a niche but stable pillar of decentralized finance since the launch of Augur in 2015. Since then, they have quietly been growing in adoption. Prediction markets <a href="https://vitalik.ca/general/2021/02/18/election.html">showed their value and their limitations</a> in the 2020 US election, and this year in 2022, both crypto prediction markets like <a href="https://polymarket.com/">Polymarket</a> and play-money markets like <a href="https://www.metaculus.com/questions/">Metaculus</a> are becoming more and more widely used. Prediction markets are valuable as an epistemic tool, and there is a genuine benefit from using cryptocurrency in making these markets more trustworthy and more globally accessible. I expect prediction markets to not make extreme multibillion-dollar splashes, but continue to steadily grow and become more useful over time.</li>
+<li><strong>Other synthetic assets</strong>: the formula behind stablecoins can in principle be replicated to other real-world assets. Interesting natural candidates include major stock indices and real estate. The latter will take longer to get right due to the inherent heterogeneity and complexity of the space, but it could be valuable for precisely the same reasons. The main question is whether or not someone can create the right balance of decentralization and efficiency that gives users access to these assets at reasonable rates of return.</li>
+<li><strong>Glue layers for efficiently trading between other assets</strong>: if there are assets on-chain that people want to use, including ETH, centralized or decentralized stablecoins, more advanced synthetic assets, or whatever else, there will be value in a layer that makes it easy for users to trade between them. Some users may want to hold USDC and pay transaction fees in USDC. Others may hold some assets, but want to be able to instantly convert to pay someone who wants to be paid in another asset. There is also space for using one asset as collateral to take out loans of another asset, though such projects are most likely to succeed and avoid leading to tears if they keep leverage <em>very</em> limited (eg. not more than 2x).</li>
 </ul>
-<p>For safety reasons, most exchanges keep the great majority of customer funds in "cold storage": on offline computers, where transactions need to be signed and carried over onto the internet manually. Literal air-gapping is common: a cold storage setup that I used to use for personal funds involved a permanently offline computer generating a QR code containing the signed transaction, which I would scan from my phone. Because of the high values at stake, the security protocols used by exchanges are crazier still, and often involve using multi-party computation between several devices to further reduce the chance of a hack against a single device compromising a key. Given this kind of setup, making even a single extra message to prove control of an address is an expensive operation!</p>
-<p>There are several paths that an exchange can take:</p>
+<h2 id="the-identity-ecosystem-ens-siwe-poh-poaps-sbts">3. The identity ecosystem: ENS, SIWE, PoH, POAPs, SBTs</h2>
+<p>"Identity" is a complicated concept that can mean many things. Some examples include:</p>
 <ul>
-<li><strong>Keep a few public long-term-use addresses</strong>. The exchange would generate a few addresses, publish a proof of each address <em>once</em> to prove ownership, and then use those addresses repeatedly. This is by far the simplest option, though it does add some constraints in how to preserve security and privacy.</li>
-<li><strong>Have many addresses, prove a few randomly</strong>. The exchange would have many addresses, perhaps even using each address only once and retiring it after a single transaction. In this case, the exchange may have a protocol where from time to time a few addresses get randomly selected and must be "opened" to prove ownership. Some exchanges already do something like this with an auditor, but in principle this technique could be turned into a fully automated procedure.</li>
-<li><strong>More complicated ZKP options</strong>. For example, an exchange could set all of its addresses to be 1-of-2 multisigs, where one of the keys is different per address, and the other is a blinded version of some "grand" emergency backup key stored in some complicated but very high-security way, eg. a 12-of-16 multisig. To preserve privacy and avoid revealing the entire set of its addresses, the exchange could even run a zero knowledge proof over the blockchain where it proves the total balance of all addresses on chain that have this format.</li>
+<li><strong>Basic authentication</strong>: simply proving that action A (eg. sending a transaction or logging into a website) was authorized by some agent that has some identifier, such as an ETH address or a public key, without attempting to say anything else about who or what the agent is.</li>
+<li><strong>Attestations</strong>: proving claims about an agent made by other agents ("Bob attests that he knows Alice", "the government of Canada attests that Charlie is a citizen")</li>
+<li><strong>Names</strong>: establishing consensus that a particular human-readable name can be used to refer to a particular agent.</li>
+<li><strong><a href="https://en.wikipedia.org/wiki/Proof_of_personhood">Proof of personhood</a></strong>: proving that an agent is human, and guaranteeing that each human can only obtain one identity through the proof of personhood system (this is often done with attestations, so it's not an entirely separate category, but it's a hugely important special case)</li>
 </ul>
-<p>The other major issue is guarding against collateral dual-use. Shuttling collateral back and forth between each other to do proof of reserves is something that exchanges <a href="https://twitter.com/cz_binance/status/1591690261029130240">could easily do</a>, and would allow them to pretend to be solvent when they actually are not. Ideally, proof of solvency would be done in real time, with a proof that updates after every block. If this is impractical, the next best thing would be to coordinate on a fixed schedule between the different exchanges, eg. proving reserves at 1400 UTC every Tuesday.</p>
-<p>One final issue is: <strong>can you do proof-of-assets on fiat?</strong> Exchanges don't just hold cryptocurrency, they also hold fiat currency within the banking system. Here, the answer is: yes, but such a procedure would inevitably rely on "fiat" trust models: the bank itself can attest to balances, auditors can attest to balance sheets, etc. Given that fiat is not cryptographically verifiable, this is the best that can be done within that framework, but it's still worth doing.</p>
-<p>An alternative approach would be to cleanly separate between one entity that runs the exchange and deals with asset-backed stablecoins like USDC, and another entity (USDC itself) that handles the cash-in and cash-out process for moving between crypto and traditional banking systems. Because the "liabilities" of USDC are just on-chain ERC20 tokens, proof of liabilities comes "for free" and only proof of assets is required.</p>
-<h2 id="plasma-and-validiums-can-we-make-cexes-non-custodial">Plasma and validiums: can we make CEXes non-custodial?</h2>
-<p>Suppose that we want to go further: we don't want to just prove that the exchange <em>has the funds</em> to pay back its users. Rather, we want to <strong>prevent the exchange from stealing users' funds completely</strong>.</p>
-<p>The first major attempt at this was <strong>Plasma</strong>, a scaling solution that was popular in Ethereum research circles in 2017 and 2018. Plasma works by splitting up the balance into a set of individual "coins", where each coin is assigned an index and lives in a particular position in the Merkle tree of a Plasma block. Making a valid transfer of a coin requires putting a transaction into the correct position of a tree whose root gets published on-chain.</p>
+<p>For a long time, I have been bullish on <em>blockchain identity</em> but bearish on <em>blockchain identity platforms</em>. The use cases mentioned above are really important to many blockchain use cases, and blockchains are valuable for identity applications because of their institution-independent nature and the interoperability benefits that they provide. But what will not work is an attempt to create a centralized platform to achieve all of these tasks from scratch. What more likely will work is an organic approach, with many projects working on specific tasks that are individually valuable, and adding more and more interoperability over time.</p>
+<p>And this is exactly what has happened since then. The <a href="https://login.xyz/">Sign In With Ethereum (SIWE)</a> standard allows users to log into (traditional) websites in much the same way that you can use Google or Facebook accounts to log into websites today. This is actually useful: it allows you to interact with a site without giving Google or Facebook access to your private information or the ability to take over or lock you out of your account. Techniques like <a href="https://vitalik.ca/general/2021/01/11/recovery.html">social recovery</a> could give users account recovery options in case they forget their password that are <em>much better</em> than what centralized corporations offer today. SIWE is supported by many applications today, including <a href="https://chat.blockscan.com/">Blockscan chat</a>, the end-to-end-encrypted email and notes service <a href="https://app.skiff.com/">Skiff</a>, and various blockchain-based alternative social media projects.</p>
+<p>ENS lets users have usernames: I have <code>vitalik.eth</code>. Proof of Humanity and other proof-of-personhood systems let users prove that they are unique humans, which is useful in many applications including airdrops and governance. <a href="https://poap.xyz/">POAP</a> (the "proof of attendance protocol", pronounced <a href="https://twitter.com/vitalikbuterin/status/1534555001326080001">either "pope" or "poe-app"</a> depending on whether you're a brave contrarian or a sheep) is a general-purpose protocol for issuing tokens that represent attestations: have you completed an educational course? Have you attended an event? Have you met a particular person? POAPs could be used both as an ingredient in a proof-of-personhood protocol and as a way to try to determine whether or not someone is a member of a particular community (valuable for governance or airdrops).</p>
 <center>
 <p><br/></p>
-<p><img src="https://vitalik.ca/images/proof_of_solvency/plasmacash.png" style="display: block; margin-left: auto; margin-right: auto;"/></p>
-<p><i><small></small></i></p>
-<p>Oversimplified diagram of one version of Plasma. Coins are held in a smart contract that enforces the rules of the Plasma protocol at withdrawal time.</p>
-
+<p><img src="https://vitalik.ca/images/excited/nfc_card.png" style="display: block; margin-left: auto; margin-right: auto;"/></p>
+<p><small><i></i></small></p>
+<p>An NFC card that contains my ENS name, and allows you to receive a POAP verifying that you've met me. I'm not sure I <strong>want</strong> to create any further incentive for people to bug me really hard to get my POAP, but this seems fun and useful for other people.</p>
+<p></p>
 </center>
 <p><br/></p>
-<p>OmiseGo attempted to make a decentralized exchange based on this protocol, but since then they have pivoted to other ideas - as has, for that matter, Plasma Group itself, which is now the optimistic EVM rollup project <a href="https://www.optimism.io/">Optimism</a>.</p>
-<p>It's not worth looking at the technical limitations of Plasma as conceived in 2018 (eg. <a href="https://ethresear.ch/t/plasma-cash-defragmentation/3410">proving coin defragmentation</a>) as some kind of morality tale about the whole concept. Since the peak of Plasma discourse in 2018, ZK-SNARKs have become much more viable for scaling-related use cases, and as we have said above, ZK-SNARKs change everything.</p>
-<p>The more modern version of the Plasma idea is what Starkware calls a <a href="https://ethereum.org/en/developers/docs/scaling/validium/">validium</a>: basically the same as a ZK-rollup, except where data is held off-chain. This construction could be used for a lot of use cases, conceivably anything where a centralized server needs to run some code and prove that it's executing code correctly. <strong>In a validium, the operator has <em>no</em> way to steal funds, though depending on the details of the implementation some quantity of user funds could get <em>stuck</em> if the operator disappears.</strong></p>
-<p>This is all really good: far from CEX vs DEX being a binary, it turns out that there is a whole spectrum of options, including various forms of hybrid centralization where you gain some benefits like efficiency but still have a lot of cryptographic guardrails preventing the centralized operator from engaging in most forms of abuses.</p>
-<center>
-<p><br/></p>
-<p><img src="https://vitalik.ca/images/proof_of_solvency/spectrum.png" style="display: block; margin-left: auto; margin-right: auto;"/></p>
-</center>
-<p><br/></p>
-<p>But it's worth getting to the fundamental issue with the right half of this design space: <strong>dealing with user errors</strong>. By far the most important type of error is: what if a user forgets their password, loses their devices, gets hacked, or otherwise loses access to their account?</p>
-<p>Exchanges can solve this problem: first e-mail recovery, and if even that fails, more complicated forms of recovery through KYC. But to be able to solve such problems, the exchange needs to actually have control over the coins. In order to have the ability to recover user accounts' funds for good reasons, exchanges need to have power that could also be used to steal user accounts' funds for bad reasons. This is an unavoidable tradeoff.</p>
-<p>The ideal long-term solution is to rely on self-custody, in a future where users have easy access to technologies such as <a href="https://vitalik.ca/general/2021/01/11/recovery.html">multisig and social recovery wallets</a> to help deal with emergency situations. But <em>in the short term</em>, there are two clear alternatives that have clearly distinct costs and benefits:</p>
+<p>Each of these applications are useful individually. But what makes them truly powerful is how well they compose with each other. When I log on to <a href="https://chat.blockscan.com/">Blockscan chat</a>, I sign in with Ethereum. This means that I am immediately visible as <code>vitalik.eth</code> (my ENS name) to anyone I chat with. In the future, to fight spam, Blockscan chat could "verify" accounts by looking at on-chain activity or POAPs. The lowest tier would simply be to verify that the account has sent or been the recipient in at least one on-chain transaction (as that requires paying fees). A higher level of verification could involve checking for balances of specific tokens, ownership of specific POAPs, a proof-of-personhood profile, or a meta-aggregator like <a href="https://passport.gitcoin.co/">Gitcoin Passport</a>.</p>
+<p>The network effects of these different services combine to create an ecosystem that provides some very powerful options for users and applications. An Ethereum-based Twitter alternative (eg. <a href="https://www.farcaster.xyz/">Farcaster</a>) could use POAPs and other proofs of on-chain activity to create a "verification" feature that does not require conventional KYC, allowing anons to participate. Such platforms could create rooms that are gated to members of a particular community - or hybrid approaches where only community members can speak but anyone can listen. The equivalent of Twitter polls could be limited to particular communities.</p>
+<p>Equally importantly, there are much more pedestrian applications that are relevant to simply helping people make a living: verification through attestations can make it easier for people to prove that they are trustworthy to get rent, employment or loans.</p>
+<p><strong>The big future challenge for this ecosystem is privacy</strong>. The status quo involves putting large amounts of information on-chain, which is something that is "fine until it's not", and eventually will become unpalatable if not outright risky to more and more people. There are ways to solve this problem by combining on-chain and off-chain information and making <a href="https://vitalik.ca/general/2022/06/15/using_snarks.html">heavy use of ZK-SNARKs</a>, but this is something that will actually need to be worked on; projects like <a href="https://www.sismo.io/">Sismo</a> and <a href="https://www.heyanon.xyz/">HeyAnon</a> are an early start. Scaling is also a challenge, but scaling can be solved generically with rollups and perhaps validiums. Privacy cannot, and must be worked on intentionally for each application.</p>
+<h2 id="daos">4. DAOs</h2>
+<p>"DAO" is a powerful term that captures many of the hopes and dreams that people have put into the crypto space to build more democratic, resilient and efficient forms of governance. It's also an incredibly broad term whose <a href="https://blog.ethereum.org/2014/05/06/daos-dacs-das-and-more-an-incomplete-terminology-guide">meaning</a> has evolved a lot over the years. Most generally, a DAO is a smart contract that is meant to represent a structure of ownership or control over some asset or process. But this structure could be anything, from the lowly multisig to highly sophisticated multi-chamber governance mechanisms like those proposed for the <a href="https://community.optimism.io/docs/governance/">Optimism Collective</a>. Many of these structures work, and many others cannot, or at least are very mismatched to the goals that they are trying to achieve.</p>
+<p>There are two questions to answer:</p>
+<ol type="1">
+<li>What kinds of governance structures make sense, and for what use cases?</li>
+<li>Does it make sense to implement those structures as a DAO, or through regular incorporation and legal contracts?</li>
+</ol>
+<p>A particular subtlety is that the word "decentralized" is sometimes used to refer to both: a <em>governance structure</em> is decentralized if its decisions depend on decisions taken from a large group of participants, and an <em>implementation</em> of a governance structure is decentralized if it is built on a decentralized structure like a blockchain and is not dependent on any single nation-state legal system.</p>
+<h3 id="decentralization-for-robustness">Decentralization for robustness</h3>
+<p>One way to think about the distinction is: <strong>decentralized governance structure protects against attackers on the inside, and a decentralized implementation protects against powerful attackers on the outside ("censorship resistance")</strong>.</p>
+<p>First, some examples:</p>
 <p><br/></p>
 <table>
 <colgroup>
@@ -193,30 +183,142 @@
 </colgroup>
 <thead>
 <tr class="header">
-<th>Option</th>
-<th>Exchange-side risk</th>
-<th>User-side risk</th>
+<th></th>
+<th>Higher need for protection from inside</th>
+<th>Lower need for protection from inside</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>Custodial exchange (eg. Coinbase today)</td>
-<td>User funds may be lost if there is a problem on the exchange side</td>
-<td>Exchange can help recover account</td>
+<td><strong>Higher need for protection from outside</strong></td>
+<td>Stablecoins</td>
+<td>The Pirate Bay, Sci-Hub</td>
 </tr>
 <tr class="even">
-<td>Non-custodial exchange (eg. Uniswap today)</td>
-<td>User can withdraw even if exchange acts maliciously</td>
-<td>User funds may be lost if user screws up</td>
+<td><strong>Lower need for protection from outside</strong></td>
+<td>Regulated financial institutions</td>
+<td>Regular businesses</td>
 </tr>
 </tbody>
 </table>
 <p><br/></p>
-<p>Another important issue is cross-chain support: exchanges need to support many different chains, and systems like Plasma and validiums would need to have code written in different languages to support different platforms, and cannot be implemented at all on others (notably Bitcoin) in their current form. In the long-term future, this can hopefully be fixed with technological upgrades and standardization; in the short term, however, it's another argument in favor of custodial exchanges remaining custodial for now.</p>
-<h2 id="conclusions-the-future-of-better-exchanges">Conclusions: the future of better exchanges</h2>
-<p>In the short term, there are two clear "classes" of exchanges: custodial exchanges and non-custodial exchanges. Today, the latter category is just DEXes such as Uniswap, and in the future we may also see cryptographically "constrained" CEXes where user funds are held in something like a validium smart contract. We may also see half-custodial exchanges where we trust them with fiat but not cryptocurrency.</p>
-<p>Both types of exchanges will continue to exist, and the easiest backwards-compatible way to improve the safety of custodial exchanges is to add proof of reserve. This consists of a combination of proof of assets and proof of liabilities. There are technical challenges in making good protocols for both, but we can and should go as far as possible to make headway in both, and open-source the software and processes as much as possible so that all exchanges can benefit.</p>
-<p>In the longer-term future, my hope is that we move closer and closer to all exchanges being non-custodial, at least on the crypto side. Wallet recovery would exist, and there may need to be highly centralized recovery options for new users dealing with small amounts, as well as institutions that require such arrangements for legal reasons, but this can be done at the wallet layer rather than within the exchange itself. On the fiat side, movement between the traditional banking system and the crypto ecosystem could be done via cash in / cash out processes native to asset-backed stablecoins such as USDC. However, it will still take a while before we can fully get there.</p>
+<p><a href="https://thepiratebay.org/index.html">The Pirate Bay</a> and <a href="https://www.sci-hub.se/">Sci-Hub</a> are important case studies of something that is censorship-resistant, but does not need decentralization. Sci-Hub is largely run by one person, and if some part of Sci-Hub infrastructure gets taken down, she can simply move it somewhere else. The Sci-Hub URL has changed many times over the years. The Pirate Bay is a hybrid: it relies on BitTorrent, which <em>is</em> decentralized, but the Pirate Bay itself is a centralized convenience layer on top.</p>
+<p>The difference between these two examples and blockchain projects is that they do not attempt to protect their users against the platform itself. If Sci-Hub or The Pirate Bay wanted to harm their users, the worst they could do is either serve bad results or shut down - either of which would only cause minor inconvenience until their users switch to other alternatives that would inevitably pop up in their absence. They could also publish user IP addresses, but even if they did that the total harm to users would still be much lower than, say, stealing all the users' funds.</p>
+<p>Stablecoins are <em>not</em> like this. Stablecoins are trying to create stable <a href="https://nakamoto.com/credible-neutrality/">credibly neutral</a> global commercial infrastructure, and this demands both lack of dependence on a single centralized actor on the outside <em>and</em> protection against attackers from the inside. If a stablecoin's governance is poorly designed, an attack on the governance could steal billions of dollars from users.</p>
+<p>At the time of this writing, MakerDAO has <a href="https://daistats.com/#/">$7.8 billion</a> in collateral, over 17x the market cap of the profit-taking token, <a href="https://www.coingecko.com/en/coins/maker">MKR</a>. Hence, if governance was up to MKR holders with no safeguards, someone could buy up half the MKR, use that to manipulate the price oracles, and steal a large portion of the collateral for themselves. In fact, this <a href="https://indianexpress.com/article/technology/crypto/heres-how-an-attacker-drained-182-million-from-beanstalk-stablecoin-protocol-7875095/">actually happened with a smaller stablecoin</a>! It hasn't happened to MKR yet largely because the MKR holdings are still fairly concentrated, with the majority of the MKR held by a fairly small group that would not be willing to sell because they believe in the project. This is a fine model to get a stablecoin started, but not a good one for the long term. Hence, making decentralized stablecoins work long term requires innovating in decentralized governance that does not have these kinds of flaws.</p>
+<p>Two possible directions include:</p>
+<ul>
+<li>Some kind of <a href="https://vitalik.ca/general/2021/08/16/voting3.html">non-financialized governance</a>, or perhaps a bicameral hybrid where decisions need to be passed not just by token holders but also by some other class of user (eg. the Optimism <a href="https://community.optimism.io/docs/governance/">Citizens' House</a> or stETH holders as in the <a href="https://hackmd.io/@lido/BJKmFkM-i">Lido two-chamber proposal</a>)</li>
+<li><a href="https://ethresear.ch/t/a-not-quite-cryptoeconomic-decentralized-oracle/6453">Intentional friction</a>, making it so that certain kinds of decisions can only take effect after a delay long enough that users can see that something is going wrong and escape the system.</li>
+</ul>
+<p>There are many subtleties in making governance that effectively optimizes for robustness. If the system's robustness depends on pathways that are only activated in extreme edge cases, the system may even want to intentionally test those pathways once in a while to make sure that they work - much like the once-every-20-years rebuilding of <a href="https://theprepared.org/features-feed/ise-jingu-and-the-pyramid-of-enabling-technologies">Ise Jingu</a>. This aspect of decentralization for robustness continues to require more careful thought and development.</p>
+<h3 id="decentralization-for-efficiency">Decentralization for efficiency</h3>
+<p>Decentralization for efficiency is a different school of thought: <strong>decentralized governance structure is valuable because it can incorporate opinions from more diverse voices at different scales, and decentralized implementation is valuable because it can sometimes be more efficient and lower cost than traditional legal-system-based approaches</strong>.</p>
+<p>This implies a different <em>style</em> of decentralization. Governance decentralized for robustness emphasizes having a large number of decision-makers to ensure <em>alignment</em> with a pre-set goal, and <em>intentionally makes pivoting more difficult</em>. Governance decentralized for efficiency preserves the ability to act rapidly and pivot if needed, but tries to move decisions away from the top to avoid the organization becoming a sclerotic bureaucracy.</p>
+<center>
+<p><br/></p>
+<p><img src="https://vitalik.ca/images/excited/pods.png" style="display: block; margin-left: auto; margin-right: auto;"/></p>
+<p><small><i>Pod-based governance in Ukraine DAO. This style of governance improves efficiency by maximizing autonomy.</i></small></p>
+</center>
+<p>Decentralized implementations designed for robustness and decentralized implementations designed for efficiency are in one way similar: they both just involve putting assets into smart contracts. But decentralized implementations designed for efficiency are going to be much simpler: just a basic multisig will generally suffice.</p>
+<p>It's worth noting that "decentralizing for efficiency" is a weak argument for large-scale projects in the same wealthy country. But it's a stronger argument for very-small-scale projects, highly internationalized projects, and projects located in countries with inefficient institutions and weak rule of law. Many applications of "decentralizing for efficiency" probably <em>could</em> also be done on a central-bank-run chain run by a stable large country; I suspect that both decentralized approaches and centralized approaches are good enough, and it's the path-dependent question of which one becomes viable first that will determine which approach dominates.</p>
+<h3 id="decentralization-for-interoperability">Decentralization for interoperability</h3>
+<p>This is a fairly boring class of reasons to decentralize, but it's still important: <strong>it's easier and more secure for on-chain things to interact with other on-chain things, than with off-chain systems that would inevitably require an (attackable) bridge layer</strong>.</p>
+<p>If a large organization running on direct democracy holds 10,000 ETH in its reserves, that would be a decentralized governance decision, but it would not be a decentralized implementation: in practice, that country would have a few people managing the keys and that storage system could get attacked.</p>
+<p>There is also a governance angle to this: if a system provides services to <em>other</em> DAOs that are not capable of rapid change, it is better for that system to itself be incapable of rapid change, to avoid "rigidity mismatch" where a system's dependencies break and that system's rigidity renders it unable to adapt to the break.</p>
+<p>These three "theories of decentralization" can be put into a chart as follows:</p>
+<p><br/></p>
+<table>
+<colgroup>
+<col style="width: 33%"/>
+<col style="width: 33%"/>
+<col style="width: 33%"/>
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>Why decentralize governance structure</th>
+<th>Why decentralize implementation</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Decentralization for robustness</strong></td>
+<td>Defense against inside threats (eg. SBF)</td>
+<td>Defense against outside threats, and censorship resistance</td>
+</tr>
+<tr class="even">
+<td><strong>Decentralization for efficiency</strong></td>
+<td>Greater efficiency from accepting input from more voices and giving room for autonomy</td>
+<td>Smart contracts often more convenient than legal systems</td>
+</tr>
+<tr class="odd">
+<td><strong>Decentralization for interoperability</strong></td>
+<td>To be rigid enough to be safe to use by other rigid systems</td>
+<td>To more easily interact with other decentralized things</td>
+</tr>
+</tbody>
+</table>
+<p><br/></p>
+<h3 id="decentralization-and-fancy-new-governance-mechanisms">Decentralization and fancy new governance mechanisms</h3>
+<p>Over the last few decades, we've seen the development of a number of fancy new governance mechanisms:</p>
+<ul>
+<li><a href="https://vitalik.ca/general/2019/12/07/quadratic.html">Quadratic voting</a></li>
+<li><a href="https://vitalik.ca/general/2021/02/18/election.html">Futarchy</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Liquid_democracy">Liquid democracy</a></li>
+<li>Decentralized <em>conversation</em> tools like <a href="https://pol.is/">Pol.is</a></li>
+</ul>
+<p>These ideas are an important part of the DAO story, and they can be valuable for both robustness <em>and</em> efficiency. The case for quadratic voting relies on a mathematical argument that it makes the exactly correct tradeoff between giving space for stronger preferences to outcompete weaker but more popular preferences and not weighting stronger preferences (or wealthy actors) <em>too much</em>. But people who have used it have found that it can improve robustness too. Newer ideas, like <a href="https://ethresear.ch/t/pairwise-coordination-subsidies-a-new-quadratic-funding-design/5553">pairwise matching</a>, <em>intentionally</em> sacrifice mathematically provable optimality for robustness in situations where the mathematical model's assumptions break.</p>
+<p>These ideas, in addition to more "traditional" centuries-old ideas around multicameral architectures and intentional indirection and delays, are going to be an important part of the story in making DAOs more effective, though they will also find value in improving the efficiency of traditional organizations.</p>
+<h3 id="case-study-gitcoin-grants">Case study: Gitcoin Grants</h3>
+<p>We can analyze the different styles of decentralization through an interesting edge-case: Gitcoin Grants. Should Gitcoin Grants be an on-chain DAO, or should it just be a centralized org?</p>
+<p>Here are some possible arguments for Gitcoin Grants to be a DAO:</p>
+<ul>
+<li>It holds and deals with cryptocurrency, because most of its users and funders are Ethereum users</li>
+<li>Secure quadratic funding is best done on-chain (see next section on blockchain voting, and <a href="https://clr.fund/">implementation of on-chain QF here</a>), so you reduce security risks if the result of the vote feeds into the system directly</li>
+<li>It deals with communities all around the world, and so benefits from being <a href="https://nakamoto.com/credible-neutrality/">credibly neutral</a> and not centered around a single country.</li>
+<li>It benefits from being able to give its users confidence that it will still be around in five years, so that public goods funders can start projects now and hope to be rewarded later.</li>
+</ul>
+<p>These arguments lean toward decentralization for robustness and decentralization for interoperability of the superstructure, though the individual quadratic funding rounds are more in the "decentralization for efficiency" school of thought (the theory behind Gitcoin Grants is that quadratic funding is a more efficient way to fund public goods).</p>
+<p>If the robustness and interoperability arguments did <em>not</em> apply, then it probably would have been better to simply run Gitcoin Grants as a regular company. But they do apply, and so Gitcoin Grants being a DAO makes sense.</p>
+<p>There are plenty of other examples of this kind of argument applying, both for DAOs that people increasingly rely on for their day-to-day lives, and for "meta-DAOs" that provide services to <em>other</em> DAOs:</p>
+<ul>
+<li>Proof of humanity</li>
+<li><a href="https://kleros.io/">Kleros</a></li>
+<li><a href="https://chain.link/">Chainlink</a></li>
+<li>Stablecoins</li>
+<li>Blockchain layer 2 protocol governance</li>
+</ul>
+<p>I don't know enough about all of these systems to testify that they all <em>do</em> optimize for decentralization-for-robustness enough to satisfy my standards, but hopefully it should be obvious by now that they <em>should</em>.</p>
+<p><strong>The main thing that <em>does not</em> work well are DAOs that require pivoting ability that is in conflict with robustness, and that do not have a sufficient case to "decentralize for efficiency"</strong>. Large-scale companies that mainly interface with US users would be one example. When making a DAO, the first thing is to determine whether or not it is worth it to structure the project as a DAO, and the second thing is to determine whether it's targeting robustness or efficiency: if the former, deep thought into governance <em>design</em> is also required, and if the latter, then either it's innovating on governance via mechanisms like quadratic funding, or it should just be a multisig.</p>
+<h2 id="hybrid-applications">5. Hybrid applications</h2>
+<p>There are many applications that are not entirely on-chain, but that take advantage of both blockchains and other systems to improve their trust models.</p>
+<p><a href="https://vitalik.ca/general/2021/05/25/voting2.html">Voting</a> is an excellent example. High assurances of censorship resistance, auditability and privacy are all required, and systems like <a href="https://github.com/privacy-scaling-explorations/maci">MACI</a> effectively combine blockchains, ZK-SNARKs and a limited centralized (or M-of-N) layer for scalability and coercion resistance to achieve all of these guarantees. Votes are published to the blockchain, so users have a way independent of the voting system to ensure that their votes get included. But votes are encrypted, preserving privacy, and a ZK-SNARK-based solution is used to ensure that the final result is the correct computation of the votes.</p>
+<center>
+<p><br/></p>
+<p><img src="https://vitalik.ca/images/excited/maci2.png" style="display: block; margin-left: auto; margin-right: auto;"/></p>
+<p><small><i>Diagram of how MACI works, combining together blockchains for censorship resistance, encryption for privacy, and ZK-SNARKs to ensure the result is correct without compromising on the other goals.</i></small></p>
+</center>
+<p><br/></p>
+<p>Voting in existing national elections is already a high-assurance process, and it will take a long time before countries and citizens are comfortable with the security assurances of any electronic ways to vote, blockchain or otherwise. But technology like this <em>can</em> be valuable very soon in two other places:</p>
+<ol type="1">
+<li>Increasing the assurance of voting processes that already happen electronically today (eg. social media votes, polls, petitions)</li>
+<li>Creating new forms of voting that allow citizens or members of groups to give rapid feedback, and baking high assurance into those from the start</li>
+</ol>
+<p>Going beyond voting, there is an entire field of potential "auditable centralized services" that could be well-served by some form of hybrid off-chain <a href="https://ethereum.org/en/developers/docs/scaling/validium/">validium</a> architecture. The easiest example of this is <a href="https://vitalik.ca/general/2022/11/19/proof_of_solvency.html">proof of solvency for exchanges</a>, but there are plenty of other possible examples:</p>
+<ul>
+<li>Government registries</li>
+<li>Corporate accounting</li>
+<li>Games (see <a href="https://zkga.me/">Dark Forest</a> for an example)</li>
+<li>Supply chain applications</li>
+<li>Tracking access authorization</li>
+<li>...</li>
+</ul>
+<p>As we go further down the list, we get to use cases that are lower and lower value, but it is important to remember that these use cases are also quite low cost. Validiums do not require publishing everything on-chain. Rather, they can be simple wrappers around existing pieces of software that maintain a Merkle root (or other commitment) of the database and occasionally publish the root on-chain along with a SNARK proving that it was updated correctly. This is a strict improvement over existing systems, because it opens the door for cross-institutional proofs and public auditing.</p>
+<h2 id="so-how-do-we-get-there">So how do we get there?</h2>
+<p>Many of these applications are being built today, though many of these applications are seeing only limited usage because of the limitations of present-day technology. Blockchains are not scalable, transactions until recently took a fairly long time to reliably get included on the chain, and present-day wallets give users an uncomfortable choice between low convenience and low security. In the longer term, many of these applications will need to overcome the specter of privacy issues.</p>
+<p>These are all problems that can be solved, and there is a strong drive to solve them. The FTX collapse has shown many people the importance of truly decentralized solutions to holding funds, and the rise of <a href="https://eips.ethereum.org/EIPS/eip-4337">ERC-4337</a> and account abstraction wallets gives us an opportunity to create such alternatives. Rollup technology is rapidly progressing to solve scalability, and transactions already get included much more quickly on-chain than they did three years ago.</p>
+<p>But what is also important is to be intentional about the application ecosystem itself. Many of the more stable and boring applications do not get built because there is less excitement and less short-term profit to be earned around them: the LUNA market cap got to over $30 billion, while stablecoins striving for robustness and simplicity often get largely ignored for years. Non-financial applications often have no hope of earning $30 billion because they do not have a token at all. But it is these applications that will be most valuable for the ecosystem in the long term, and that will bring the most lasting value to both their users and those who build and support them.</p>
 </meta></div>
 </body>
 </html>

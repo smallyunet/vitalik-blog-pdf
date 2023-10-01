@@ -42,260 +42,113 @@
   checkColorScheme();
 </script>
 <meta content="summary" name="twitter:card">
-<meta content="An Incomplete Guide to Rollups" name="twitter:title"/>
+<meta content="Why we need wide adoption of social recovery wallets" name="twitter:title"/>
 <meta content="http://vitalik.ca/images/icon.png" name="twitter:image"/>
 <br/>
-<h1 style="margin-bottom:7px"> An Incomplete Guide to Rollups </h1>
-<small style="float:left; color: #888"> 2021 Jan 05 </small>
+<h1 style="margin-bottom:7px"> Why we need wide adoption of social recovery wallets </h1>
+<small style="float:left; color: #888"> 2021 Jan 11 </small>
 <small style="float:right; color: #888"><a href="../../../../index.html">See all posts</a></small>
 <br/> <br/> <br/>
-<title> An Incomplete Guide to Rollups </title>
-<p>Rollups are all the rage in the Ethereum community, and are <a href="https://ethereum-magicians.org/t/a-rollup-centric-ethereum-roadmap/4698">poised to be the key scalability solution</a> for Ethereum for the foreseeable future. But what exactly is this technology, what can you expect from it and how will you be able to use it? This post will attempt to answer some of those key questions.</p>
-<h2 id="background-what-is-layer-1-and-layer-2-scaling">Background: what is layer-1 and layer-2 scaling?</h2>
-<p><strong>There are two ways to scale a blockchain ecosystem. First, you can make the blockchain itself have a higher transaction capacity</strong>. The main challenge with this technique is that blockchains with "bigger blocks" are inherently more difficult to verify and likely to become more centralized. To avoid such risks, developers can either increase the efficiency of client software or, more sustainably, use techniques <a href="https://eth.wiki/sharding/Sharding-FAQs">such as sharding</a> to allow the work of building and verifying the chain to be split up across many nodes; the <a href="https://ethereum.org/en/eth2">effort known as "eth2"</a> is currently building this upgrade to Ethereum.</p>
-<p><strong>Second, you can change the way that you use the blockchain</strong>. Instead of putting <em>all</em> activity on the blockchain directly, users perform the bulk of their activity off-chain in a "layer 2" protocol. There is a smart contract on-chain, which only has two tasks: processing deposits and withdrawals, and verifying proofs that everything happening off-chain is following the rules. There are multiple ways to do these proofs, but they all share the property that verifying the proofs on-chain is much cheaper than doing the original computation off-chain.</p>
-<h2 id="state-channels-vs-plasma-vs-rollups">State channels vs plasma vs rollups</h2>
-<p>The three major types of layer-2 scaling are <a href="https://statechannels.org/">state channels</a>, <a href="http://plasma.io/">Plasma</a> and rollups. They are three different paradigms, with different strengths and weaknesses, and at this point we are fairly confident that all layer-2 scaling falls into roughly these three categories (though naming controversies exist at the edges, eg. see <a href="https://medium.com/starkware/volition-and-the-emerging-data-availability-spectrum-87e8bfa09bb">"validium"</a>).</p>
-<h3 id="how-do-channels-work">How do channels work?</h3>
-<p><em>See also: <a href="https://www.jeffcoleman.ca/state-channels">https://www.jeffcoleman.ca/state-channels</a> and <a href="https://statechannels.org/">statechannels.org</a></em></p>
-<p>Imagine that Alice is offering an internet connection to Bob, in exchange for Bob paying her $0.001 per megabyte. Instead of making a transaction for each payment, Alice and Bob use the following layer-2 scheme.</p>
-<p>First, Bob puts $1 (or some ETH or stablecoin equivalent) into a smart contract. To make his first payment to Alice, Bob signs a "ticket" (an off-chain message), that simply says "$0.001", and sends it to Alice. To make his second payment, Bob would sign another ticket that says "$0.002", and send it to Alice. And so on and so forth for as many payments as needed. When Alice and Bob are done transacting, Alice can publish the highest-value ticket to chain, wrapped in another signature from herself. The smart contract verifies Alice and Bob's signatures, pays Alice the amount on Bob's ticket and returns the rest to Bob. If Alice is unwilling to close the channel (due to malice or technical failure), Bob can initiate a withdrawal period (eg. 7 days); if Alice does not provide a ticket within that time, then Bob gets all his money back.</p>
-<p>This technique is powerful: it can be adjusted to handle bidirectional payments, smart contract relationships (eg. Alice and Bob making a financial contract inside the channel), and composition (if Alice and Bob have an open channel and so do Bob and Charlie, Alice can trustlessly interact with Charlie). But there are limits to what channels can do. Channels cannot be used to send funds off-chain to people who are not yet participants. Channels cannot be used to represent objects that do not have a clear logical owner (eg. Uniswap). And channels, especially if used to do things more complex than simple recurring payments, require a large amount of capital to be locked up.</p>
-<h3 id="how-does-plasma-work">How does plasma work?</h3>
-<p><em>See also: the <a href="http://plasma.io/plasma-deprecated.pdf">original Plasma paper</a>, and <a href="https://ethresear.ch/t/plasma-cash-plasma-with-much-less-per-user-data-checking/1298">Plasma Cash</a>.</em></p>
-<p>To deposit an asset, a user sends it to the smart contract managing the Plasma chain. The Plasma chain assigns that asset a new unique ID (eg. 537). Each Plasma chain has an <em>operator</em> (this could be a centralized actor, or a multisig, or something more complex like PoS or DPoS). Every interval (this could be 15 seconds, or an hour, or anything in between), the operator generates a "batch" consisting of all of the Plasma transactions they have received off-chain. They generate a Merkle tree, where at each index <code>X</code> in the tree, there is a transaction transferring asset ID <code>X</code> if such a transaction exists, and otherwise that leaf is zero. They publish the Merkle root of this tree to chain. They also send the Merkle branch of each index <code>X</code> to the current owner of that asset. To withdraw an asset, a user publishes the Merkle branch of the most recent transaction sending the asset to them. The contract starts a challenge period, during which anyone can try to use other Merkle branches to invalidate the exit by proving that either (i) the sender did not own the asset at the time they sent it, or (ii) they sent the asset to someone else at some later point in time. If no one proves that the exit is fraudulent for (eg.) 7 days, the user can withdraw the asset.</p>
-<p>Plasma provides stronger properties than channels: you can send assets to participants who were never part of the system, and the capital requirements are much lower. But it comes at a cost: channels require no data whatsoever to go on chain during "normal operation", but Plasma requires each chain to publish one hash at regular intervals. Additionally, Plasma transfers are not instant: you have to wait for the interval to end and for the block to be published.</p>
-<p>Additionally, Plasma and channels share a key weakness in common: the game theory behind why they are secure relies on the idea that each object controlled by both systems has some logical "owner". If that owner does not care about their asset, then an "invalid" outcome involving that asset may result. This is okay for many applications, but it is a deal breaker for many others (eg. Uniswap). Even systems where the state of an object can be changed without the owner's consent (eg. account-based systems, where you can <em>increase</em> someone's balance without their consent) do not work well with Plasma. This all means that a large amount of "application-specific reasoning" is required in any realistic plasma or channels deployment, and it is not possible to make a plasma or channel system that just simulates the full ethereum environment (or "the EVM"). To get around this problem, we get to... rollups.</p>
-<h3 id="rollups">Rollups</h3>
-<p><em>See also: <a href="https://docs.ethhub.io/ethereum-roadmap/layer-2-scaling/optimistic_rollups/">EthHub on optimistic rollups</a> and <a href="https://docs.ethhub.io/ethereum-roadmap/layer-2-scaling/zk-rollups/">ZK rollups</a>.</em></p>
-<p>Plasma and channels are "full" layer 2 schemes, in that they try to move both data <em>and</em> computation off-chain. However, <a href="https://www.youtube.com/watch?v=OJT_fR7wexw">fundamental game theory issues around data availability</a> means that it is impossible to safely do this for all applications. Plasma and channels get around this by relying on an explicit notion of owners, but this prevents them from being fully general. Rollups, on the other hand, are a "hybrid" layer 2 scheme. <strong>Rollups move computation (and state storage) off-chain, but keep some data per transaction on-chain</strong>. To improve efficiency, they use a whole host of fancy compression tricks to <em>replace data with computation</em> wherever possible. The result is a system where scalability is still limited by the data bandwidth of the underlying blockchain, but at a very favorable ratio: whereas an Ethereum base-layer ERC20 token transfer costs ~45000 gas, an ERC20 token transfer in a rollup takes up 16 bytes of on-chain space and costs under 300 gas.</p>
-<p>The fact that data is on-chain is key (note: putting data "on IPFS" does <em>not</em> work, because IPFS does not provide <em>consensus</em> on whether or not any given piece of data is available; the data <em>must</em> go on a blockchain). Putting data on-chain and having consensus on that fact allows anyone to locally process all the operations in the rollup if they wish to, allowing them to detect fraud, initiate withdrawals, or personally start producing transaction batches. The lack of data availability issues means that a malicious or offline operator can do <em>even less</em> harm (eg. they cannot cause a 1 week delay), opening up a much larger design space for who has the right to publish batches and making rollups vastly easier to reason about. And most importantly, the lack of data availability issues means that there is no longer any need to map assets to owners, leading to the key reason why the Ethereum community is so much more excited about rollups than previous forms of layer 2 scaling: <strong>rollups are fully general-purpose, and one can even run an EVM inside a rollup, allowing existing Ethereum applications to migrate to rollups with almost no need to write any new code</strong>.</p>
-<h2 id="ok-so-how-exactly-does-a-rollup-work">OK, so how exactly does a rollup work?</h2>
-<p>There is a smart contract on-chain which maintains a <strong>state root</strong>: the Merkle root of the state of the rollup (meaning, the account balances, contract code, etc, that are "inside" the rollup).</p>
-<br/>
+<title> Why we need wide adoption of social recovery wallets </title>
+<p><em>Special thanks to Itamar Lesuisse from Argent and Daniel Wang from Loopring for feedback.</em></p>
+<p>One of the great challenges with making cryptocurrency and blockchain applications usable for average users is security: how do we prevent users' funds from being lost or stolen? Losses and thefts are a serious issue, often costing innocent blockchain users thousands of dollars or even in some cases the majority of their entire net worth.</p>
+<p>There have been many solutions proposed over the years: paper wallets, hardware wallets, and my own one-time favorite: <a href="https://bitcoinmagazine.com/articles/bitcoin-self-defense-part-i-wallet-protection-1368758841">multisig wallets</a>. And indeed they have led to significant improvements in security. However, these solutions have all suffered from various defects - sometimes providing far less extra protection against theft and loss than is actually needed, sometimes being cumbersome and difficult to use leading to very low adoption, and sometimes both. But recently, there is an emerging better alternative: a newer type of smart contract wallet called a <em>social recovery wallet</em>. These wallets can potentially provide a high level of security and much better usability than previous options, but there is still a way to go before they can be easily and widely deployed. <strong>This post will go through what social recovery wallets are, why they matter, and how we can and should move toward much broader adoption of them throughout the ecosystem.</strong></p>
+<h3 id="wallet-security-is-a-really-big-problem">Wallet security is a really big problem</h3>
+<p>Wallet security issues have been a thorn in the side of the blockchain ecosystem almost since the beginning. Cryptocurrency losses and thefts were rampant even back in 2011 when Bitcoin was almost the only cryptocurrency out there; indeed, in my pre-Ethereum role as a cofounder and writer of <a href="https://bitcoinmagazine.com">Bitcoin Magazine</a>, I wrote an entire article detailing the horrors of hacks and losses and thefts that were already happening at the time.</p>
+<p>Here is one sample:</p>
+<blockquote>
+<p>Last night around 9PM PDT, I clicked a link to go to CoinChat[.]freetzi[.]com – and I was prompted to run java. I did (thinking this was a legitimate chatoom), and nothing happened. I closed the window and thought nothing of it. I opened my bitcoin-qt wallet approx 14 minutes later, and saw a transaction that I did NOT approve go to wallet 1Es3QVvKN1qA2p6me7jLCVMZpQXVXWPNTC for almost my entire wallet...</p>
+</blockquote>
+<p>This person's losses were 2.07 BTC, worth $300 at the time, and over $70000 today. Here's another one:</p>
+<blockquote>
+<p>In June 2011, the Bitcointalk member "allinvain" lost 25,000 BTC (worth $500,000 at the time) after an unknown intruder somehow gained direct access to his computer. The attacker was able to access allinvain's wallet.dat file, and quickly empty out the wallet – either by sending a transaction from allinvain's computer itself, or by simply uploading the wallet.dat file and emptying it on his own machine.</p>
+</blockquote>
+<p>In present-day value, that's a loss of <em>nearly one billion dollars</em>. But theft is not the only concern; there are also losses from losing one's private keys. Here's Stefan Thomas:</p>
+<blockquote>
+<p>Bitcoin developer Stefan Thomas had three backups of his wallet – an encrypted USB stick, a Dropbox account and a Virtualbox virtual machine. However, he managed to erase two of them and forget the password to the third, forever losing access to 7,000 BTC (worth $125,000 at the time). Thomas's reaction: "[I'm] pretty dedicated to creating better clients since then."</p>
+</blockquote>
+<p>One analysis of the Bitcoin ecosystem suggests that <a href="https://news.bitcoin.com/analyst-1500-bitcoins-lost-every-day-less-than-14-million-coins-will-ever-circulate/">1500 BTC may be lost every day</a> - over ten times more than what Bitcoin users <a href="https://ycharts.com/indicators/bitcoin_total_transaction_fees_per_day">spend on transaction fees</a>, and over the years adding up to as much as <a href="https://www.investopedia.com/news/20-all-btc-lost-unrecoverable-study-shows/">20% of the total supply</a>. The stories and the numbers alike point to the same inescapable truth: <strong>the importance of the wallet security problem is great, and it should not be underestimated</strong>.</p>
+<p>It's easy to see the social and psychological reasons why wallet security is easy to underestimate: people naturally worry about appearing uncareful or dumb in front of an always judgemental public, and so many keep their experiences with their funds getting hacked to themselves. Loss of funds is even worse, as there is a pervasive (though in my opinion very incorrect) feeling that "there is no one to blame but yourself". <strong>But the reality is that <em>the whole point of digital technology</em>, blockchains included, is to make it easier for humans to engage in very complicated tasks without having to exert extreme mental effort or live in constant fear of making mistakes.</strong> An ecosystem whose only answer to losses and thefts is a combination of 12-step tutorials, not-very-secure half-measures and the not-so-occasional semi-sarcastic "sorry for your loss" is going to have a hard time getting broad adoption.</p>
+<p>So solutions that reduce the quantity of losses and thefts taking place, without requiring all cryptocurrency users to turn personal security into a full-time hobby, are highly valuable for the industry.</p>
+<h3 id="hardware-wallets-alone-are-not-good-enough">Hardware wallets alone are not good enough</h3>
+<p>Hardware wallets are often touted as the best-in-class technology for cryptocurrency funds management. A hardware wallet is a specialized hardware device which can be connected to your computer or phone (eg. through USB), and which contains a specialized chip that can only generate private keys and sign transactions. A transaction would be initiated on your computer or phone, must be confirmed on the hardware wallet before it can be sent. The private key stays on your hardware wallet, so an attacker that hacks into your computer or phone could <em>not</em> drain the funds.</p>
+<p>Hardware wallets are a significant improvement, and they certainly would have protected the Java chatroom victim, but they are not perfect. I see two main problems with hardware wallets:</p>
+<ul>
+<li><strong>Supply chain attacks</strong>: if you buy a hardware wallet, you are trusting a number of actors that were involved in producing it - the company that designed the wallet, the factory that produced it, and everyone involved in shipping it who could have replaced it with a fake. Hardware wallets are potentially a magnet for such attacks: the ratio of funds stolen to number of devices compromised is very high. To their credit, hardware wallet manufacturers such as Ledger have put in many safeguards to protect against these risks, but some risks still remain. A hardware device fundamentally cannot be audited the same way a piece of open source software can.</li>
+<li><strong>Still a single point of failure</strong>: if someone steals your hardware wallet right after they stand behind your shoulder and catch you typing in the PIN, they can steal your funds. If you lose your hardware wallet, then you lose your funds - unless the hardware wallet generates and outputs a backup at setup time, but as we will see those have problems of their own...</li>
+</ul>
+<h3 id="mnemonic-phrases-are-not-good-enough">Mnemonic phrases are not good enough</h3>
+<p>Many wallets, hardware and software alike, have a setup procedure during which they output a <em>mnemonic phrase</em>, which is a human-readable 12 to 24-word encoding of the wallet's root private key. A mnemonic phrase looks like this:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a aria-hidden="true" href="#cb1-1"></a> vote    dance   <span class="bu">type</span>    subject valley  fall    usage   silk</span>
+<span id="cb1-2"><a aria-hidden="true" href="#cb1-2"></a> essay   lunch   endorse lunar   obvious race    ribbon  key</span>
+<span id="cb1-3"><a aria-hidden="true" href="#cb1-3"></a> already arrow   enable  drama   keen    survey  lesson  cruel</span></code></pre></div>
+<p>If you lose your wallet but you have the mnemonic phrase, you can input the phrase when setting up a new wallet to recover your account, as the mnemonic phrase contains the root key from which all of your other keys can be generated.</p>
+<p>Mnemonic phrases are good for protecting against loss, but they do nothing against theft. Even worse, they add a <em>new</em> vector for theft: if you have the standard hardware wallet + mnemonic backup combo, then someone stealing <em>either</em> your hardware wallet + PIN <em>or</em> your mnemonic backup can steal your funds. Furthermore, maintaining a mnemonic phrase and not accidentally throwing it away is itself a non-trivial mental effort.</p>
+<p>The problems with theft can be alleviated if you split the phrase in half and give half to your friend, but (i) almost no one actually promotes this, (ii) there are security issues, as if the phrase is short (128 bits) then a sophisticated and motivated attacker who steals one piece may be able to brute-force through all <span class="math inline">\(2^{64}\)</span> possible combinations to find the other, and (iii) it increases the mental overhead even further.</p>
+<h3 id="so-what-do-we-need">So what do we need?</h3>
+<p>What we need is a wallet design which satisfies three key criteria:</p>
+<ul>
+<li><strong>No single point of failure</strong>: there is no single thing (and ideally, no collection of things which travel together) which, if stolen, can give an attacker access to your funds, or if lost, can deny you access to your funds.</li>
+<li><strong>Low mental overhead</strong>: as much as possible, it should not require users to learn strange new habits or exert mental effort to always remember to follow certain patterns of behavior.</li>
+<li><strong>Maximum ease of transacting</strong>: most normal activities should not require much more effort than they do in regular wallets (eg. Status, Metamask...)</li>
+</ul>
+<h3 id="multisig-is-good">Multisig is good!</h3>
+<p>The best-in-class technology for solving these problems <a href="https://bitcoinmagazine.com/articles/multisig-revolution-incomplete-1406578252">back in 2013</a> was multisig. You could have a wallet that has three keys, where any two of them are needed to send a transaction.</p>
 <center>
-<img class="padded" src="https://vitalik.ca/images/rollup-files/diag1.png" style="display: block; margin-left: auto; margin-right: auto;"/>
+<img class="padded" src="https://vitalik.ca/images/social-recovery-files/diag1.png" style="display: block; margin-left: auto; margin-right: auto;"/>
 </center>
 <p><br/></p>
-<p>Anyone can publish a <strong>batch</strong>, a collection of transactions in a highly compressed form together with the previous state root and the new state root (the Merkle root <em>after</em> processing the transactions). The contract checks that the previous state root in the batch matches its current state root; if it does, it switches the state root to the new state root.</p>
-<br/>
-<center>
-<img class="padded" src="https://vitalik.ca/images/rollup-files/diag2.png" style="display: block; margin-left: auto; margin-right: auto;"/>
-</center>
-<p><br/></p>
-<p>To support depositing and withdrawing, we add the ability to have transactions whose input or output is "outside" the rollup state. If a batch has inputs from the outside, the transaction submitting the batch needs to also transfer these assets to the rollup contract. If a batch has outputs to the outside, then upon processing the batch the smart contract initiates those withdrawals.</p>
-<p>And that's it! Except for one major detail: <strong>how to do know that the post-state roots in the batches are correct?</strong> If someone can submit a batch with any post-state root with no consequences, they could just transfer all the coins inside the rollup to themselves. This question is key because there are two very different families of solutions to the problem, and these two families of solutions lead to the two flavors of rollups.</p>
-<h3 id="optimistic-rollups-vs-zk-rollups">Optimistic rollups vs ZK rollups</h3>
-<p>The two types of rollups are:</p>
+<p>This technology was originally developed within the Bitcoin ecosystem, but excellent multisig wallets (eg. see <a href="https://gnosis-safe.io/">Gnosis Safe</a>) now exist for Ethereum too. Multisig wallets have been highly successful within organizations: the Ethereum Foundation uses a 4-of-7 multisig wallet to store <a href="https://etherscan.io/address/0xde0b295669a9fd93d5f28d9ec85e40f4cb697bae">its funds</a>, as do many other orgs in the Ethereum ecosystem.</p>
+<p>For a multisig wallet to hold the funds for an <em>individual</em>, the main challenge is: who holds the funds, and how are transactions approved? The most common formula is some variant of "two easily accessible, but separate, keys, held by you (eg. laptop and phone) and a third more secure but less accessible a backup, held offline or by a friend or institution".</p>
+<p>This is reasonably secure: there is no single device that can be lost or stolen that would lead to you losing access to your funds. But the security is far from perfect: if you can steal someone's laptop, it's often not that hard to steal their phone as well. The usability is also a challenge, as every transaction now requires two confirmations with two devices.</p>
+<h3 id="social-recovery-is-better">Social recovery is better</h3>
+<p>This gets us to my preferred method for securing a wallet: social recovery. A social recovery system works as follows:</p>
 <ol type="1">
-<li><strong>Optimistic rollups</strong>, which use <strong>fraud proofs</strong>: the rollup contract keeps track of its entire history of state roots and the hash of each batch. If anyone discovers that one batch had an incorrect post-state root, they can publish a proof to chain, proving that the batch was computed incorrectly. The contract verifies the proof, and reverts that batch and all batches after it.</li>
-<li><strong>ZK rollups</strong>, which use <strong>validity proofs</strong>: every batch includes a cryptographic proof called a ZK-SNARK (eg. using the <a href="https://vitalik.ca/general/2019/09/22/plonk.html">PLONK</a> protocol), which proves that the post-state root is the correct result of executing the batch. No matter how large the computation, the proof can be very quickly verified on-chain.</li>
+<li>There is a single "signing key" that can be used to approve transactions</li>
+<li>There is a set of at least 3 (or a much higher number) of "guardians", of which a majority can cooperate to change the signing key of the account.</li>
 </ol>
-<p>There are complex tradeoffs between the two flavors of rollups:</p>
-<table>
-<colgroup>
-<col style="width: 33%"/>
-<col style="width: 33%"/>
-<col style="width: 33%"/>
-</colgroup>
-<thead>
-<tr class="header">
-<th>Property</th>
-<th>Optimistic rollups</th>
-<th>ZK rollups</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Fixed gas cost per batch</td>
-<td><strong>~40,000</strong> (a lightweight transaction that mainly just changes the value of the state root)</td>
-<td>~500,000 (verification of a ZK-SNARK is quite computationally intensive)</td>
-</tr>
-<tr class="even">
-<td>Withdrawal period</td>
-<td>~1 week (withdrawals need to be delayed to give time for someone to publish a fraud proof and cancel the withdrawal if it is fraudulent)</td>
-<td><strong>Very fast</strong> (just wait for the next batch)</td>
-</tr>
-<tr class="odd">
-<td>Complexity of technology</td>
-<td><strong>Low</strong></td>
-<td>High (ZK-SNARKs are very new and mathematically complex technology)</td>
-</tr>
-<tr class="even">
-<td>Generalizability</td>
-<td><strong>Easier</strong> (general-purpose EVM rollups are already close to mainnet)</td>
-<td>Harder (ZK-SNARK proving general-purpose EVM execution is much harder than proving simple computations, though there are efforts (eg. <a href="https://medium.com/starkware/hello-cairo-3cb43b13b209">Cairo</a>) working to improve on this)</td>
-</tr>
-<tr class="odd">
-<td>Per-transaction on-chain gas costs</td>
-<td>Higher</td>
-<td><strong>Lower</strong> (if data in a transaction is only used to verify, and not to cause state changes, then this data can be left out, whereas in an optimistic rollup it would need to be published in case it needs to be checked in a fraud proof)</td>
-</tr>
-<tr class="even">
-<td>Off-chain computation costs</td>
-<td><strong>Lower</strong> (though there is more need for many full nodes to redo the computation)</td>
-<td>Higher (ZK-SNARK proving especially for general-purpose computation can be expensive, potentially many thousands of times more expensive than running the computation directly)</td>
-</tr>
-</tbody>
-</table>
-<p>In general, my own view is that in the short term, optimistic rollups are likely to win out for general-purpose EVM computation and ZK rollups are likely to win out for simple payments, exchange and other application-specific use cases, but in the medium to long term ZK rollups will win out in all use cases as ZK-SNARK technology improves.</p>
-<h3 id="anatomy-of-a-fraud-proof">Anatomy of a fraud proof</h3>
-<p>The security of an optimistic rollup depends on the idea that if someone publishes an invalid batch into the rollup, <em>anyone else</em> who was keeping up with the chain and detected the fraud can publish a fraud proof, proving to the contract that that batch is invalid and should be reverted.</p>
-<br/>
+<p>The signing key has the ability to add or remove guardians, though only after a delay (often 1-3 days).</p>
 <center>
-<img class="padded" src="https://vitalik.ca/images/rollup-files/tree.png" style="display: block; margin-left: auto; margin-right: auto;"/>
+<img class="padded" src="https://vitalik.ca/images/social-recovery-files/diag2.png" style="display: block; margin-left: auto; margin-right: auto;"/>
 </center>
 <p><br/></p>
-<p>A fraud proof claiming that a batch was invalid would contain the data in green: the batch itself (which could be checked against a hash stored on chain) and the parts of the Merkle tree needed to prove just the specific accounts that were read and/or modified by the batch. The nodes in the tree in yellow can be reconstructed from the nodes in green and so do not need to be provided. This data is sufficient to execute the batch and compute the post-state root (note that this is exactly the same as how <a href="https://ethresear.ch/t/the-stateless-client-concept/172">stateless clients</a> verify individual blocks). If the computed post-state root and the provided post-state root in the batch are not the same, then the batch is fraudulent.</p>
-<p>It is guaranteed that if a batch was constructed incorrectly, <em>and all previous batches were constructed correctly</em>, then it is possible to create a fraud proof showing the the batch was constructed incorrectly. Note the claim about previous batches: if there was more than one invalid batch published to the rollup, then it is best to try to prove the earliest one invalid. It is also, of course, guaranteed that if a batch was constructed correctly, then it is never possible to create a fraud proof showing that the batch is invalid.</p>
-<h3 id="how-does-compression-work">How does compression work?</h3>
-<p>A simple Ethereum transaction (to send ETH) takes ~110 bytes. An ETH transfer on a rollup, however, takes only ~12 bytes:</p>
-<table>
-<thead>
-<tr class="header">
-<th>Parameter</th>
-<th>Ethereum</th>
-<th>Rollup</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Nonce</td>
-<td>~3</td>
-<td>0</td>
-</tr>
-<tr class="even">
-<td>Gasprice</td>
-<td>~8</td>
-<td>0-0.5</td>
-</tr>
-<tr class="odd">
-<td>Gas</td>
-<td>3</td>
-<td>0-0.5</td>
-</tr>
-<tr class="even">
-<td>To</td>
-<td>21</td>
-<td>4</td>
-</tr>
-<tr class="odd">
-<td>Value</td>
-<td>~9</td>
-<td>~3</td>
-</tr>
-<tr class="even">
-<td>Signature</td>
-<td>~68 (2 + 33 + 33)</td>
-<td>~0.5</td>
-</tr>
-<tr class="odd">
-<td>From</td>
-<td>0 (recovered from sig)</td>
-<td>4</td>
-</tr>
-<tr class="even">
-<td>Total</td>
-<td>~112</td>
-<td>~12</td>
-</tr>
-</tbody>
-</table>
-<p>Part of this is simply superior encoding: Ethereum's RLP wastes 1 byte per value on the length of each value. But there are also some very clever compression tricks that are going on:</p>
+<p>Under all normal circumstances, the user can simply use their social recovery wallet like a regular wallet, signing messages with their signing key so that each transaction signed can fly off with a single confirmation click much like it would in a "traditional" wallet like Metamask.</p>
+<p>If a user <em>loses</em> their signing key, that is when the social recovery functionality would kick in. The user can simply reach out to their guardians and ask them to sign a special transaction to change the signing pubkey registered in the wallet contract to a new one. This is easy: they can simply go to a webpage such as <a href="https://security.loopring.io/">security.loopring.io</a>, sign in, see a recovery request and sign it. About as easy for each guardian as making a Uniswap trade.</p>
+<p>There are many possible choices for whom to select as a guardian. The three most common choices are:</p>
 <ul>
-<li><strong>Nonce</strong>: the purpose of this parameter is to prevent replays. If the current nonce of an account is 5, the next transaction from that account must have nonce 5, but once the transaction is processed the nonce in the account will be incremented to 6 so the transaction cannot be processed again. In the rollup, we can omit the nonce entirely, because we just recover the nonce from the pre-state; if someone tries replaying a transaction with an earlier nonce, the signature would fail to verify, as the signature would be checked against data that contains the new higher nonce.</li>
-<li><strong>Gasprice</strong>: we can allow users to pay with a fixed range of gasprices, eg. a choice of 16 consecutive powers of two. Alternatively, we could just have a fixed fee level in each batch, or even move gas payment outside the rollup protocol entirely and have transactors pay batch creators for inclusion through a channel.</li>
-<li><strong>Gas</strong>: we could similarly restrict the total gas to a choice of consecutive powers of two. Alternatively, we could just have a gas limit only at the batch level.</li>
-<li><strong>To</strong>: we can replace the 20-byte address with an <em>index</em> (eg. if an address is the 4527th address added to the tree, we just use the index 4527 to refer to it. We would add a subtree to the state to store the mapping of indices to addresses).</li>
-<li><strong>Value</strong>: we can store value in scientific notation. In most cases, transfers only need 1-3 significant digits.</li>
-<li><strong>Signature</strong>: we can use <a href="https://ethresear.ch/t/pragmatic-signature-aggregation-with-bls/2105">BLS aggregate signatures</a>, which allows many signatures to be aggregated into a single ~32-96 byte (depending on protocol) signature. This signature can then be checked against the entire set of messages and senders in a batch all at once. The ~0.5 in the table represents the fact that there is a limit on how many signatures can be combined in an aggregate that can be verified in a single block, and so large batches would need one signature per ~100 transactions.</li>
+<li>Other devices (or paper mnemonics) owned by the wallet holder themselves</li>
+<li>Friends and family members</li>
+<li>Institutions, which would sign a recovery message if they get a confirmation of your phone number or email or perhaps in high value cases verify you personally by video call</li>
 </ul>
-<p>One important compression trick that is specific to ZK rollups is that if a part of a transaction is only used for verification, and is not relevant to computing the state update, then that part can be left off-chain. This cannot be done in an optimistic rollup because that data would still need to be included on-chain in case it needs to be later checked in a fraud proof, whereas in a ZK rollup the SNARK proving correctness of the batch already proves that any data needed for verification was provided. An important example of this is privacy-preserving rollups: in an optimistic rollup the ~500 byte ZK-SNARK used for privacy in each transaction needs to go on chain, whereas in a ZK rollup the ZK-SNARK covering the entire batch already leaves no doubt that the "inner" ZK-SNARKs are valid.</p>
-<p>These compression tricks are key to the scalability of rollups; without them, rollups would be perhaps only a ~10x improvement on the scalability of the base chain (though there are some specific computation-heavy applications where even simple rollups are powerful), whereas with compression tricks the scaling factor can go over 100x for almost all applications.</p>
-<h3 id="who-can-submit-a-batch">Who can submit a batch?</h3>
-<p>There are a number of schools of thought for who can submit a batch in an optimistic or ZK rollup. Generally, everyone agrees that in order to be able to submit a batch, a user must put down a large deposit; if that user ever submits a fraudulent batch (eg. with an invalid state root), that deposit would be part burned and part given as a reward to the fraud prover. But beyond that, there are many possibilities:</p>
-<ul>
-<li><strong>Total anarchy</strong>: anyone can submit a batch at any time. This is the simplest approach, but it has some important drawbacks. Particularly, there is a risk that multiple participants will generate and attempt to submit batches in parallel, and only one of those batches can be successfully included. This leads to a large amount of wasted effort in generating proofs and/or wasted gas in publishing batches to chain.</li>
-<li><strong>Centralized sequencer</strong>: there is a single actor, the <strong>sequencer</strong>, who can submit batches (with an exception for withdrawals: the usual technique is that a user can first submit a withdrawal request, and then if the sequencer does not process that withdrawal in the next batch, then the user can submit a single-operation batch themselves). This is the most "efficient", but it is reliant on a central actor for liveness.</li>
-<li><strong>Sequencer auction</strong>: an auction is held (eg. every day) to determine who has the right to be the sequencer for the next day. This technique has the advantage that it raises funds which could be distributed by eg. a DAO controlled by the rollup (see: <a href="https://ethresear.ch/t/mev-auction-auctioning-transaction-ordering-rights-as-a-solution-to-miner-extractable-value/6788">MEV auctions</a>)</li>
-<li><strong>Random selection from PoS set</strong>: anyone can deposit ETH (or perhaps the rollup's own protocol token) into the rollup contract, and the sequencer of each batch is randomly selected from one of the depositors, with the probability of being selected being proportional to the amount deposited. The main drawback of this technique is that it leads to large amounts of needless capital lockup.</li>
-<li><strong>DPoS voting</strong>: there is a single sequencer selected with an auction but if they perform poorly token holders can vote to kick them out and hold a new auction to replace them.</li>
-</ul>
-<h4 id="split-batching-and-state-root-provision">Split batching and state root provision</h4>
-<p>Some of the rollups being currently developed are using a "split batch" paradigm, where the action of submitting a batch of layer-2 transactions and the action of submitting a state root are done separately. This has some key advantages:</p>
-<ol type="1">
-<li>You can allow many sequencers in parallel to publish batches in order to improve censorship resistance, without worrying that some batches will be invalid because some other batch got included first.</li>
-<li>If a state root is fraudulent, you don't need to revert the entire batch; you can revert just the state root, and wait for someone to provide a new state root for the same batch. This gives transaction senders a better guarantee that their transactions will not be reverted.</li>
-</ol>
-<p>So all in all, there is a fairly complex zoo of techniques that are trying to balance between complicated tradeoffs involving efficiency, simplicity, censorship resistance and other goals. It's still too early to say which combination of these ideas works best; time will tell.</p>
-<h2 id="how-much-scaling-do-rollups-give-you">How much scaling do rollups give you?</h2>
-<p>On the existing Ethereum chain, the gas limit is 12.5 million, and each byte of data in a transaction costs 16 gas. This means that if a block contains nothing but a single batch (we'll say a ZK rollup is used, spending 500k gas on proof verification), that batch can have (12 million / 16) = 750,000 bytes of data. As shown above, a rollup for ETH transfers requires only 12 bytes per user operation, meaning that the batch can contain up to 62,500 transactions. At an average block time of <a href="https://etherscan.io/chart/blocktime">13 seconds</a>, this translates to ~4807 TPS (compared to 12.5 million / 21000 / 13 ~= 45 TPS for ETH transfers directly on Ethereum itself).</p>
-<p>Here's a chart for some other example use cases:</p>
-<table>
-<colgroup>
-<col style="width: 25%"/>
-<col style="width: 25%"/>
-<col style="width: 25%"/>
-<col style="width: 25%"/>
-</colgroup>
-<thead>
-<tr class="header">
-<th>Application</th>
-<th>Bytes in rollup</th>
-<th>Gas cost on layer 1</th>
-<th>Max scalability gain</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>ETH transfer</td>
-<td><strong>12</strong></td>
-<td>21,000</td>
-<td>105x</td>
-</tr>
-<tr class="even">
-<td>ERC20 transfer</td>
-<td><strong>16</strong> (4 more bytes to specify which token)</td>
-<td>~50,000</td>
-<td>187x</td>
-</tr>
-<tr class="odd">
-<td>Uniswap trade</td>
-<td><strong>~14</strong> (4 bytes sender + 4 bytes recipient + 3 bytes value + 1 byte max price + 1 byte misc)</td>
-<td>~100,000</td>
-<td>428x</td>
-</tr>
-<tr class="even">
-<td>Privacy-preserving withdrawal (Optimistic rollup)</td>
-<td><strong>296</strong> (4 bytes index of root + 32 bytes nullifier + 4 bytes recipient + 256 bytes ZK-SNARK proof)</td>
-<td><a href="https://etherscan.io/tx/0x6e311f84655af72614966705584569b52d6e314f2d61b965db91db41fd01b1e1">~380,000</a></td>
-<td>77x</td>
-</tr>
-<tr class="odd">
-<td>Privacy-preserving withdrawal (ZK rollup)</td>
-<td><strong>40</strong> (4 bytes index of root + 32 bytes nullifier + 4 bytes recipient)</td>
-<td><a href="https://etherscan.io/tx/0x6e311f84655af72614966705584569b52d6e314f2d61b965db91db41fd01b1e1">~380,000</a></td>
-<td>570x</td>
-</tr>
-</tbody>
-</table>
-<p><small><i>Max scalability gain is calculated as (L1 gas cost) / (bytes in rollup * 16) * 12 million / 12.5 million.</i></small></p>
-<p>Now, it is worth keeping in mind that these figures are overly optimistic for a few reasons. Most importantly, a block would almost never just contain one batch, at the very least because there are and will be multiple rollups. Second, deposits and withdrawals will continue to exist. Third, <em>in the short term</em> usage will be low, and so fixed costs will dominate. But even with these factors taken into account, scalability gains of over 100x are expected to be the norm.</p>
-<p>Now what if we want to go above ~1000-4000 TPS (depending on the specific use case)? Here is where <a href="https://hackmd.io/@HWeNw8hNRimMm2m2GH56Cw/sharding_proposal">eth2 data sharding</a> comes in. The sharding proposal opens up a space of 16 MB every 12 seconds that can be filled with any data, and the system guarantees consensus on the availability of that data. This data space can be used by rollups. This ~1398k bytes per sec is a 23x improvement on the ~60 kB/sec of the existing Ethereum chain, and in the longer term the data capacity is expected to grow even further. Hence, rollups that use eth2 sharded data can collectively process as much as ~100k TPS, and even more in the future.</p>
-<h2 id="what-are-some-not-yet-fully-solved-challenges-in-rollups">What are some not-yet-fully-solved challenges in rollups?</h2>
-<p>While the basic concept of a rollup is now well-understood, we are quite certain that they are fundamentally feasible and secure, and multiple rollups have already been deployed to mainnet, there are still many areas of rollup design that have not been well explored, and quite a few challenges in fully bringing large parts of the Ethereum ecosystem onto rollups to take advantage of their scalability. Some key challenges include:</p>
-<ul>
-<li><strong>User and ecosystem onboarding</strong> - not many applications use rollups, rollups are unfamiliar to users, and few wallets have started integrating rollups. Merchants and charities do not yet accept them for payments.</li>
-<li><strong>Cross-rollup transactions</strong> - efficiently moving assets and data (eg. oracle outputs) from one rollup into another without incurring the expense of going through the base layer.</li>
-<li><strong>Auditing incentives</strong> - how to maximize the chance that at least one honest node actually will be fully verifying an optimistic rollup so they can publish a fraud proof if something goes wrong? For small-scale rollups (up to a few hundred TPS) this is not a significant issue and one can simply rely on altruism, but for larger-scale rollups more explicit reasoning about this is needed.</li>
-<li><strong>Exploring the design space in between plasma and rollups</strong> - are there techniques that put <em>some</em> state-update-relevant data on chain but not <em>all</em> of it, and is there anything useful that could come out of that?</li>
-<li><strong>Maximizing security of pre-confirmations</strong> - many rollups provide a notion of "pre-confirmation" for faster UX, where the sequencer immediately provides a promise that a transaction will be included in the next batch, and the sequencer's deposit is destroyed if they break their word. But the economy security of this scheme is limited, because of the possibility of making many promises to very many actors at the same time. Can this mechanism be improved?</li>
-<li><strong>Improving speed of response to absent sequencers</strong> - if the sequencer of a rollup suddenly goes offline, it would be valuable to recover from that situation maximally quickly and cheaply, either quickly and cheaply mass-exiting to a different rollup or replacing the sequencer.</li>
-<li><strong>Efficient ZK-VM</strong> - generating a ZK-SNARK proof that general-purpose EVM code (or some different VM that existing smart contracts can be compiled to) has been executed correctly and has a given result.</li>
-</ul>
-<h2 id="conclusions">Conclusions</h2>
-<p>Rollups are a powerful new layer-2 scaling paradigm, and are expected to be a cornerstone of Ethereum scaling in the short and medium-term future (and possibly long-term as well). They have seen a large amount of excitement from the Ethereum community because unlike previous attempts at layer-2 scaling, they can support general-purpose EVM code, allowing existing applications to easily migrate over. They do this by making a key compromise: not trying to go fully off-chain, but instead leaving a small amount of data per transaction on-chain.</p>
-<p>There are many kinds of rollups, and many choices in the design space: one can have an optimistic rollup using fraud proofs, or a ZK rollup using validity proofs (aka. ZK-SNARKs). The sequencer (the user that can publish transaction batches to chain) can be either a centralized actor, or a free-for-all, or many other choices in between. Rollups are still an early-stage technology, and development is continuing rapidly, but they work and some (notably <a href="https://loopring.io/">Loopring</a>, <a href="https://wallet.zksync.io/">ZKSync</a> and <a href="https://www.deversifi.com/">DeversiFi</a>) have already been running for months. Expect much more exciting work to come out of the rollup space in the years to come.</p>
+<p>Guardians are easy to add: you can add a guardian simply by typing in their ENS name or ETH address, though most social recovery wallets will require the guardian to sign a transaction in the recovery webpage to agree to be added. In any sanely designed social recovery wallet, the guardian does NOT need to download and use the same wallet; they can simply use their existing Ethereum wallet, whichever type of wallet it is. Given the high convenience of adding guardians, if you are lucky enough that your social circles are already made up of Ethereum users, I personally favor high guardian counts (ideally 7+) for increased security. If you already have a wallet, there is no ongoing mental effort required to be a guardian: any recovery operations that you do would be done through your existing wallet. If you not know many other active Ethereum users, then a smaller number of guardians that you trust to be technically competent is best.</p>
+<p>To reduce the risk of attacks on guardians and collusion, <strong>your guardians do not have to be publicly known: in fact, they do not need to know <em>each other's</em> identities</strong>. This can be accomplished in two ways. First, instead of the guardians' addresses being stored directly on chain, a hash of the list of addresses can be stored on chain, and the wallet owner would only need to publish the full list at recovery time. Second, each guardian can be asked to deterministically generate a new single-purpose address that they would use just for that particular recovery; they would not need to actually send any transactions with that address unless a recovery is actually required. To complement these technical protections, <strong>it's recommended to choose a diverse collection of guardians from different social circles (including ideally one institutional guardian)</strong>; these recommendations together would make it extremely difficult for the guardians to be attacked simultaneously or collude.</p>
+<p>In the event that you die or are permanently incapacitated, it would be a socially agreed standard protocol that guardians can publicly announce themselves, so in that case they can find each other and recover your funds.</p>
+<h3 id="social-recovery-wallets-are-not-a-betrayal-but-rather-an-expression-of-crypto-values">Social recovery wallets are not a betrayal, but rather an <em>expression</em>, of "crypto values"</h3>
+<p>One common response to suggestions to use any form of multisig, social recovery or otherwise, is the idea that this solution goes back to "trusting people", and so is a betrayal of the values of the blockchain and cryptocurrency industry. While I understand why one may think this at first glance, I would argue that this criticism stems from a fundamental misunderstanding of what crypto should be about.</p>
+<p>To me, the goal of crypto was never to remove the need for <em>all</em> trust. <strong>Rather, the goal of crypto is to give people access to cryptographic and economic building blocks that give people more <em>choice</em> in whom to trust, and furthermore allow people to build more <em>constrained</em> forms of trust</strong>: giving someone the power to do some things on your behalf without giving them the power to do everything. Viewed in this way, <strong>multisig and social recovery are a perfect expression of this principle</strong>: each participant has <em>some</em> influence over the ability to accept or reject transactions, but no one can move funds unilaterally. This more complex logic allows for a setup far more secure than what would be possible if there had to be one person or key that unilaterally controlled the funds.</p>
+<p>This fundamental idea, that human inputs should be wielded carefully but not thrown away outright, is powerful because it works well with the strengths and weaknesses of the human brain. The human brain is quite poorly suited for remembering passwords and tracking paper wallets, but it's an ASIC for keeping track of relationships with other people. This effect is even stronger for less technical users: they may have a harder time with wallets and passwords, but they are just as adept at social tasks like "choose 7 people who won't all gang up on me". If we <em>can</em> extract at least some information from human inputs into a mechanism, without those inputs turning into a vector for attack and exploitation, then we should figure out how. And social recovery is very robust: for a wallet with 7 guardians to be compromised, 4 of the 7 guardians would need to somehow discover each other and agree to steal the funds, without <em>any</em> of them tipping the owner off: certainly a much tougher challenge than attacking a <a href="https://bitcoinmagazine.com/articles/bitcoin-self-defense-part-i-wallet-protection-1368758841">wallet protected purely by a single individuals</a>.</p>
+<h3 id="how-can-social-recovery-protect-against-theft">How can social recovery protect against theft?</h3>
+<p>Social recovery as explained above deals with the risk that you <em>lose</em> your wallet. But there is still the risk that your signing key gets <em>stolen</em>: someone hacks into your computer, sneaks up behind you while you're already logged in and hits you over the head, or even just uses some user interface glitch to trick you into signing a transaction that you did not intend to sign.</p>
+<p>We can extend social recovery to deal with such issues by adding a <a href="https://hackingdistributed.com/2016/02/26/how-to-implement-secure-bitcoin-vaults/">vault</a>. Every social recovery wallet can come with an automatically generated vault. Assets can be moved to the vault just by sending them to the vault's address, but they can be moved out of the vault only with a 1 week delay. During that delay, the signing key (or, by extension, the guardians) can cancel the transaction. If desired, the vault could also be programmed so that some limited financial operations (eg. Uniswap trades between some whitelisted tokens) can be done without delay.</p>
+<h3 id="existing-social-recovery-wallets">Existing social recovery wallets</h3>
+<p>Currently, the two major wallets that have implemented social recovery are the <a href="https://www.argent.xyz/">Argent wallet</a> and the <a href="https://loopring.io/">Loopring wallet</a>:</p>
+<center>
+<img src="https://vitalik.ca/images/social-recovery-files/loopring.png" style="display: block; margin-left: auto; margin-right: auto;width:35%; padding-right: 10%"/> <img src="https://vitalik.ca/images/social-recovery-files/argent.png" style="display: block; margin-left: auto; margin-right: auto;width:34.6%"/>
+</center>
+<p><br/></p>
+<p>The Argent wallet is the first major, and still the most popular, "smart contract wallet" currently in use, and social recovery is one of its main selling points. The Argent wallet includes an interface by which guardians can be added and removed:</p>
+<center>
+<img src="https://vitalik.ca/images/social-recovery-files/argentrecovery.png" style="display: block; margin-left: auto; margin-right: auto;width:34.6%"/>
+</center>
+<p><br/></p>
+<p>To protect against theft, the wallet has a daily limit: transactions up to that amount are instant but transactions above that amount require guardians to approve to finalize the withdrawal.</p>
+<p>The Loopring wallet is most known for being built by the developers of (and of course including support for) the <a href="https://exchange.loopring.io">Loopring protocol</a>, a <a href="https://vitalik.ca/general/2021/01/05/rollup.html">ZK rollup</a> for payments and decentralized exchange. But the Loopring wallet also has a social recovery feature, which works very similarly to that in Argent. In both cases, the wallet companies provide one guardian for free, which relies on a confirmation code sent by mobile phone to authenticate you. For the other guardians, you can add either other users of the same wallet, or any Ethereum user by providing their Ethereum address.</p>
+<p>The user experience in both cases is surprisingly smooth. There were two main challenges. First, the smoothness in both cases relies on a central "relayer" run by the wallet maker that re-publishes signed messages as transactions. Second, the fees are high. Fortunately, both of these problems are surmountable.</p>
+<h3 id="migration-to-layer-2-rollups-can-solve-the-remaining-challenges">Migration to Layer 2 (rollups) can solve the remaining challenges</h3>
+<p>As mentioned above, <strong>there are two key challenges: (i) the dependence on relayers to solve transactions, and (ii) high transaction fees</strong>. The first challenge, dependence on relayers, is an increasingly common problem in Ethereum applications. The issue arises because there are two types of accounts in Ethereum: <strong>externally owned accounts (EOAs)</strong>, which are accounts controlled by a single private key, and <strong>contracts</strong>. In Ethereum, there is a rule that every transaction must start from an EOA; the original intention was that EOAs represent "users" and contracts represent "applications", and an application can only run if a user talks to the application. If we want wallets with more complex policies, like multisig and social recovery, we need to use contracts to represent users. But this poses a challenge: if your funds are in a contract, you need to have some <em>other</em> account that has ETH that can pay to start each transaction, and it needs quite a lot of ETH just in case transaction fees get really high.</p>
+<p>Argent and Loopring get around this problem by personally running a "relayer". The relayer listens for off-chain digitally signed "messages" submitted by users, and wraps these messages in a transaction and publishes them to chain. But for the long run, this is a poor solution; it adds an extra point of centralization. If the relayer is down and a user really needs to send a transaction, they can always just send it from their own EOA, but it is nevertheless the case that a new tradeoff between centralization and inconvenience is introduced. There are efforts to solve this problem and get convenience without centralization; the main two categories revolve around either making a <a href="https://docs.opengsn.org">generalized decentralized relayer network</a> or modifying the Ethereum protocol itself to <a href="https://our.status.im/account-abstraction-eip-2938/">allow transactions to begin from contracts</a>. But neither of these solutions solve transaction fees, and in fact, they make the problem worse due to smart contracts' inherently greater complexity.</p>
+<p><strong>Fortunately, we <em>can</em> solve both of these problems at the same time, by looking toward a third solution: moving the ecosystem <a href="https://vitalik.ca/general/2021/01/05/rollup.html">onto layer 2 protocols</a> such as optimistic rollups and ZK rollups.</strong> Optimistic and ZK rollups can both be designed with account abstraction built in, circumventing any need for relayers. Existing wallet developers are already looking into rollups, but ultimately migrating to rollups en masse is an ecosystem-wide challenge.</p>
+<p>An ecosystem-wide mass migration to rollups is as good an opportunity as any to reverse the Ethereum ecosystem's earlier mistakes and give multisig and smart contract wallets a much more central role in helping to secure users' funds. But this requires broader recognition that wallet security is a challenge, and that we have not gone nearly as far in trying to meet and challenge as we should. Multisig and social recovery need not be the end of the story; there may well be designs that work even better. But the simple reform of moving to rollups and making sure that these rollups treat smart contract wallets as <em>first class citizens</em> is an important step toward making that happen.</p>
 </meta></div>
 </body>
 </html>
